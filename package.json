@@ -1,0 +1,16 @@
+{
+  "name": "odds-fetcher",
+  "version": "1.0.0",
+  "description": "Automated odds fetching for NFL games",
+  "main": "fetch-odds.js",
+  "scripts": {
+    "start": "node fetch-odds.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "keywords": ["nfl", "odds", "betting", "sports"],
+  "author": "kevbowl",
+  "license": "MIT"
+}
