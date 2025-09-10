@@ -1,10 +1,10 @@
 # Odds Fetcher
 
-Automated odds fetching for NFL games using The-Odds-API and GitHub Actions.
+Automated odds fetching for NFL and NCAA Football games using The-Odds-API and GitHub Actions.
 
 ## Overview
 
-This repository automatically fetches NFL betting odds every 4 hours and makes them publicly available as JSON files. The Prophet betting application consumes these odds for generating recommendations.
+This repository automatically fetches NFL and NCAA Football betting odds every 4 hours and makes them publicly available as JSON files. The Prophet betting application consumes these odds for generating recommendations.
 
 ## Files
 
@@ -12,7 +12,8 @@ This repository automatically fetches NFL betting odds every 4 hours and makes t
 - `fetch-odds.js` - Node.js script that fetches odds from The-Odds-API
 - `package.json` - Node.js dependencies
 - `odds/nfl.json` - Generated NFL odds data (updated every 4 hours)
-- `odds/summary.json` - Summary of the latest odds fetch
+- `odds/ncaaf.json` - Generated NCAA Football odds data (updated every 4 hours)
+- `odds/summary.json` - Summary of the latest odds fetch for all sports
 
 ## Setup
 
@@ -20,9 +21,11 @@ This repository automatically fetches NFL betting odds every 4 hours and makes t
 
 2. **Manual Trigger**: You can manually trigger the workflow by going to Actions → Fetch NFL Odds → Run workflow
 
-3. **API Usage**: The generated `odds/nfl.json` file is publicly accessible at:
+3. **API Usage**: The generated odds files are publicly accessible at:
    ```
    https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
+   https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/ncaaf.json
+   https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.json
    ```
 
 ## Data Format
