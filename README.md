@@ -14,7 +14,7 @@ This system provides **real-time odds data** and **historical tracking** for det
 ```
 ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
 | GitHub Actions  │-─▶│ The-Odds-API    │-─▶│ GitHub          │
-│ (Every 8min)    │   │ (Limit 20K/mo)  │   │ (Git Commits)   │
+│ (Every 12min)   │   │ (Limit 20K/mo)  │   │ (Git Commits)   │
 └─────────────────┘   └─────────────────┘   └─────────────────┘
                                                    ▲
                                                    │
@@ -28,9 +28,9 @@ This system provides **real-time odds data** and **historical tracking** for det
 
 | Metric | Value |
 |--------|-------|
-| **Frequency** | Every 8 minutes (24/7) |
+| **Frequency** | Every 12 minutes (24/7) |
 | **Sports** | NFL + NCAA Football |
-| **API Calls/Month** | ~11,520 (within 20K limit) |
+| **API Calls/Month** | ~7,200 (within 20K limit) |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
 
