@@ -1,6 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
@@ -10,18 +11,41 @@ if (!fs.existsSync(ODDS_DIR)) {
   fs.mkdirSync(ODDS_DIR, { recursive: true });
 }
 
+// Retry logic for API calls
+async function fetchWithRetry(url, params, maxRetries = 3, delay = 1000) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`API attempt ${attempt}/${maxRetries}...`);
+      const response = await axios.get(url, { params });
+      return response;
+    } catch (error) {
+      console.error(`Attempt ${attempt} failed:`, error.message);
+      
+      if (error.response?.status === 429) {
+        // Rate limit - wait longer
+        const waitTime = delay * Math.pow(2, attempt - 1);
+        console.log(`Rate limited. Waiting ${waitTime}ms before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      } else if (attempt === maxRetries) {
+        throw error;
+      } else {
+        // Other errors - wait and retry
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+}
+
 async function fetchOdds(sport, sportKey, fileName) {
   try {
     console.log(`Fetching ${sport} odds...`);
     
-    const response = await axios.get(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
-      params: {
-        apiKey: ODDS_API_KEY,
-        regions: 'us',
-        markets: 'h2h,spreads,totals',
-        oddsFormat: 'american',
-        dateFormat: 'iso'
-      }
+    const response = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
+      apiKey: ODDS_API_KEY,
+      regions: 'us',
+      markets: 'h2h,spreads,totals',
+      oddsFormat: 'american',
+      dateFormat: 'iso'
     });
 
     const oddsData = response.data;
@@ -57,7 +81,7 @@ async function fetchOdds(sport, sportKey, fileName) {
 
 async function fetchAllOdds() {
   try {
-    console.log('Starting odds fetching for all sports...');
+    console.log('Starting enhanced odds fetching for all sports...');
     
     // Fetch both NFL and NCAA football odds
     const [nflResult, ncaafResult] = await Promise.all([
@@ -92,7 +116,18 @@ async function fetchAllOdds() {
     fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));
     
     console.log(`Summary saved to ${summaryPath}`);
-    console.log('Odds fetching completed successfully!');
+    console.log('Enhanced odds fetching completed successfully!');
+    
+    // Git version control for historical data
+    try {
+      console.log('Committing odds changes to Git...');
+      execSync('git add odds/', { stdio: 'inherit' });
+      execSync(`git commit -m "Odds update $(date '+%Y-%m-%d %H:%M')"`, { stdio: 'inherit' });
+      console.log('Git commit successful');
+    } catch (gitError) {
+      console.error('Git commit failed:', gitError.message);
+      // Don't fail the entire process if Git fails
+    }
     
   } catch (error) {
     console.error('Error in fetchAllOdds:', error.message);
@@ -100,5 +135,5 @@ async function fetchAllOdds() {
   }
 }
 
-// Run the fetch
+// Run the enhanced fetch
 fetchAllOdds();
