@@ -32,7 +32,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add odds/
-        git diff --staged --quiet || git commit -m "Update NFL odds - $(date)"
+        git diff --staged --quiet || git commit -m "Update odds - $(date)"
         git push
 
 
