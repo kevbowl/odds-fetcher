@@ -14,7 +14,7 @@ This system provides **real-time odds data** and **historical tracking** for det
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   GitHub Actions │───▶│  The-Odds-API   │───▶│  Git Repository │
-│   (8min intervals)│    │   (Rate Limited) │    │ (Historical Data)│
+│   (8min intervals) │    │   (Rate Limited) │    │ (Historical Data) │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
          │                                              │
          ▼                                              ▼
