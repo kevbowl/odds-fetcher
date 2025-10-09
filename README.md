@@ -30,7 +30,7 @@ This system provides **real-time odds data** and **historical tracking** for det
 |--------|-------|
 | **Frequency** | Every 8 minutes (24/7) |
 | **Sports** | NFL + NCAA Football |
-| **API Calls/Month** | ~10,800 (within 20K limit) |
+| **API Calls/Month** | ~11,520 (within 20K limit) |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
 
