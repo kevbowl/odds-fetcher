@@ -3,7 +3,7 @@ name: Fetch NFL Odds
 on:
   schedule:
     # Run every 8 minutes, 24/7 (1,800 minutes/month - within free tier)
-    - cron: '*/8 * * * *'
+    - cron: '0,8,16,24,32,40,48,56 * * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
