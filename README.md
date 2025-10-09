@@ -18,8 +18,8 @@ This system provides **real-time odds data** and **historical tracking** for det
 │   (Every 8min)    │  │   (Limit 20K/mo)  │  │  (Git Commits)    │
 │                   │  │                   │  │                   │
 └───────────────────┘  └───────────────────┘  └───────────────────┘
-                                                                  ▲
-                                                                  │
+                                                      ▲
+                                                      │
                                                       ┌───────────────────┐
                                                       │                   │
                                                       │     Analysis      │
