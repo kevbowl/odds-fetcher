@@ -7,7 +7,7 @@
 
 ## 🎯 Purpose
 
-This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL and NCAA Football betting markets. Built for the Prophet betting application's steam detection algorithms.
+This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL, NCAA Football, and FIFA World Cup betting markets. Built for the Prophet betting application's steam detection algorithms.
 
 ## 🏗️ Architecture
 
@@ -29,8 +29,8 @@ This system provides **real-time odds data** and **historical tracking** for det
 | Metric | Value |
 |--------|-------|
 | **Frequency** | Every 12 minutes (24/7) |
-| **Sports** | NFL + NCAA Football |
-| **API Calls/Month** | ~7,200 (within 20K limit) |
+| **Sports** | NFL + NCAA Football + FIFA World Cup |
+| **API Calls/Month** | ~10,800 (within 20K limit) |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
 
@@ -44,6 +44,7 @@ This system provides **real-time odds data** and **historical tracking** for det
 | `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Every 8 minutes |
 | `odds/nfl.json` | Current NFL odds (latest) | Updated every 8 minutes |
 | `odds/ncaaf.json` | Current NCAA Football odds (latest) | Updated every 8 minutes |
+| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | Updated every 8 minutes |
 | `odds/summary.json` | Fetch metadata & game counts | Updated every 8 minutes |
 
 ### Git-Based Historical Tracking
@@ -109,6 +110,9 @@ curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
 # Latest NCAA Football odds  
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/ncaaf.json
 
+# Latest FIFA World Cup odds
+curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/worldcup.json
+
 # Fetch summary
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.json
 ```
@@ -166,6 +170,51 @@ git show HEAD~14:odds/nfl.json > nfl_2hours_ago.json
             "outcomes": [
               {"name": "Over", "price": -110, "point": 48.5},
               {"name": "Under", "price": -110, "point": 48.5}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+### FIFA World Cup JSON Structure (`odds/worldcup.json`)
+
+Identical top-level schema to the football files, with two soccer-specific differences:
+
+- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals` only — soccer has no point spread in our model. Only the World Cup file drops spreads; NFL/NCAAF keep `h2h,spreads,totals`.
+- **3-way moneyline.** The `h2h` market returns three outcomes — home team, away team, and the draw. The draw outcome's `name` is exactly `"Draw"` (The Odds API default, written through unchanged so downstream parsers can key off `name == "Draw"`).
+
+```json
+[
+  {
+    "id": "...",
+    "sport_key": "soccer_fifa_world_cup",
+    "sport_title": "FIFA World Cup",
+    "commence_time": "2026-06-11T19:00:00Z",
+    "home_team": "United States",
+    "away_team": "Mexico",
+    "bookmakers": [
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "...",
+            "outcomes": [
+              {"name": "United States", "price": 150},
+              {"name": "Mexico", "price": 180},
+              {"name": "Draw", "price": 210}
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "...",
+            "outcomes": [
+              {"name": "Over", "price": -110, "point": 2.5},
+              {"name": "Under", "price": -110, "point": 2.5}
             ]
           }
         ]
