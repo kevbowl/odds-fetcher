@@ -28,11 +28,32 @@ This system provides **real-time odds data** and **historical tracking** for det
 
 | Metric | Value |
 |--------|-------|
-| **Frequency** | Every 12 minutes (24/7) |
+| **Workflow cadence** | Wakes every 12 minutes (24/7) |
 | **Sports** | NFL + NCAA Football + FIFA World Cup |
-| **API Calls/Month** | ~10,800 (within 20K limit) |
+| **Per-sport frequency** | NFL/NCAAF every run (12 min); World Cup every 4h |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
+
+### Scheduling & quota (per-sport gating)
+
+The GitHub Actions workflow wakes every 12 minutes, but `fetch-odds.js` decides
+**per sport** whether to actually call the API on a given run. This keeps quota
+usage tied to what's in season and how frequently each sport needs sampling.
+The Odds API bills **1 credit per market, per region, per request**.
+
+| Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
+|-------|-----------------|---------|-----------------|-----------------|
+| FIFA World Cup | Jun 11 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every 4h (~370 credits/mo) | 2 |
+| NFL | September – February | `h2h,spreads,totals` | Every run (12 min) | 3 |
+| NCAA Football | August – January | `h2h,spreads,totals` | Every run (12 min) | 3 |
+
+- A sport is fetched only when it is **in season** *and* **due** this run.
+- World Cup is throttled to 4h so it fits a 500-credit/month plan during the
+  summer when it's the only sport active.
+- NFL + NCAAF at 12-minute resolution is high-volume (~21,600 credits/mo when
+  both are in season) — size the API plan accordingly for football season.
+- Configure all of this in the `SPORTS` array in `fetch-odds.js`
+  (`seasonMonths` / `window` for season, `fetchEveryMinutes` for cadence).
 
 ## 🔧 Technical Implementation
 
@@ -40,12 +61,12 @@ This system provides **real-time odds data** and **historical tracking** for det
 
 | File | Purpose | Frequency |
 |------|---------|-----------|
-| `fetch-odds.js` | Enhanced fetcher with retry logic & Git commits | Every 8 minutes |
-| `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Every 8 minutes |
-| `odds/nfl.json` | Current NFL odds (latest) | Updated every 8 minutes |
-| `odds/ncaaf.json` | Current NCAA Football odds (latest) | Updated every 8 minutes |
-| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | Updated every 8 minutes |
-| `odds/summary.json` | Fetch metadata & game counts | Updated every 8 minutes |
+| `fetch-odds.js` | Fetcher with retry logic, per-sport season/cadence gating & Git commits | Runs every 12 minutes |
+| `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Wakes every 12 minutes |
+| `odds/nfl.json` | Current NFL odds (latest) | In season: every 12 min |
+| `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 12 min |
+| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 4h |
+| `odds/summary.json` | Fetch metadata & game counts | Each run that fetches |
 
 ### Git-Based Historical Tracking
 
