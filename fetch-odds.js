@@ -36,14 +36,14 @@ async function fetchWithRetry(url, params, maxRetries = 3, delay = 1000) {
   }
 }
 
-async function fetchOdds(sport, sportKey, fileName) {
+async function fetchOdds(sport, sportKey, fileName, markets = 'h2h,spreads,totals') {
   try {
     console.log(`Fetching ${sport} odds...`);
     
     const response = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
       apiKey: ODDS_API_KEY,
       regions: 'us',
-      markets: 'h2h,spreads,totals',
+      markets,
       oddsFormat: 'american',
       dateFormat: 'iso'
     });
@@ -83,10 +83,13 @@ async function fetchAllOdds() {
   try {
     console.log('Starting enhanced odds fetching for all sports...');
     
-    // Fetch both NFL and NCAA football odds
-    const [nflResult, ncaafResult] = await Promise.all([
+    // Fetch NFL, NCAA football, and FIFA World Cup odds.
+    // World Cup is soccer (3-way h2h with a "Draw" outcome) and has no point
+    // spread in our model, so it requests h2h,totals only (no spreads).
+    const [nflResult, ncaafResult, worldCupResult] = await Promise.all([
       fetchOdds('NFL', 'americanfootball_nfl', 'nfl'),
-      fetchOdds('NCAA Football', 'americanfootball_ncaaf', 'ncaaf')
+      fetchOdds('NCAA Football', 'americanfootball_ncaaf', 'ncaaf'),
+      fetchOdds('FIFA World Cup', 'soccer_fifa_world_cup', 'worldcup', 'h2h,totals')
     ]);
     
     // Create combined summary
@@ -108,6 +111,14 @@ async function fetchAllOdds() {
         sport: ncaafResult.sport,
         gameCount: ncaafResult.gameCount,
         fileName: 'ncaaf.json'
+      });
+    }
+    
+    if (worldCupResult) {
+      summary.sports.push({
+        sport: worldCupResult.sport,
+        gameCount: worldCupResult.gameCount,
+        fileName: 'worldcup.json'
       });
     }
     
