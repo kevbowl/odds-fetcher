@@ -6,6 +6,68 @@ const { execSync } = require('child_process');
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
 
+// How often the GitHub Actions workflow wakes this script (its cron cadence).
+// Per-sport fetchEveryMinutes must be a multiple of this.
+const RUN_EVERY_MIN = 12;
+
+// Sports to fetch, each gated to its own season AND its own fetch frequency, so
+// we only spend API quota when a sport is live and only as often as we want.
+// The Odds API bills 1 credit per market, per region, per request (e.g. World
+// Cup h2h,totals x us = 2 credits/request).
+//
+// Season gating per sport:
+//   - seasonMonths: recurring annual season as a list of months (1-12). Handles
+//     year-end wraparound automatically (e.g. NFL Sep-Feb = [9,10,11,12,1,2]).
+//   - window: a fixed one-off date range { start, end } for non-recurring events.
+//   - neither: always in season.
+// Frequency gating per sport:
+//   - fetchEveryMinutes: minimum minutes between fetches (default RUN_EVERY_MIN).
+//     World Cup is throttled to 4h to fit a 500-credit plan; football fetches
+//     every run (12 min) for high-resolution steam detection.
+const SPORTS = [
+  {
+    sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
+    markets: 'h2h,totals',
+    window: { start: '2026-06-11T00:00:00Z', end: '2026-07-20T00:00:00Z' }, // through the final (Jul 19, 2026)
+    fetchEveryMinutes: 240, // every 4h (~370 credits/month)
+  },
+  {
+    sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
+    markets: 'h2h,spreads,totals',
+    seasonMonths: [9, 10, 11, 12, 1, 2], // September - February
+    fetchEveryMinutes: 12, // every run, for steam detection
+  },
+  {
+    sport: 'NCAA Football', sportKey: 'americanfootball_ncaaf', fileName: 'ncaaf',
+    markets: 'h2h,spreads,totals',
+    seasonMonths: [8, 9, 10, 11, 12, 1], // August - January
+    fetchEveryMinutes: 12, // every run, for steam detection
+  },
+];
+
+// Whether a sport is in season right now (UTC).
+function isSportActive(sport, now = new Date()) {
+  if (sport.window) {
+    const t = now.getTime();
+    return t >= new Date(sport.window.start).getTime() && t < new Date(sport.window.end).getTime();
+  }
+  if (sport.seasonMonths) {
+    return sport.seasonMonths.includes(now.getUTCMonth() + 1);
+  }
+  return true;
+}
+
+// Whether a sport should fetch on this run, based on its fetchEveryMinutes.
+// Uses the run's time slot (rounded to the cron cadence) so it fires once per
+// interval and tolerates GitHub's cron jitter without double-firing.
+function isSportDue(sport, now = new Date()) {
+  const every = sport.fetchEveryMinutes || RUN_EVERY_MIN;
+  const slotsPerInterval = Math.max(1, Math.round(every / RUN_EVERY_MIN));
+  const minutesSinceMidnight = now.getUTCHours() * 60 + now.getUTCMinutes();
+  const slotIndex = Math.round(minutesSinceMidnight / RUN_EVERY_MIN);
+  return slotIndex % slotsPerInterval === 0;
+}
+
 // Ensure odds directory exists
 if (!fs.existsSync(ODDS_DIR)) {
   fs.mkdirSync(ODDS_DIR, { recursive: true });
@@ -81,16 +143,20 @@ async function fetchOdds(sport, sportKey, fileName, markets = 'h2h,spreads,total
 
 async function fetchAllOdds() {
   try {
-    console.log('Starting enhanced odds fetching for all sports...');
+    console.log('Starting odds fetching...');
     
-    // Fetch NFL, NCAA football, and FIFA World Cup odds.
-    // World Cup is soccer (3-way h2h with a "Draw" outcome) and has no point
-    // spread in our model, so it requests h2h,totals only (no spreads).
-    const [nflResult, ncaafResult, worldCupResult] = await Promise.all([
-      fetchOdds('NFL', 'americanfootball_nfl', 'nfl'),
-      fetchOdds('NCAA Football', 'americanfootball_ncaaf', 'ncaaf'),
-      fetchOdds('FIFA World Cup', 'soccer_fifa_world_cup', 'worldcup', 'h2h,totals')
-    ]);
+    // Fetch only sports that are in season AND due this run (no quota otherwise).
+    const now = new Date();
+    const activeSports = SPORTS.filter(s => isSportActive(s, now) && isSportDue(s, now));
+    if (activeSports.length === 0) {
+      console.log('No sports in season and due this run; skipping. No API quota used.');
+      return;
+    }
+    console.log(`Fetching this run: ${activeSports.map(s => s.sport).join(', ')}`);
+    
+    const results = await Promise.all(
+      activeSports.map(s => fetchOdds(s.sport, s.sportKey, s.fileName, s.markets))
+    );
     
     // Create combined summary
     const summary = {
@@ -98,29 +164,15 @@ async function fetchAllOdds() {
       sports: []
     };
     
-    if (nflResult) {
-      summary.sports.push({
-        sport: nflResult.sport,
-        gameCount: nflResult.gameCount,
-        fileName: 'nfl.json'
-      });
-    }
-    
-    if (ncaafResult) {
-      summary.sports.push({
-        sport: ncaafResult.sport,
-        gameCount: ncaafResult.gameCount,
-        fileName: 'ncaaf.json'
-      });
-    }
-    
-    if (worldCupResult) {
-      summary.sports.push({
-        sport: worldCupResult.sport,
-        gameCount: worldCupResult.gameCount,
-        fileName: 'worldcup.json'
-      });
-    }
+    results.forEach((result, i) => {
+      if (result) {
+        summary.sports.push({
+          sport: result.sport,
+          gameCount: result.gameCount,
+          fileName: `${activeSports[i].fileName}.json`
+        });
+      }
+    });
     
     // Save combined summary
     const summaryPath = path.join(ODDS_DIR, 'summary.json');
