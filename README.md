@@ -43,11 +43,19 @@ The Odds API bills **1 credit per market, per region, per request**.
 
 | Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
 |-------|-----------------|---------|-----------------|-----------------|
-| FIFA World Cup | Jun 11 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every 4h (~370 credits/mo) | 2 |
+| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every 4h (~370 credits/mo) | 2 |
 | NFL | September – February | `h2h,spreads,totals` | Every run (12 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every run (12 min) | 3 |
 
 - A sport is fetched only when it is **in season** *and* **due** this run.
+- "Due" is based on **elapsed time since the last fetch** (tracked per sport via
+  `lastFetched` in `summary.json`), not wall-clock slots — so it's robust to
+  GitHub's cron jitter and skipped runs (a late/missed run just fetches on the
+  next wake-up rather than waiting a full interval).
+- **Manual runs always fetch.** Triggering the workflow via *Run workflow*
+  (`workflow_dispatch`) bypasses the frequency throttle and fetches every
+  in-season sport immediately — handy for testing. (Set `FORCE_FETCH=true` to
+  do the same when running locally.)
 - World Cup is throttled to 4h so it fits a 500-credit/month plan during the
   summer when it's the only sport active.
 - NFL + NCAAF at 12-minute resolution is high-volume (~21,600 credits/mo when
