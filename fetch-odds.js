@@ -6,42 +6,32 @@ const { execSync } = require('child_process');
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
 
-// How often the GitHub Actions workflow wakes this script (its cron cadence).
-// Per-sport fetchEveryMinutes must be a multiple of this.
+// The workflow cron wakes the script this often; fetchEveryMinutes values are
+// multiples of it. The Odds API bills 1 credit per market, per region, per
+// request (World Cup h2h,totals x us = 2 credits).
 const RUN_EVERY_MIN = 12;
 
-// Sports to fetch, each gated to its own season AND its own fetch frequency, so
-// we only spend API quota when a sport is live and only as often as we want.
-// The Odds API bills 1 credit per market, per region, per request (e.g. World
-// Cup h2h,totals x us = 2 credits/request).
-//
-// Season gating per sport:
-//   - seasonMonths: recurring annual season as a list of months (1-12). Handles
-//     year-end wraparound automatically (e.g. NFL Sep-Feb = [9,10,11,12,1,2]).
-//   - window: a fixed one-off date range { start, end } for non-recurring events.
-//   - neither: always in season.
-// Frequency gating per sport:
-//   - fetchEveryMinutes: minimum minutes between fetches (default RUN_EVERY_MIN).
-//     World Cup is throttled to 4h to fit a 500-credit plan; football fetches
-//     every run (12 min) for high-resolution steam detection.
+// Per-sport config. See README "Scheduling & quota" for the gating model.
+//   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
+//   cadence: fetchEveryMinutes (min minutes between fetches)
 const SPORTS = [
   {
     sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
     markets: 'h2h,totals',
-    window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' }, // through the final (Jul 19, 2026)
+    window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
     fetchEveryMinutes: 240, // every 4h (~370 credits/month)
   },
   {
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
     markets: 'h2h,spreads,totals',
-    seasonMonths: [9, 10, 11, 12, 1, 2], // September - February
-    fetchEveryMinutes: 12, // every run, for steam detection
+    seasonMonths: [9, 10, 11, 12, 1, 2], // Sep - Feb
+    fetchEveryMinutes: 12,
   },
   {
     sport: 'NCAA Football', sportKey: 'americanfootball_ncaaf', fileName: 'ncaaf',
     markets: 'h2h,spreads,totals',
-    seasonMonths: [8, 9, 10, 11, 12, 1], // August - January
-    fetchEveryMinutes: 12, // every run, for steam detection
+    seasonMonths: [8, 9, 10, 11, 12, 1], // Aug - Jan
+    fetchEveryMinutes: 12,
   },
 ];
 
@@ -57,15 +47,29 @@ function isSportActive(sport, now = new Date()) {
   return true;
 }
 
-// Whether a sport should fetch on this run, based on its fetchEveryMinutes.
-// Uses the run's time slot (rounded to the cron cadence) so it fires once per
-// interval and tolerates GitHub's cron jitter without double-firing.
-function isSportDue(sport, now = new Date()) {
+// Last-fetch state from the previous run (persisted in summary.json), keyed by
+// "<fileName>.json".
+function loadLastFetched() {
+  try {
+    const prev = JSON.parse(fs.readFileSync(path.join(ODDS_DIR, 'summary.json'), 'utf8'));
+    const map = {};
+    (prev.sports || []).forEach(s => {
+      if (s.fileName) map[s.fileName] = { lastFetched: s.lastFetched || null, gameCount: s.gameCount };
+    });
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+// Due based on elapsed time since last fetch (not wall-clock slots), so it's
+// robust to GitHub cron jitter and skipped runs. Half-step slack avoids
+// drifting a full cron step late.
+function isSportDue(sport, lastFetchedIso, now = new Date()) {
+  if (!lastFetchedIso) return true; // never fetched -> fetch now
   const every = sport.fetchEveryMinutes || RUN_EVERY_MIN;
-  const slotsPerInterval = Math.max(1, Math.round(every / RUN_EVERY_MIN));
-  const minutesSinceMidnight = now.getUTCHours() * 60 + now.getUTCMinutes();
-  const slotIndex = Math.round(minutesSinceMidnight / RUN_EVERY_MIN);
-  return slotIndex % slotsPerInterval === 0;
+  const elapsedMin = (now.getTime() - new Date(lastFetchedIso).getTime()) / 60000;
+  return elapsedMin >= every - RUN_EVERY_MIN / 2;
 }
 
 // Ensure odds directory exists
@@ -145,33 +149,48 @@ async function fetchAllOdds() {
   try {
     console.log('Starting odds fetching...');
     
-    // Fetch only sports that are in season AND due this run (no quota otherwise).
     const now = new Date();
-    const activeSports = SPORTS.filter(s => isSportActive(s, now) && isSportDue(s, now));
-    if (activeSports.length === 0) {
-      console.log('No sports in season and due this run; skipping. No API quota used.');
+    // Manual "Run workflow" triggers (or FORCE_FETCH=true) bypass the frequency
+    // throttle and fetch every in-season sport immediately.
+    const isManual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch'
+      || process.env.FORCE_FETCH === 'true';
+    const lastFetched = loadLastFetched();
+    
+    // Fetch sports that are in season and (due by elapsed time OR a manual run).
+    const inSeason = SPORTS.filter(s => isSportActive(s, now));
+    const due = inSeason.filter(s =>
+      isManual || isSportDue(s, lastFetched[`${s.fileName}.json`]?.lastFetched, now)
+    );
+    if (due.length === 0) {
+      console.log(inSeason.length === 0
+        ? 'No sports in season; skipping. No API quota used.'
+        : 'In-season sports not due yet; skipping. No API quota used.');
       return;
     }
-    console.log(`Fetching this run: ${activeSports.map(s => s.sport).join(', ')}`);
+    console.log(`Fetching this run${isManual ? ' (manual)' : ''}: ${due.map(s => s.sport).join(', ')}`);
     
     const results = await Promise.all(
-      activeSports.map(s => fetchOdds(s.sport, s.sportKey, s.fileName, s.markets))
+      due.map(s => fetchOdds(s.sport, s.sportKey, s.fileName, s.markets))
     );
     
-    // Create combined summary
-    const summary = {
-      lastUpdated: new Date().toISOString(),
-      sports: []
-    };
+    // Map this run's successful fetches by output file.
+    const nowIso = now.toISOString();
+    const fetchedByFile = {};
+    due.forEach((s, i) => { if (results[i]) fetchedByFile[`${s.fileName}.json`] = results[i]; });
     
-    results.forEach((result, i) => {
-      if (result) {
-        summary.sports.push({
-          sport: result.sport,
-          gameCount: result.gameCount,
-          fileName: `${activeSports[i].fileName}.json`
-        });
-      }
+    // Build summary for all in-season sports, carrying forward last-fetch state
+    // for any in-season sport not (successfully) fetched on this run.
+    const summary = { lastUpdated: nowIso, sports: [] };
+    inSeason.forEach(s => {
+      const fileKey = `${s.fileName}.json`;
+      const fetched = fetchedByFile[fileKey];
+      const prev = lastFetched[fileKey];
+      summary.sports.push({
+        sport: s.sport,
+        gameCount: fetched ? fetched.gameCount : (prev ? prev.gameCount : 0),
+        fileName: fileKey,
+        lastFetched: fetched ? nowIso : (prev ? prev.lastFetched : null)
+      });
     });
     
     // Save combined summary
