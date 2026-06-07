@@ -28,7 +28,7 @@ const SPORTS = [
   {
     sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
     markets: 'h2h,totals',
-    window: { start: '2026-06-11T00:00:00Z', end: '2026-07-20T00:00:00Z' }, // through the final (Jul 19, 2026)
+    window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' }, // through the final (Jul 19, 2026)
     fetchEveryMinutes: 240, // every 4h (~370 credits/month)
   },
   {
