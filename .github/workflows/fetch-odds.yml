@@ -3,7 +3,7 @@ name: Fetch Odds
 on:
   schedule:
     # Wake every 12 minutes; fetch-odds.js gates paid API calls by season, cadence, and quota.
-    - cron: '0,12,24,36,48 * * * *'
+    - cron: '3,15,27,39,51 * * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
