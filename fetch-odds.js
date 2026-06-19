@@ -1,7 +1,6 @@
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
@@ -317,17 +316,6 @@ async function fetchAllOdds() {
     
     console.log(`Summary saved to ${summaryPath}`);
     console.log('Enhanced odds fetching completed successfully!');
-    
-    // Git version control for historical data
-    try {
-      console.log('Committing odds changes to Git...');
-      execSync('git add odds/', { stdio: 'inherit' });
-      execSync(`git commit -m "Odds update $(date '+%Y-%m-%d %H:%M')"`, { stdio: 'inherit' });
-      console.log('Git commit successful');
-    } catch (gitError) {
-      console.error('Git commit failed:', gitError.message);
-      // Don't fail the entire process if Git fails
-    }
     
   } catch (error) {
     console.error('Error in fetchAllOdds:', error.message);
