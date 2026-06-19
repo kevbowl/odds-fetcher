@@ -2,8 +2,7 @@ name: Fetch Odds
 
 on:
   schedule:
-    # Run every 12 minutes, 24/7 (7,200 calls/month - within 20K limit)
-    - cron: '0,12,24,36,48 * * * *'
+    - cron: '7 */2 * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
