@@ -7,7 +7,7 @@
 
 ## 🎯 Purpose
 
-This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL, NCAA Football, and FIFA World Cup betting markets. Built for the Prophet betting application's steam detection algorithms.
+This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL, NCAA Football, MLB, and FIFA World Cup betting markets. Built for the Prophet betting application's steam detection algorithms.
 
 ## 🏗️ Architecture
 
@@ -29,8 +29,8 @@ This system provides **real-time odds data** and **historical tracking** for det
 | Metric | Value |
 |--------|-------|
 | **Workflow cadence** | Wakes every 12 minutes (24/7) |
-| **Sports** | NFL + NCAA Football + FIFA World Cup |
-| **Per-sport frequency** | NFL/NCAAF every run while in season; World Cup every run while active |
+| **Sports** | NFL + NCAA Football + MLB + FIFA World Cup |
+| **Per-sport frequency** | NFL/NCAAF/MLB every run while in season; World Cup every run while active |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
 
@@ -51,6 +51,7 @@ the script skips the paid request for that run.
 | FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every run (12 min, ~7,200 credits/mo) | 2 |
 | NFL | September – February | `h2h,spreads,totals` | Every run (12 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every run (12 min) | 3 |
+| MLB | March – October | `h2h,spreads,totals` | Every run (12 min) | 3 |
 
 - A sport is fetched only when it is **in season** *and* **due** this run.
 - "Due" is based on **elapsed time since the last fetch** (tracked per sport via
@@ -65,8 +66,8 @@ the script skips the paid request for that run.
   a 30-day month.
 - The quota reserve defaults to 20 credits. Override it with
   `ODDS_API_QUOTA_RESERVE_CREDITS` if you need a larger safety buffer.
-- NFL + NCAAF at 12-minute resolution is high-volume (~21,600 credits/mo when
-  both are in season) — size the API plan accordingly for football season.
+- Each `h2h,spreads,totals` sport costs 3 credits per fetch (~10,800
+  credits/mo at 12-minute cadence), so overlapping seasons add quickly.
 - Configure all of this in the `SPORTS` array in `fetch-odds.js`
   (`seasonMonths` / `window` for season, `fetchEveryMinutes` for cadence,
   `markets` / `regions` for quota cost).
@@ -81,6 +82,7 @@ the script skips the paid request for that run.
 | `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Wakes every 12 minutes |
 | `odds/nfl.json` | Current NFL odds (latest) | In season: every 12 min |
 | `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 12 min |
+| `odds/mlb.json` | Current MLB odds (latest) | In season: every 12 min |
 | `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 12 min |
 | `odds/summary.json` | Fetch metadata, quota headers & game counts | Each run that fetches |
 
@@ -147,6 +149,9 @@ curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
 # Latest NCAA Football odds  
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/ncaaf.json
 
+# Latest MLB odds
+curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/mlb.json
+
 # Latest FIFA World Cup odds
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/worldcup.json
 
@@ -171,7 +176,7 @@ git show HEAD~14:odds/nfl.json > nfl_2hours_ago.json
 
 ## 📋 Data Schema
 
-### NFL/NCAA Football JSON Structure
+### NFL/NCAA Football/MLB JSON Structure
 ```json
 [
   {
@@ -220,7 +225,7 @@ git show HEAD~14:odds/nfl.json > nfl_2hours_ago.json
 
 Identical top-level schema to the football files, with two soccer-specific differences:
 
-- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals` only — soccer has no point spread in our model. Only the World Cup file drops spreads; NFL/NCAAF keep `h2h,spreads,totals`.
+- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals` only — soccer has no point spread in our model. Only the World Cup file drops spreads; NFL/NCAAF/MLB keep `h2h,spreads,totals`.
 - **3-way moneyline.** The `h2h` market returns three outcomes — home team, away team, and the draw. The draw outcome's `name` is exactly `"Draw"` (The Odds API default, written through unchanged so downstream parsers can key off `name == "Draw"`).
 
 ```json
