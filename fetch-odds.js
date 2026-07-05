@@ -44,6 +44,13 @@ const SPORTS = [
     seasonMonths: [8, 9, 10, 11, 12, 1], // Aug - Jan
     fetchEveryMinutes: 12,
   },
+  {
+    sport: 'MLB', sportKey: 'baseball_mlb', fileName: 'mlb',
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10], // Mar - Oct
+    fetchEveryMinutes: 12,
+  },
 ];
 
 function countCsvValues(value) {
