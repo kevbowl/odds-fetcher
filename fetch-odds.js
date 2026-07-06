@@ -15,6 +15,7 @@ const QUOTA_RESERVE_CREDITS = Number.isFinite(parsedQuotaReserveCredits)
 const MLB_SPORT_KEY = 'baseball_mlb';
 const MLB_TIME_ZONE = 'America/New_York';
 const MLB_WINDOW_START_BUFFER_HOURS = 2;
+const MLB_WINDOW_END_DAYS = 2;
 const MLB_EVENT_ID_BATCH_SIZE = 50;
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
@@ -53,6 +54,7 @@ const SPORTS = [
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10], // Mar - Oct
+    estimatedPaidRequests: 2,
     fetchEveryMinutes: 12,
   },
 ];
@@ -66,7 +68,10 @@ function countCsvValues(value) {
 }
 
 function estimateCredits(sport) {
-  return countCsvValues(sport.markets || 'h2h') * countCsvValues(sport.regions || DEFAULT_REGIONS);
+  const paidRequests = sport.estimatedPaidRequests || 1;
+  return countCsvValues(sport.markets || 'h2h')
+    * countCsvValues(sport.regions || DEFAULT_REGIONS)
+    * paidRequests;
 }
 
 function readNumberHeader(headers, name) {
@@ -149,7 +154,7 @@ function formatOddsApiIso(date) {
 function buildMlbEventWindow(now = new Date()) {
   const today = getZonedParts(now, MLB_TIME_ZONE);
   const todayDate = { year: today.year, month: today.month, day: today.day };
-  const endDate = addDaysToPlainDate(todayDate, 3);
+  const endDate = addDaysToPlainDate(todayDate, MLB_WINDOW_END_DAYS);
   const todayStartUtc = zonedTimeToUtcDate(todayDate, MLB_TIME_ZONE);
   const windowEndUtc = zonedTimeToUtcDate(endDate, MLB_TIME_ZONE);
   const windowStartUtc = new Date(
@@ -191,6 +196,19 @@ function summarizeGames(oddsData) {
     commenceTime: game.commence_time,
     bookmakers: game.bookmakers?.length || 0
   }));
+}
+
+function addOddsGamesById(target, oddsData) {
+  (Array.isArray(oddsData) ? oddsData : []).forEach(game => {
+    if (game?.id) target.set(game.id, game);
+  });
+}
+
+function isGameWithinWindow(game, window) {
+  const commenceTime = Date.parse(game?.commence_time);
+  return Number.isFinite(commenceTime)
+    && commenceTime >= new Date(window.commenceTimeFrom).getTime()
+    && commenceTime < new Date(window.commenceTimeTo).getTime();
 }
 
 // Whether a sport is in season right now (UTC).
@@ -321,7 +339,7 @@ async function fetchMlbOddsByEventWindow(config) {
   const eventIds = [...new Set(events.map(event => event.id).filter(Boolean))];
   console.log(`Fetched ${events.length} MLB events in NY slate window`);
 
-  const oddsById = new Map();
+  const eventOddsById = new Map();
   let latestQuota = parseQuotaHeaders(eventsResponse.headers);
   const batches = chunkArray(eventIds, MLB_EVENT_ID_BATCH_SIZE);
 
@@ -336,17 +354,36 @@ async function fetchMlbOddsByEventWindow(config) {
       eventIds: batch.join(',')
     });
     latestQuota = parseQuotaHeaders(response.headers) || latestQuota;
-    (Array.isArray(response.data) ? response.data : []).forEach(game => {
-      if (game?.id) oddsById.set(game.id, game);
-    });
+    addOddsGamesById(eventOddsById, response.data);
   }
 
-  const oddsData = eventIds
-    .map(id => oddsById.get(id))
+  const eventOddsData = eventIds
+    .map(id => eventOddsById.get(id))
     .filter(Boolean);
-  const missingOddsEventIds = eventIds.filter(id => !oddsById.has(id));
+
+  console.log('Fetching MLB direct odds for NY slate window...');
+  const directResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
+    apiKey: ODDS_API_KEY,
+    regions,
+    markets,
+    oddsFormat: 'american',
+    dateFormat: 'iso',
+    commenceTimeFrom: window.commenceTimeFrom,
+    commenceTimeTo: window.commenceTimeTo
+  });
+  latestQuota = parseQuotaHeaders(directResponse.headers) || latestQuota;
+  const directOddsById = new Map();
+  addOddsGamesById(directOddsById, directResponse.data);
+
+  const mergedOddsById = new Map();
+  addOddsGamesById(mergedOddsById, eventOddsData);
+  addOddsGamesById(mergedOddsById, Array.from(directOddsById.values()));
+
+  const oddsData = Array.from(mergedOddsById.values())
+    .filter(game => isGameWithinWindow(game, window));
+  const missingOddsEventIds = eventIds.filter(id => !mergedOddsById.has(id));
   const warning = events.length > 0 && missingOddsEventIds.length > 0
-    ? `${missingOddsEventIds.length} MLB event(s) returned by /events had no odds in /odds`
+    ? `${missingOddsEventIds.length} MLB event(s) returned by /events had no odds after event-id and direct /odds fetches`
     : null;
   const commenceRange = getCommenceTimeRange(oddsData);
 
@@ -363,14 +400,16 @@ async function fetchMlbOddsByEventWindow(config) {
   return {
     sport,
     gameCount: oddsData.length,
-    estimatedCredits: estimateCredits(config) * Math.max(batches.length, 1),
+    estimatedCredits: countCsvValues(markets) * countCsvValues(regions) * (batches.length + 1),
     quota: latestQuota,
     debug: {
       mlbWindowStart: window.commenceTimeFrom,
       mlbWindowEnd: window.commenceTimeTo,
       mlbWindowTimeZone: window.timeZone,
       mlbEventCount: events.length,
-      mlbOddsEventCount: oddsData.length,
+      mlbEventOddsCount: eventOddsData.length,
+      mlbDirectOddsCount: directOddsById.size,
+      mlbMergedOddsCount: oddsData.length,
       earliestCommenceTime: commenceRange.earliest,
       latestCommenceTime: commenceRange.latest,
       warning,
