@@ -142,6 +142,10 @@ function addDaysToPlainDate({ year, month, day }, days) {
   };
 }
 
+function formatOddsApiIso(date) {
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
 function buildMlbEventWindow(now = new Date()) {
   const today = getZonedParts(now, MLB_TIME_ZONE);
   const todayDate = { year: today.year, month: today.month, day: today.day };
@@ -155,8 +159,8 @@ function buildMlbEventWindow(now = new Date()) {
   return {
     timeZone: MLB_TIME_ZONE,
     startBufferHours: MLB_WINDOW_START_BUFFER_HOURS,
-    commenceTimeFrom: windowStartUtc.toISOString(),
-    commenceTimeTo: windowEndUtc.toISOString()
+    commenceTimeFrom: formatOddsApiIso(windowStartUtc),
+    commenceTimeTo: formatOddsApiIso(windowEndUtc)
   };
 }
 
