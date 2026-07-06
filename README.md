@@ -51,7 +51,7 @@ the script skips the paid request for that run.
 | FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every run (12 min, ~7,200 credits/mo) | 2 |
 | NFL | September – February | `h2h,spreads,totals` | Every run (12 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every run (12 min) | 3 |
-| MLB | March – October | `h2h,spreads,totals` | Every run (12 min) | 3 |
+| MLB | March – October | `h2h,spreads,totals` | Every run (12 min; current NY slate + next 2 NY dates) | 3 per odds batch |
 
 - A sport is fetched only when it is **in season** *and* **due** this run.
 - "Due" is based on **elapsed time since the last fetch** (tracked per sport via
@@ -82,7 +82,7 @@ the script skips the paid request for that run.
 | `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Wakes every 12 minutes |
 | `odds/nfl.json` | Current NFL odds (latest) | In season: every 12 min |
 | `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 12 min |
-| `odds/mlb.json` | Current MLB odds (latest) | In season: every 12 min |
+| `odds/mlb.json` | Current MLB odds for the current America/New_York slate plus the next 2 NY slate dates | In season: every 12 min |
 | `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 12 min |
 | `odds/summary.json` | Fetch metadata, quota headers & game counts | Each run that fetches |
 
@@ -177,6 +177,13 @@ git show HEAD~14:odds/nfl.json > nfl_2hours_ago.json
 ## 📋 Data Schema
 
 ### NFL/NCAA Football/MLB JSON Structure
+
+MLB uses the same raw `/odds` response shape as football, but its collection is
+event-windowed: the fetcher first calls `/v4/sports/baseball_mlb/events` for
+the current America/New_York slate plus the next 2 NY slate dates, then calls
+`/odds` with those `eventIds`. `odds/mlb.json` remains a plain array of `/odds`
+game objects.
+
 ```json
 [
   {
