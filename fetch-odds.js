@@ -5,6 +5,13 @@ const path = require('path');
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
 const DEFAULT_REGIONS = 'us';
+const parsedOddsApiTimeoutMs = Number.parseInt(
+  process.env.ODDS_API_TIMEOUT_MS || '15000',
+  10
+);
+const ODDS_API_TIMEOUT_MS = Number.isFinite(parsedOddsApiTimeoutMs)
+  ? Math.max(parsedOddsApiTimeoutMs, 1000)
+  : 15000;
 const parsedQuotaReserveCredits = Number.parseInt(
   process.env.ODDS_API_QUOTA_RESERVE_CREDITS || '20',
   10
@@ -280,7 +287,10 @@ async function fetchWithRetry(url, params, maxRetries = 3, delay = 1000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`API attempt ${attempt}/${maxRetries}...`);
-      const response = await axios.get(url, { params });
+      const response = await axios.get(url, {
+        params,
+        timeout: ODDS_API_TIMEOUT_MS
+      });
       return response;
     } catch (error) {
       console.error(`Attempt ${attempt} failed:`, error.message);
