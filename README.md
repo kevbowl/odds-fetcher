@@ -12,17 +12,23 @@ This system provides **real-time odds data** and **historical tracking** for det
 ## 🏗️ Architecture
 
 ```text
-+--------------------+    +--------------------+    +--------------------+    +--------------------+
-| cron-job.org       | -> | GitHub Actions     | -> | The Odds API       | -> | GitHub odds repo   |
-| every 15 min       |    | workflow dispatch  |    | events + odds      |    | latest + history   |
-+--------------------+    +--------------------+    +--------------------+    +--------------------+
-                                                                                        |
-                                                                                        v
-                                                                              +--------------------+
-                                                                              | Prophet            |
-                                                                              | live odds +        |
-                                                                              | odds snapshots     |
-                                                                              +--------------------+
++--------------------+    +--------------------+    +--------------------+
+| cron-job.org       | -> | GitHub Actions     | -> | The Odds API       |
+| every 15 min       |    | workflow dispatch  |    | events + odds      |
++--------------------+    +--------------------+    +--------------------+
+                                                              |
+                                                              v
+                                                    +--------------------+
+                                                    | GitHub odds repo   |
+                                                    | latest + history   |
+                                                    +--------------------+
+                                                              |
+                                                              v
+                                                    +--------------------+
+                                                    | Prophet            |
+                                                    | live odds +        |
+                                                    | odds snapshots     |
+                                                    +--------------------+
 ```
 
 ## 📊 Data Collection
