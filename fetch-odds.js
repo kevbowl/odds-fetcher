@@ -13,10 +13,24 @@ const QUOTA_RESERVE_CREDITS = Number.isFinite(parsedQuotaReserveCredits)
   ? Math.max(parsedQuotaReserveCredits, 0)
   : 20;
 const MLB_SPORT_KEY = 'baseball_mlb';
+const KBO_SPORT_KEY = 'baseball_kbo';
 const MLB_TIME_ZONE = 'America/New_York';
-const MLB_WINDOW_START_BUFFER_HOURS = 2;
-const MLB_WINDOW_END_DAYS = 2;
-const MLB_EVENT_ID_BATCH_SIZE = 50;
+const KBO_TIME_ZONE = 'Asia/Seoul';
+const BASEBALL_WINDOW_START_BUFFER_HOURS = 2;
+const BASEBALL_WINDOW_END_DAYS = 2;
+const BASEBALL_EVENT_ID_BATCH_SIZE = 50;
+const BASEBALL_EVENT_WINDOW_SPORTS = {
+  [MLB_SPORT_KEY]: {
+    timeZone: MLB_TIME_ZONE,
+    debugPrefix: 'mlb',
+    slateLabel: 'NY slate window'
+  },
+  [KBO_SPORT_KEY]: {
+    timeZone: KBO_TIME_ZONE,
+    debugPrefix: 'kbo',
+    slateLabel: 'Korea slate window'
+  }
+};
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
@@ -54,6 +68,14 @@ const SPORTS = [
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10], // Mar - Oct
+    estimatedPaidRequests: 2,
+    fetchEveryMinutes: 12,
+  },
+  {
+    sport: 'KBO', sportKey: KBO_SPORT_KEY, fileName: 'kbo',
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10, 11], // Mar - Nov
     estimatedPaidRequests: 2,
     fetchEveryMinutes: 12,
   },
@@ -151,19 +173,19 @@ function formatOddsApiIso(date) {
   return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 }
 
-function buildMlbEventWindow(now = new Date()) {
-  const today = getZonedParts(now, MLB_TIME_ZONE);
+function buildBaseballEventWindow(timeZone, now = new Date()) {
+  const today = getZonedParts(now, timeZone);
   const todayDate = { year: today.year, month: today.month, day: today.day };
-  const endDate = addDaysToPlainDate(todayDate, MLB_WINDOW_END_DAYS);
-  const todayStartUtc = zonedTimeToUtcDate(todayDate, MLB_TIME_ZONE);
-  const windowEndUtc = zonedTimeToUtcDate(endDate, MLB_TIME_ZONE);
+  const endDate = addDaysToPlainDate(todayDate, BASEBALL_WINDOW_END_DAYS);
+  const todayStartUtc = zonedTimeToUtcDate(todayDate, timeZone);
+  const windowEndUtc = zonedTimeToUtcDate(endDate, timeZone);
   const windowStartUtc = new Date(
-    todayStartUtc.getTime() - MLB_WINDOW_START_BUFFER_HOURS * 60 * 60 * 1000
+    todayStartUtc.getTime() - BASEBALL_WINDOW_START_BUFFER_HOURS * 60 * 60 * 1000
   );
 
   return {
-    timeZone: MLB_TIME_ZONE,
-    startBufferHours: MLB_WINDOW_START_BUFFER_HOURS,
+    timeZone,
+    startBufferHours: BASEBALL_WINDOW_START_BUFFER_HOURS,
     commenceTimeFrom: formatOddsApiIso(windowStartUtc),
     commenceTimeTo: formatOddsApiIso(windowEndUtc)
   };
@@ -316,7 +338,7 @@ function selectSportsWithinQuota(sports, quota) {
   return { selected, skipped };
 }
 
-async function fetchMlbOddsByEventWindow(config) {
+async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   const {
     sport,
     sportKey,
@@ -324,9 +346,10 @@ async function fetchMlbOddsByEventWindow(config) {
     markets = 'h2h,spreads,totals',
     regions = DEFAULT_REGIONS
   } = config;
-  const window = buildMlbEventWindow();
+  const { timeZone, debugPrefix, slateLabel } = windowConfig;
+  const window = buildBaseballEventWindow(timeZone);
   console.log(
-    `Fetching MLB events from ${window.commenceTimeFrom} to ${window.commenceTimeTo} (${window.timeZone})...`
+    `Fetching ${sport} events from ${window.commenceTimeFrom} to ${window.commenceTimeTo} (${window.timeZone})...`
   );
 
   const eventsResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/events`, {
@@ -337,14 +360,14 @@ async function fetchMlbOddsByEventWindow(config) {
   });
   const events = Array.isArray(eventsResponse.data) ? eventsResponse.data : [];
   const eventIds = [...new Set(events.map(event => event.id).filter(Boolean))];
-  console.log(`Fetched ${events.length} MLB events in NY slate window`);
+  console.log(`Fetched ${events.length} ${sport} events in ${slateLabel}`);
 
   const eventOddsById = new Map();
   let latestQuota = parseQuotaHeaders(eventsResponse.headers);
-  const batches = chunkArray(eventIds, MLB_EVENT_ID_BATCH_SIZE);
+  const batches = chunkArray(eventIds, BASEBALL_EVENT_ID_BATCH_SIZE);
 
   for (const batch of batches) {
-    console.log(`Fetching MLB odds for ${batch.length} event ids...`);
+    console.log(`Fetching ${sport} odds for ${batch.length} event ids...`);
     const response = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
       apiKey: ODDS_API_KEY,
       regions,
@@ -361,7 +384,7 @@ async function fetchMlbOddsByEventWindow(config) {
     .map(id => eventOddsById.get(id))
     .filter(Boolean);
 
-  console.log('Fetching MLB direct odds for NY slate window...');
+  console.log(`Fetching ${sport} direct odds for ${slateLabel}...`);
   const directResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
     apiKey: ODDS_API_KEY,
     regions,
@@ -383,7 +406,7 @@ async function fetchMlbOddsByEventWindow(config) {
     .filter(game => isGameWithinWindow(game, window));
   const missingOddsEventIds = eventIds.filter(id => !mergedOddsById.has(id));
   const warning = events.length > 0 && missingOddsEventIds.length > 0
-    ? `${missingOddsEventIds.length} MLB event(s) returned by /events had no odds after event-id and direct /odds fetches`
+    ? `${missingOddsEventIds.length} ${sport} event(s) returned by /events had no odds after event-id and direct /odds fetches`
     : null;
   const commenceRange = getCommenceTimeRange(oddsData);
 
@@ -394,7 +417,7 @@ async function fetchMlbOddsByEventWindow(config) {
   const filePath = path.join(ODDS_DIR, `${fileName}.json`);
   fs.writeFileSync(filePath, JSON.stringify(oddsData, null, 2));
 
-  console.log(`Fetched odds for ${oddsData.length} MLB events`);
+  console.log(`Fetched odds for ${oddsData.length} ${sport} events`);
   console.log(`${sport} odds saved to ${filePath}`);
 
   return {
@@ -403,13 +426,13 @@ async function fetchMlbOddsByEventWindow(config) {
     estimatedCredits: countCsvValues(markets) * countCsvValues(regions) * (batches.length + 1),
     quota: latestQuota,
     debug: {
-      mlbWindowStart: window.commenceTimeFrom,
-      mlbWindowEnd: window.commenceTimeTo,
-      mlbWindowTimeZone: window.timeZone,
-      mlbEventCount: events.length,
-      mlbEventOddsCount: eventOddsData.length,
-      mlbDirectOddsCount: directOddsById.size,
-      mlbMergedOddsCount: oddsData.length,
+      [`${debugPrefix}WindowStart`]: window.commenceTimeFrom,
+      [`${debugPrefix}WindowEnd`]: window.commenceTimeTo,
+      [`${debugPrefix}WindowTimeZone`]: window.timeZone,
+      [`${debugPrefix}EventCount`]: events.length,
+      [`${debugPrefix}EventOddsCount`]: eventOddsData.length,
+      [`${debugPrefix}DirectOddsCount`]: directOddsById.size,
+      [`${debugPrefix}MergedOddsCount`]: oddsData.length,
       earliestCommenceTime: commenceRange.earliest,
       latestCommenceTime: commenceRange.latest,
       warning,
@@ -429,8 +452,9 @@ async function fetchOdds(config) {
   } = config;
 
   try {
-    if (sportKey === MLB_SPORT_KEY) {
-      return await fetchMlbOddsByEventWindow(config);
+    const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
+    if (baseballWindowConfig) {
+      return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig);
     }
 
     console.log(`Fetching ${sport} odds (${estimateCredits(config)} estimated credits)...`);
