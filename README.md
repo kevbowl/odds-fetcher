@@ -1,6 +1,6 @@
 # Odds Fetcher - Steam Detection System
 
-[![GitHub Actions](https://github.com/kevbowl/odds-fetcher/workflows/Fetch%20Odds/badge.svg)](https://github.com/kevbowl/odds-fetcher/actions)
+[![GitHub Actions](https://github.com/kevbowl/odds-fetcher/workflows/Fetch%20Odds%20Cron/badge.svg)](https://github.com/kevbowl/odds-fetcher/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **High-frequency odds collection system with Git-based historical tracking for steam detection analysis**
@@ -12,23 +12,23 @@ This system provides **real-time odds data** and **historical tracking** for det
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
-| GitHub Actions  │-─▶│ The-Odds-API    │-─▶│ GitHub          │
-│ (Every 12min)   │   │ (Limit 20K/mo)  │   │ (Git Commits)   │
-└─────────────────┘   └─────────────────┘   └─────────────────┘
-                                                   ▲
-                                                   │
-                                            ┌─────────────────┐
-                                            │ Analysis        │
-                                            │ (Git History)   │
-                                            └─────────────────┘
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+| cron-job.org    │-─▶│ GitHub Actions  │-─▶│ The-Odds-API    │-─▶│ GitHub          │
+│ (Every 15min)   │   │ workflow_dispatch│   │ (Limit 20K/mo)  │   │ (Git Commits)   │
+└─────────────────┘   └─────────────────┘   └─────────────────┘   └─────────────────┘
+                                                                        ▲
+                                                                        │
+                                                                 ┌─────────────────┐
+                                                                 │ Analysis        │
+                                                                 │ (Git History)   │
+                                                                 └─────────────────┘
 ```
 
 ## 📊 Data Collection
 
 | Metric | Value |
 |--------|-------|
-| **Workflow cadence** | Wakes every 12 minutes (24/7) |
+| **Workflow cadence** | cron-job.org dispatches the GitHub workflow every 15 minutes |
 | **Sports** | NFL + NCAA Football + MLB + KBO + FIFA World Cup |
 | **Per-sport frequency** | NFL/NCAAF/MLB/KBO every run while in season; World Cup every run while active |
 | **Historical Retention** | Unlimited (Git compression) |
@@ -36,10 +36,11 @@ This system provides **real-time odds data** and **historical tracking** for det
 
 ### Scheduling & quota (per-sport gating)
 
-The GitHub Actions workflow wakes every 12 minutes, but `fetch-odds.js` decides
-**per sport** whether to actually call the API on a given run. This keeps quota
-usage tied to what's in season and how frequently each sport needs sampling.
-The Odds API bills **1 credit per market, per region, per request**.
+cron-job.org sends a `workflow_dispatch` request to GitHub every 15 minutes.
+The GitHub Actions workflow then runs `fetch-odds.js`, which decides **per
+sport** whether to actually call the API on a given run. This keeps quota usage
+tied to what's in season and how frequently each sport needs sampling. The Odds
+API bills **1 credit per market, per region, per request**.
 
 Before a paid `/odds` request, the script calls the no-cost `/sports` endpoint
 to read the quota headers (`x-requests-remaining`, `x-requests-used`, and
@@ -48,30 +49,65 @@ the script skips the paid request for that run.
 
 | Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
 |-------|-----------------|---------|-----------------|-----------------|
-| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every run (12 min, ~7,200 credits/mo) | 2 |
-| NFL | September – February | `h2h,spreads,totals` | Every run (12 min) | 3 |
-| NCAA Football | August – January | `h2h,spreads,totals` | Every run (12 min) | 3 |
-| MLB | March – October | `h2h,spreads,totals` | Every run (12 min; current NY slate + tomorrow's NY slate) | 3 per odds call |
-| KBO | March – November | `h2h,spreads,totals` | Every run (12 min; current Korea slate + tomorrow's Korea slate) | 3 per odds call |
+| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every dispatched run (15 min, ~5,760 credits/mo) | 2 |
+| NFL | September – February | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
+| NCAA Football | August – January | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
+| MLB | March – October | `h2h,spreads,totals` | Every dispatched run (15 min; current NY slate + tomorrow's NY slate) | 3 per odds call |
+| KBO | March – November | `h2h,spreads,totals` | Every dispatched run (15 min; current Korea slate + tomorrow's Korea slate) | 3 per odds call |
 
 - A sport is fetched only when it is **in season** *and* **due** this run.
 - "Due" is based on **elapsed time since the last fetch** (tracked per sport via
   `lastFetched` in `summary.json`), not wall-clock slots — so it's robust to
-  GitHub's cron jitter and skipped runs (a late/missed run just fetches on the
-  next wake-up rather than waiting a full interval).
+  cron-job.org jitter and skipped dispatches (a late/missed run just fetches on
+  the next wake-up rather than waiting a full interval).
 - **Manual runs bypass cadence, not quota.** Triggering the workflow via *Run
   workflow* (`workflow_dispatch`) fetches every in-season sport that still fits
   inside the quota reserve. Set `FORCE_FETCH=true` to do the same locally.
-- On the 20,000-credit plan, World Cup can run every 12 minutes: `h2h,totals`
-  in the `us` region costs 2 credits per fetch, which is about 7,200 credits in
+- On the 20,000-credit plan, World Cup can run every 15 minutes: `h2h,totals`
+  in the `us` region costs 2 credits per fetch, which is about 5,760 credits in
   a 30-day month.
 - The quota reserve defaults to 20 credits. Override it with
   `ODDS_API_QUOTA_RESERVE_CREDITS` if you need a larger safety buffer.
-- Each `h2h,spreads,totals` sport costs 3 credits per fetch (~10,800
-  credits/mo at 12-minute cadence), so overlapping seasons add quickly.
+- Each `h2h,spreads,totals` sport costs 3 credits per fetch (~8,640
+  credits/mo at 15-minute cadence), so overlapping seasons add quickly.
 - Configure all of this in the `SPORTS` array in `fetch-odds.js`
   (`seasonMonths` / `window` for season, `fetchEveryMinutes` for cadence,
   `markets` / `regions` for quota cost).
+
+### External trigger: cron-job.org
+
+This repository does not rely on a GitHub `schedule` trigger for the production
+cadence. Instead, cron-job.org calls the GitHub Actions workflow dispatch API.
+
+cron-job.org job settings:
+
+| Setting | Value |
+|---------|-------|
+| Title | `Fetch Odds Cron` |
+| URL | `https://api.github.com/repos/kevbowl/odds-fetcher/actions/workflows/fetch-odds-cron.yml/dispatches` |
+| Schedule | Every 15 minutes (`*/15 * * * *`) |
+| Time zone | `Asia/Singapore` |
+| Request method | `POST` |
+| Timeout | 30 seconds |
+| Request body | `{"ref":"main"}` |
+| Success response | `204 No Content` from GitHub |
+
+Required headers:
+
+```text
+Accept: application/vnd.github+json
+Authorization: Bearer <github_token>
+Content-Type: application/json
+X-GitHub-Api-Version: 2022-11-28
+```
+
+The GitHub token is stored only in cron-job.org and must not be committed to
+this repository. It needs permission to dispatch the workflow for this repo.
+cron-job.org returning `204 No Content` only means GitHub accepted the workflow
+dispatch; the actual fetch result should be checked in GitHub Actions under the
+`Fetch Odds Cron` workflow. The job currently has response-history saving off
+and only alerts when cron-job.org is about to disable the job after repeated
+failures.
 
 ## 🔧 Technical Implementation
 
@@ -79,13 +115,13 @@ the script skips the paid request for that run.
 
 | File | Purpose | Frequency |
 |------|---------|-----------|
-| `fetch-odds.js` | Fetcher with retry logic and per-sport season/cadence/quota gating | Runs every 12 minutes |
-| `.github/workflows/fetch-odds.yml` | GitHub Actions scheduler | Wakes every 12 minutes |
-| `odds/nfl.json` | Current NFL odds (latest) | In season: every 12 min |
-| `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 12 min |
-| `odds/mlb.json` | Current MLB odds for the current America/New_York slate plus tomorrow's NY slate | In season: every 12 min |
-| `odds/kbo.json` | Current KBO odds for the current Asia/Seoul slate plus tomorrow's Korea slate | In season: every 12 min |
-| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 12 min |
+| `fetch-odds.js` | Fetcher with retry logic and per-sport season/cadence/quota gating | Runs when dispatched |
+| `.github/workflows/fetch-odds-cron.yml` | Manual GitHub Actions workflow called by cron-job.org | Dispatched every 15 minutes |
+| `odds/nfl.json` | Current NFL odds (latest) | In season: every 15 min |
+| `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 15 min |
+| `odds/mlb.json` | Current MLB odds for the current America/New_York slate plus tomorrow's NY slate | In season: every 15 min |
+| `odds/kbo.json` | Current KBO odds for the current Asia/Seoul slate plus tomorrow's Korea slate | In season: every 15 min |
+| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 15 min |
 | `odds/summary.json` | Fetch metadata, quota headers & game counts | Each run that fetches |
 
 ### Git-Based Historical Tracking
@@ -138,7 +174,7 @@ npm install
 ODDS_API_KEY=your_key_here node fetch-odds.js
 
 # Manual workflow trigger
-# Go to Actions → Fetch Odds → Run workflow
+# Go to Actions → Fetch Odds Cron → Run workflow
 ```
 
 ## 📡 Data Access
@@ -317,7 +353,7 @@ def get_odds_at_time(commit_offset):
 
 def compare_odds_changes(hours_back=1):
     """Compare odds changes over time"""
-    commits_back = hours_back * 7  # 7 commits per hour (8min intervals)
+    commits_back = hours_back * 4  # 4 commits per hour (15min intervals)
     
     current_odds = get_odds_at_time(0)
     historical_odds = get_odds_at_time(commits_back)
