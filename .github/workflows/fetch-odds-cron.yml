@@ -6,28 +6,44 @@ on:
 jobs:
   fetch-odds:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        
+
     - name: Install dependencies
       run: npm install
-      
+
     - name: Fetch odds
       env:
         ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       run: node fetch-odds.js
-      
+
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add odds/
-        git diff --staged --quiet || git commit -m "Update odds - $(date)"
-        git push
+        if git diff --staged --quiet; then
+          echo "No odds changes to commit"
+          exit 0
+        fi
+
+        git commit -m "Update odds - $(date)"
+
+        for attempt in 1 2 3; do
+          git pull --rebase origin main
+          if git push; then
+            exit 0
+          fi
+          echo "Push failed; retrying after fetching latest main..."
+          sleep 5
+        done
+
+        echo "Failed to push odds update after retries"
+        exit 1
