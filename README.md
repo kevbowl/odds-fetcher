@@ -56,7 +56,7 @@ the script skips the paid request for that run.
 
 | Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
 |-------|-----------------|---------|-----------------|-----------------|
-| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every dispatched run (15 min, ~5,760 credits/mo) | 2 |
+| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals,to_qualify` | Every dispatched run (15 min, ~8,640 credits/mo) | 3 |
 | NFL | September – February | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | MLB | March – October | `h2h,spreads,totals` | Every dispatched run (15 min; current NY slate + tomorrow's NY slate) | 3 per odds call |
@@ -70,8 +70,8 @@ the script skips the paid request for that run.
 - **Manual runs bypass cadence, not quota.** Triggering the workflow via *Run
   workflow* (`workflow_dispatch`) fetches every in-season sport that still fits
   inside the quota reserve. Set `FORCE_FETCH=true` to do the same locally.
-- On the 20,000-credit plan, World Cup can run every 15 minutes: `h2h,totals`
-  in the `us` region costs 2 credits per fetch, which is about 5,760 credits in
+- On the 20,000-credit plan, World Cup can run every 15 minutes: `h2h,totals,to_qualify`
+  in the `us` region costs 3 credits per fetch, which is about 8,640 credits in
   a 30-day month.
 - The quota reserve defaults to 20 credits. Override it with
   `ODDS_API_QUOTA_RESERVE_CREDITS` if you need a larger safety buffer.
@@ -128,7 +128,7 @@ cron-job.org is about to disable the job after repeated failures.
 | `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 15 min |
 | `odds/mlb.json` | Current MLB odds for the current America/New_York slate plus tomorrow's NY slate | In season: every 15 min |
 | `odds/kbo.json` | Current KBO odds for the current Asia/Seoul slate plus tomorrow's Korea slate | In season: every 15 min |
-| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 15 min |
+| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals + to-qualify) | In tournament: every 15 min |
 | `odds/summary.json` | Fetch metadata, quota headers & game counts | Each run that fetches |
 
 ### Git-Based Historical Tracking
@@ -281,7 +281,7 @@ plain arrays of `/odds` game objects.
 
 Identical top-level schema to the football files, with two soccer-specific differences:
 
-- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals` only — soccer has no point spread in our model. Only the World Cup file drops spreads; NFL/NCAAF/MLB/KBO keep `h2h,spreads,totals`.
+- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals,to_qualify` — soccer has no point spread in our model. The `to_qualify` market records team-to-advance prices separately from regulation-time `h2h`; NFL/NCAAF/MLB/KBO keep `h2h,spreads,totals`.
 - **3-way moneyline.** The `h2h` market returns three outcomes — home team, away team, and the draw. The draw outcome's `name` is exactly `"Draw"` (The Odds API default, written through unchanged so downstream parsers can key off `name == "Draw"`).
 
 ```json

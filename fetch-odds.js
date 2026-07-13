@@ -41,7 +41,7 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
-// request (World Cup h2h,totals x us = 2 credits).
+// request (World Cup h2h,totals,to_qualify x us = 3 credits).
 const RUN_EVERY_MIN = 12;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
@@ -51,10 +51,10 @@ const RUN_EVERY_MIN = 12;
 const SPORTS = [
   {
     sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
-    markets: 'h2h,totals',
+    markets: 'h2h,totals,to_qualify',
     regions: DEFAULT_REGIONS,
     window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
-    fetchEveryMinutes: 12, // every scheduled run (~7,200 credits/30-day month)
+    fetchEveryMinutes: 12, // every 15-minute dispatch (~8,640 credits/30-day month)
   },
   {
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
