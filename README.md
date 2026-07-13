@@ -56,7 +56,7 @@ the script skips the paid request for that run.
 
 | Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
 |-------|-----------------|---------|-----------------|-----------------|
-| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals,to_qualify` | Every dispatched run (15 min, ~8,640 credits/mo) | 3 |
+| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | Featured `h2h,totals`; event `to_qualify` | Every dispatched run (15 min) | 2 + up to 1/event |
 | NFL | September – February | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | MLB | March – October | `h2h,spreads,totals` | Every dispatched run (15 min; current NY slate + tomorrow's NY slate) | 3 per odds call |
@@ -70,9 +70,10 @@ the script skips the paid request for that run.
 - **Manual runs bypass cadence, not quota.** Triggering the workflow via *Run
   workflow* (`workflow_dispatch`) fetches every in-season sport that still fits
   inside the quota reserve. Set `FORCE_FETCH=true` to do the same locally.
-- On the 20,000-credit plan, World Cup can run every 15 minutes: `h2h,totals,to_qualify`
-  in the `us` region costs 3 credits per fetch, which is about 8,640 credits in
-  a 30-day month.
+- World Cup featured odds use the sport endpoint for `h2h,totals` (2 credits
+  per dispatch in `us`). Knockout `to_qualify` is requested separately through
+  the event-odds endpoint for each returned event and costs up to 1 additional
+  credit per event when that market is available.
 - The quota reserve defaults to 20 credits. Override it with
   `ODDS_API_QUOTA_RESERVE_CREDITS` if you need a larger safety buffer.
 - Each `h2h,spreads,totals` sport costs 3 credits per fetch (~8,640
@@ -281,7 +282,11 @@ plain arrays of `/odds` game objects.
 
 Identical top-level schema to the football files, with two soccer-specific differences:
 
-- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals,to_qualify` — soccer has no point spread in our model. The `to_qualify` market records team-to-advance prices separately from regulation-time `h2h`; NFL/NCAAF/MLB/KBO keep `h2h,spreads,totals`.
+- **No `spreads` market.** World Cup featured odds use `markets=h2h,totals` on
+  the sport endpoint. For each returned knockout event, the event-odds endpoint
+  is queried with `markets=to_qualify` and those bookmaker markets are merged
+  into the same game object. This keeps team-to-advance prices separate from
+  regulation-time `h2h`; NFL/NCAAF/MLB/KBO keep `h2h,spreads,totals`.
 - **3-way moneyline.** The `h2h` market returns three outcomes — home team, away team, and the draw. The draw outcome's `name` is exactly `"Draw"` (The Odds API default, written through unchanged so downstream parsers can key off `name == "Draw"`).
 
 ```json

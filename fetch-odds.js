@@ -19,6 +19,7 @@ const parsedQuotaReserveCredits = Number.parseInt(
 const QUOTA_RESERVE_CREDITS = Number.isFinite(parsedQuotaReserveCredits)
   ? Math.max(parsedQuotaReserveCredits, 0)
   : 20;
+const WORLDCUP_SPORT_KEY = 'soccer_fifa_world_cup';
 const MLB_SPORT_KEY = 'baseball_mlb';
 const KBO_SPORT_KEY = 'baseball_kbo';
 const MLB_TIME_ZONE = 'America/New_York';
@@ -41,7 +42,8 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
-// request (World Cup h2h,totals,to_qualify x us = 3 credits).
+// request. World Cup featured odds cost 2 credits, plus up to 1 credit per
+// event when a to_qualify market is returned by the event-odds endpoint.
 const RUN_EVERY_MIN = 12;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
@@ -50,8 +52,10 @@ const RUN_EVERY_MIN = 12;
 //   markets/regions determine the estimated API credit cost
 const SPORTS = [
   {
-    sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
-    markets: 'h2h,totals,to_qualify',
+    sport: 'FIFA World Cup', sportKey: WORLDCUP_SPORT_KEY, fileName: 'worldcup',
+    markets: 'h2h,totals',
+    eventMarkets: 'to_qualify',
+    estimatedCredits: 6,
     regions: DEFAULT_REGIONS,
     window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
     fetchEveryMinutes: 12, // every 15-minute dispatch (~8,640 credits/30-day month)
@@ -97,6 +101,10 @@ function countCsvValues(value) {
 }
 
 function estimateCredits(sport) {
+  if (Number.isFinite(sport.estimatedCredits)) {
+    return sport.estimatedCredits;
+  }
+
   const paidRequests = sport.estimatedPaidRequests || 1;
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
@@ -230,6 +238,37 @@ function summarizeGames(oddsData) {
 function addOddsGamesById(target, oddsData) {
   (Array.isArray(oddsData) ? oddsData : []).forEach(game => {
     if (game?.id) target.set(game.id, game);
+  });
+}
+
+function mergeAdditionalMarkets(targetGame, sourceGame) {
+  if (!targetGame || !sourceGame) return;
+
+  if (!Array.isArray(targetGame.bookmakers)) targetGame.bookmakers = [];
+  (sourceGame.bookmakers || []).forEach(sourceBookmaker => {
+    const targetBookmaker = targetGame.bookmakers.find(bookmaker =>
+      bookmaker.key === sourceBookmaker.key
+    );
+    if (!targetBookmaker) {
+      targetGame.bookmakers.push(sourceBookmaker);
+      return;
+    }
+
+    if (!Array.isArray(targetBookmaker.markets)) targetBookmaker.markets = [];
+    (sourceBookmaker.markets || []).forEach(sourceMarket => {
+      const existingIndex = targetBookmaker.markets.findIndex(market =>
+        market.key === sourceMarket.key
+      );
+      if (existingIndex >= 0) {
+        targetBookmaker.markets[existingIndex] = sourceMarket;
+      } else {
+        targetBookmaker.markets.push(sourceMarket);
+      }
+    });
+
+    if (sourceBookmaker.last_update) {
+      targetBookmaker.last_update = sourceBookmaker.last_update;
+    }
   });
 }
 
@@ -452,6 +491,79 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   };
 }
 
+async function fetchWorldCupOdds(config) {
+  const {
+    sport,
+    sportKey,
+    fileName,
+    markets = 'h2h,totals',
+    eventMarkets = 'to_qualify',
+    regions = DEFAULT_REGIONS
+  } = config;
+
+  console.log(`Fetching ${sport} featured odds (${markets})...`);
+  const featuredResponse = await fetchWithRetry(
+    `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`,
+    {
+      apiKey: ODDS_API_KEY,
+      regions,
+      markets,
+      oddsFormat: 'american',
+      dateFormat: 'iso'
+    }
+  );
+  const oddsData = Array.isArray(featuredResponse.data) ? featuredResponse.data : [];
+  let latestQuota = parseQuotaHeaders(featuredResponse.headers);
+  let toQualifyMarketCount = 0;
+
+  await Promise.all(oddsData.map(async game => {
+    try {
+      console.log(`Fetching ${sport} ${eventMarkets} odds for event ${game.id}...`);
+      const eventResponse = await fetchWithRetry(
+        `https://api.the-odds-api.com/v4/sports/${sportKey}/events/${game.id}/odds`,
+        {
+          apiKey: ODDS_API_KEY,
+          regions,
+          markets: eventMarkets,
+          oddsFormat: 'american',
+          dateFormat: 'iso'
+        }
+      );
+      latestQuota = parseQuotaHeaders(eventResponse.headers) || latestQuota;
+      mergeAdditionalMarkets(game, eventResponse.data);
+      toQualifyMarketCount += (eventResponse.data?.bookmakers || [])
+        .flatMap(bookmaker => bookmaker.markets || [])
+        .filter(market => market.key === 'to_qualify')
+        .length;
+    } catch (error) {
+      console.warn(
+        `Unable to fetch ${eventMarkets} for ${sport} event ${game.id}; preserving featured odds: ${error.message}`
+      );
+    }
+  }));
+
+  const filePath = path.join(ODDS_DIR, `${fileName}.json`);
+  fs.writeFileSync(filePath, JSON.stringify(oddsData, null, 2));
+  console.log(
+    `Fetched ${oddsData.length} ${sport} games; merged ${toQualifyMarketCount} bookmaker to_qualify markets`
+  );
+  console.log(`${sport} odds saved to ${filePath}`);
+
+  return {
+    sport,
+    gameCount: oddsData.length,
+    estimatedCredits: estimateCredits(config),
+    quota: latestQuota,
+    debug: {
+      featuredMarkets: markets,
+      eventMarkets,
+      eventMarketRequests: oddsData.length,
+      toQualifyMarketCount
+    },
+    games: summarizeGames(oddsData)
+  };
+}
+
 async function fetchOdds(config) {
   const {
     sport,
@@ -462,6 +574,10 @@ async function fetchOdds(config) {
   } = config;
 
   try {
+    if (sportKey === WORLDCUP_SPORT_KEY) {
+      return await fetchWorldCupOdds(config);
+    }
+
     const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
     if (baseballWindowConfig) {
       return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig);
