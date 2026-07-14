@@ -7,7 +7,7 @@
 
 ## 🎯 Purpose
 
-This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL, NCAA Football, MLB, KBO, and FIFA World Cup betting markets. Built for the Prophet betting application's steam detection algorithms.
+This system provides **real-time odds data** and **historical tracking** for detecting coordinated line movements (steam events) in NFL, NCAA Football, WNBA, MLB, KBO, and FIFA World Cup betting markets. Built for the Prophet betting application's steam detection algorithms.
 
 ## 🏗️ Architecture
 
@@ -36,8 +36,8 @@ This system provides **real-time odds data** and **historical tracking** for det
 | Metric | Value |
 |--------|-------|
 | **Workflow cadence** | cron-job.org dispatches the GitHub workflow every 15 minutes |
-| **Sports** | NFL \| NCAA Football \| MLB \| KBO \| FIFA World Cup |
-| **Per-sport frequency** | NFL/NCAAF/MLB/KBO every run while in season; World Cup every run while active |
+| **Sports** | NFL \| NCAA Football \| WNBA \| MLB \| KBO \| FIFA World Cup |
+| **Per-sport frequency** | NFL/NCAAF/WNBA/MLB/KBO every run while in season; World Cup every run while active |
 | **Historical Retention** | Unlimited (Git compression) |
 | **Data Format** | JSON with full bookmaker details |
 
@@ -56,9 +56,10 @@ the script skips the paid request for that run.
 
 | Sport | Season (gating) | Markets | Fetch frequency | Credits/request |
 |-------|-----------------|---------|-----------------|-----------------|
-| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | Featured `h2h,totals`; event `to_qualify` | Every dispatched run (15 min) | 2 + up to 1/event |
+| FIFA World Cup | Jun 7 – Jul 20, 2026 (fixed window) | `h2h,totals` | Every dispatched run (15 min, ~5,760 credits/mo) | 2 |
 | NFL | September – February | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | NCAA Football | August – January | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
+| WNBA | May – October | `h2h,spreads,totals` | Every dispatched run (15 min) | 3 |
 | MLB | March – October | `h2h,spreads,totals` | Every dispatched run (15 min; current NY slate + tomorrow's NY slate) | 3 per odds call |
 | KBO | March – November | `h2h,spreads,totals` | Every dispatched run (15 min; current Korea slate + tomorrow's Korea slate) | 3 per odds call |
 
@@ -67,13 +68,13 @@ the script skips the paid request for that run.
   `lastFetched` in `summary.json`), not wall-clock slots — so it's robust to
   cron-job.org jitter and skipped dispatches (a late/missed run just fetches on
   the next wake-up rather than waiting a full interval).
-- **Manual runs bypass cadence, not quota.** Triggering the workflow via *Run
-  workflow* (`workflow_dispatch`) fetches every in-season sport that still fits
-  inside the quota reserve. Set `FORCE_FETCH=true` to do the same locally.
-- World Cup featured odds use the sport endpoint for `h2h,totals` (2 credits
-  per dispatch in `us`). Knockout `to_qualify` is requested separately through
-  the event-odds endpoint for each returned event and costs up to 1 additional
-  credit per event when that market is available.
+- **Only `FORCE_FETCH=true` bypasses cadence, not quota.** Production uses
+  `workflow_dispatch` every 15 minutes, so a workflow dispatch is treated as a
+  normal scheduled wake-up. Set `FORCE_FETCH=true` when you intentionally want
+  every in-season sport fetched immediately.
+- On the 20,000-credit plan, World Cup can run every 15 minutes: `h2h,totals`
+  in the `us` region costs 2 credits per fetch, which is about 5,760 credits in
+  a 30-day month.
 - The quota reserve defaults to 20 credits. Override it with
   `ODDS_API_QUOTA_RESERVE_CREDITS` if you need a larger safety buffer.
 - Each `h2h,spreads,totals` sport costs 3 credits per fetch (~8,640
@@ -127,9 +128,10 @@ cron-job.org is about to disable the job after repeated failures.
 | `.github/workflows/fetch-odds-cron.yml` | Manual GitHub Actions workflow called by cron-job.org | Dispatched every 15 minutes |
 | `odds/nfl.json` | Current NFL odds (latest) | In season: every 15 min |
 | `odds/ncaaf.json` | Current NCAA Football odds (latest) | In season: every 15 min |
+| `odds/wnba.json` | Current WNBA odds (latest) | In season: every 15 min |
 | `odds/mlb.json` | Current MLB odds for the current America/New_York slate plus tomorrow's NY slate | In season: every 15 min |
 | `odds/kbo.json` | Current KBO odds for the current Asia/Seoul slate plus tomorrow's Korea slate | In season: every 15 min |
-| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals + to-qualify) | In tournament: every 15 min |
+| `odds/worldcup.json` | Current FIFA World Cup odds (latest, h2h + totals only) | In tournament: every 15 min |
 | `odds/summary.json` | Fetch metadata, quota headers & game counts | Each run that fetches |
 
 ### Git-Based Historical Tracking
@@ -178,10 +180,10 @@ npm install
 
 ### 3. Manual Testing
 ```bash
-# Test the fetcher locally
-ODDS_API_KEY=your_key_here node fetch-odds.js
+# Test the fetcher locally and bypass cadence
+ODDS_API_KEY=your_key_here FORCE_FETCH=true node fetch-odds.js
 
-# Manual workflow trigger
+# Manual workflow trigger (normal cadence rules still apply)
 # Go to Actions → Fetch Odds Cron → Run workflow
 ```
 
@@ -194,6 +196,9 @@ curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
 
 # Latest NCAA Football odds  
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/ncaaf.json
+
+# Latest WNBA odds
+curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/wnba.json
 
 # Latest MLB odds
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/mlb.json
@@ -225,9 +230,10 @@ git show HEAD~8:odds/nfl.json > nfl_2hours_ago.json
 
 ## 📋 Data Schema
 
-### NFL/NCAA Football/MLB/KBO JSON Structure
+### NFL/NCAA Football/WNBA/MLB/KBO JSON Structure
 
-MLB and KBO use the same raw `/odds` response shape as football, but their
+WNBA uses the same direct raw `/odds` response shape as football. MLB and KBO
+use that same raw `/odds` response shape too, but their
 collection is event-windowed: the fetcher first calls `/events` for the current
 league-local slate plus tomorrow's local slate, then calls `/odds` with those
 `eventIds` and also calls direct `/odds` with the same time window. The two odds
@@ -282,11 +288,7 @@ plain arrays of `/odds` game objects.
 
 Identical top-level schema to the football files, with two soccer-specific differences:
 
-- **No `spreads` market.** World Cup featured odds use `markets=h2h,totals` on
-  the sport endpoint. For each returned knockout event, the event-odds endpoint
-  is queried with `markets=to_qualify` and those bookmaker markets are merged
-  into the same game object. This keeps team-to-advance prices separate from
-  regulation-time `h2h`; NFL/NCAAF/MLB/KBO keep `h2h,spreads,totals`.
+- **No `spreads` market.** World Cup is fetched with `markets=h2h,totals` only — soccer has no point spread in our model. Only the World Cup file drops spreads; NFL/NCAAF/WNBA/MLB/KBO keep `h2h,spreads,totals`.
 - **3-way moneyline.** The `h2h` market returns three outcomes — home team, away team, and the draw. The draw outcome's `name` is exactly `"Draw"` (The Odds API default, written through unchanged so downstream parsers can key off `name == "Draw"`).
 
 ```json
