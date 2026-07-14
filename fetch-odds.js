@@ -19,7 +19,6 @@ const parsedQuotaReserveCredits = Number.parseInt(
 const QUOTA_RESERVE_CREDITS = Number.isFinite(parsedQuotaReserveCredits)
   ? Math.max(parsedQuotaReserveCredits, 0)
   : 20;
-const WORLDCUP_SPORT_KEY = 'soccer_fifa_world_cup';
 const MLB_SPORT_KEY = 'baseball_mlb';
 const KBO_SPORT_KEY = 'baseball_kbo';
 const MLB_TIME_ZONE = 'America/New_York';
@@ -42,9 +41,8 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
-// request. World Cup featured odds cost 2 credits, plus up to 1 credit per
-// event when a to_qualify market is returned by the event-odds endpoint.
-const RUN_EVERY_MIN = 12;
+// request (World Cup h2h,totals x us = 2 credits).
+const RUN_EVERY_MIN = 15;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
 //   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
@@ -52,27 +50,32 @@ const RUN_EVERY_MIN = 12;
 //   markets/regions determine the estimated API credit cost
 const SPORTS = [
   {
-    sport: 'FIFA World Cup', sportKey: WORLDCUP_SPORT_KEY, fileName: 'worldcup',
+    sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
     markets: 'h2h,totals',
-    eventMarkets: 'to_qualify',
-    estimatedCredits: 6,
     regions: DEFAULT_REGIONS,
     window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
-    fetchEveryMinutes: 12, // every 15-minute dispatch (~8,640 credits/30-day month)
+    fetchEveryMinutes: 15, // every scheduled run (~5,760 credits/30-day month)
   },
   {
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [9, 10, 11, 12, 1, 2], // Sep - Feb
-    fetchEveryMinutes: 12,
+    fetchEveryMinutes: 15,
   },
   {
     sport: 'NCAA Football', sportKey: 'americanfootball_ncaaf', fileName: 'ncaaf',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [8, 9, 10, 11, 12, 1], // Aug - Jan
-    fetchEveryMinutes: 12,
+    fetchEveryMinutes: 15,
+  },
+  {
+    sport: 'WNBA', sportKey: 'basketball_wnba', fileName: 'wnba',
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [5, 6, 7, 8, 9, 10], // May - Oct
+    fetchEveryMinutes: 15,
   },
   {
     sport: 'MLB', sportKey: MLB_SPORT_KEY, fileName: 'mlb',
@@ -80,7 +83,7 @@ const SPORTS = [
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10], // Mar - Oct
     estimatedPaidRequests: 2,
-    fetchEveryMinutes: 12,
+    fetchEveryMinutes: 15,
   },
   {
     sport: 'KBO', sportKey: KBO_SPORT_KEY, fileName: 'kbo',
@@ -88,7 +91,7 @@ const SPORTS = [
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10, 11], // Mar - Nov
     estimatedPaidRequests: 2,
-    fetchEveryMinutes: 12,
+    fetchEveryMinutes: 15,
   },
 ];
 
@@ -101,10 +104,6 @@ function countCsvValues(value) {
 }
 
 function estimateCredits(sport) {
-  if (Number.isFinite(sport.estimatedCredits)) {
-    return sport.estimatedCredits;
-  }
-
   const paidRequests = sport.estimatedPaidRequests || 1;
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
@@ -238,37 +237,6 @@ function summarizeGames(oddsData) {
 function addOddsGamesById(target, oddsData) {
   (Array.isArray(oddsData) ? oddsData : []).forEach(game => {
     if (game?.id) target.set(game.id, game);
-  });
-}
-
-function mergeAdditionalMarkets(targetGame, sourceGame) {
-  if (!targetGame || !sourceGame) return;
-
-  if (!Array.isArray(targetGame.bookmakers)) targetGame.bookmakers = [];
-  (sourceGame.bookmakers || []).forEach(sourceBookmaker => {
-    const targetBookmaker = targetGame.bookmakers.find(bookmaker =>
-      bookmaker.key === sourceBookmaker.key
-    );
-    if (!targetBookmaker) {
-      targetGame.bookmakers.push(sourceBookmaker);
-      return;
-    }
-
-    if (!Array.isArray(targetBookmaker.markets)) targetBookmaker.markets = [];
-    (sourceBookmaker.markets || []).forEach(sourceMarket => {
-      const existingIndex = targetBookmaker.markets.findIndex(market =>
-        market.key === sourceMarket.key
-      );
-      if (existingIndex >= 0) {
-        targetBookmaker.markets[existingIndex] = sourceMarket;
-      } else {
-        targetBookmaker.markets.push(sourceMarket);
-      }
-    });
-
-    if (sourceBookmaker.last_update) {
-      targetBookmaker.last_update = sourceBookmaker.last_update;
-    }
   });
 }
 
@@ -491,79 +459,6 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   };
 }
 
-async function fetchWorldCupOdds(config) {
-  const {
-    sport,
-    sportKey,
-    fileName,
-    markets = 'h2h,totals',
-    eventMarkets = 'to_qualify',
-    regions = DEFAULT_REGIONS
-  } = config;
-
-  console.log(`Fetching ${sport} featured odds (${markets})...`);
-  const featuredResponse = await fetchWithRetry(
-    `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`,
-    {
-      apiKey: ODDS_API_KEY,
-      regions,
-      markets,
-      oddsFormat: 'american',
-      dateFormat: 'iso'
-    }
-  );
-  const oddsData = Array.isArray(featuredResponse.data) ? featuredResponse.data : [];
-  let latestQuota = parseQuotaHeaders(featuredResponse.headers);
-  let toQualifyMarketCount = 0;
-
-  await Promise.all(oddsData.map(async game => {
-    try {
-      console.log(`Fetching ${sport} ${eventMarkets} odds for event ${game.id}...`);
-      const eventResponse = await fetchWithRetry(
-        `https://api.the-odds-api.com/v4/sports/${sportKey}/events/${game.id}/odds`,
-        {
-          apiKey: ODDS_API_KEY,
-          regions,
-          markets: eventMarkets,
-          oddsFormat: 'american',
-          dateFormat: 'iso'
-        }
-      );
-      latestQuota = parseQuotaHeaders(eventResponse.headers) || latestQuota;
-      mergeAdditionalMarkets(game, eventResponse.data);
-      toQualifyMarketCount += (eventResponse.data?.bookmakers || [])
-        .flatMap(bookmaker => bookmaker.markets || [])
-        .filter(market => market.key === 'to_qualify')
-        .length;
-    } catch (error) {
-      console.warn(
-        `Unable to fetch ${eventMarkets} for ${sport} event ${game.id}; preserving featured odds: ${error.message}`
-      );
-    }
-  }));
-
-  const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(oddsData, null, 2));
-  console.log(
-    `Fetched ${oddsData.length} ${sport} games; merged ${toQualifyMarketCount} bookmaker to_qualify markets`
-  );
-  console.log(`${sport} odds saved to ${filePath}`);
-
-  return {
-    sport,
-    gameCount: oddsData.length,
-    estimatedCredits: estimateCredits(config),
-    quota: latestQuota,
-    debug: {
-      featuredMarkets: markets,
-      eventMarkets,
-      eventMarketRequests: oddsData.length,
-      toQualifyMarketCount
-    },
-    games: summarizeGames(oddsData)
-  };
-}
-
 async function fetchOdds(config) {
   const {
     sport,
@@ -574,10 +469,6 @@ async function fetchOdds(config) {
   } = config;
 
   try {
-    if (sportKey === WORLDCUP_SPORT_KEY) {
-      return await fetchWorldCupOdds(config);
-    }
-
     const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
     if (baseballWindowConfig) {
       return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig);
@@ -629,16 +520,15 @@ async function fetchAllOdds() {
     }
     
     const now = new Date();
-    // Manual "Run workflow" triggers (or FORCE_FETCH=true) bypass the frequency
-    // throttle. The quota reserve still applies before any paid API call.
-    const isManual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch'
-      || process.env.FORCE_FETCH === 'true';
+    // Production uses workflow_dispatch every 15 minutes, so only FORCE_FETCH
+    // bypasses cadence. The quota reserve still applies before paid API calls.
+    const isForced = process.env.FORCE_FETCH === 'true';
     const lastFetched = loadLastFetched();
     
-    // Fetch sports that are in season and (due by elapsed time OR a manual run).
+    // Fetch sports that are in season and due by elapsed time, unless forced.
     const inSeason = SPORTS.filter(s => isSportActive(s, now));
     const due = inSeason.filter(s =>
-      isManual || isSportDue(s, lastFetched[`${s.fileName}.json`]?.lastFetched, now)
+      isForced || isSportDue(s, lastFetched[`${s.fileName}.json`]?.lastFetched, now)
     );
     if (due.length === 0) {
       console.log(inSeason.length === 0
@@ -646,7 +536,7 @@ async function fetchAllOdds() {
         : 'In-season sports not due yet; skipping. No API quota used.');
       return;
     }
-    console.log(`Fetching this run${isManual ? ' (manual)' : ''}: ${due.map(s => s.sport).join(', ')}`);
+    console.log(`Fetching this run${isForced ? ' (forced)' : ''}: ${due.map(s => s.sport).join(', ')}`);
 
     const quotaBefore = await fetchQuotaStatus();
     const { selected: quotaAllowed, skipped: quotaSkipped } = selectSportsWithinQuota(due, quotaBefore);
