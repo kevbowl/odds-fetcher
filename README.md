@@ -8,9 +8,23 @@ Odds Fetcher collects current bookmaker lines from [The Odds API](https://the-od
 ## How it works
 
 ```text
-cron-job.org -> GitHub Actions -> The Odds API -> odds/*.json -> Prophet
-                     |
-                     +-> Git history (snapshots)
++--------------------+    +--------------------+    +--------------------+
+| cron-job.org       | -> | GitHub Actions     | -> | The Odds API       |
+| every 15 min       |    | workflow dispatch  |    | events + odds      |
++--------------------+    +--------------------+    +--------------------+
+                                                              |
+                                                              v
+                                                    +--------------------+
+                                                    | GitHub odds repo   |
+                                                    | latest + history   |
+                                                    +--------------------+
+                                                              |
+                                                              v
+                                                    +--------------------+
+                                                    | Prophet            |
+                                                    | live odds +        |
+                                                    | odds snapshots     |
+                                                    +--------------------+
 ```
 
 cron-job.org dispatches the GitHub Actions workflow. On each run, the fetcher decides which leagues are active, due, and within the available API quota. Successful results are written to `odds/` and committed only when the generated files change.
