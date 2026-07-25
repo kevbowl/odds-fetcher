@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-07-25T18:15:26.256Z",
+  "lastUpdated": "2026-07-25T18:30:37.469Z",
   "quota": {
-    "remaining": 14245630,
-    "used": 754370,
-    "lastRequestCost": 0,
+    "remaining": 14245609,
+    "used": 754391,
+    "lastRequestCost": 3,
     "reserveCredits": 20
   },
   "sports": [
@@ -11,42 +11,42 @@
       "sport": "WNBA",
       "gameCount": 7,
       "fileName": "wnba.json",
-      "lastFetched": "2026-07-25T18:15:26.256Z"
+      "lastFetched": "2026-07-25T18:30:37.469Z"
     },
     {
       "sport": "MLB",
-      "gameCount": 15,
+      "gameCount": 22,
       "fileName": "mlb.json",
-      "lastFetched": "2026-07-25T18:15:26.256Z",
+      "lastFetched": "2026-07-25T18:30:37.469Z",
       "debug": {
         "mlbWindowStart": "2026-07-25T02:00:00Z",
         "mlbWindowEnd": "2026-07-27T04:00:00Z",
         "mlbWindowTimeZone": "America/New_York",
-        "mlbEventCount": 15,
-        "mlbEventOddsCount": 15,
-        "mlbDirectOddsCount": 15,
-        "mlbMergedOddsCount": 15,
+        "mlbEventCount": 22,
+        "mlbEventOddsCount": 22,
+        "mlbDirectOddsCount": 22,
+        "mlbMergedOddsCount": 22,
         "earliestCommenceTime": "2026-07-25T17:11:00Z",
-        "latestCommenceTime": "2026-07-25T23:16:00Z",
+        "latestCommenceTime": "2026-07-26T18:11:00Z",
         "warning": null,
         "missingOddsEventIds": []
       }
     },
     {
       "sport": "KBO",
-      "gameCount": 0,
+      "gameCount": 4,
       "fileName": "kbo.json",
-      "lastFetched": "2026-07-25T18:15:26.256Z",
+      "lastFetched": "2026-07-25T18:30:37.469Z",
       "debug": {
         "kboWindowStart": "2026-07-25T13:00:00Z",
         "kboWindowEnd": "2026-07-27T15:00:00Z",
         "kboWindowTimeZone": "Asia/Seoul",
-        "kboEventCount": 0,
-        "kboEventOddsCount": 0,
-        "kboDirectOddsCount": 0,
-        "kboMergedOddsCount": 0,
-        "earliestCommenceTime": null,
-        "latestCommenceTime": null,
+        "kboEventCount": 4,
+        "kboEventOddsCount": 4,
+        "kboDirectOddsCount": 4,
+        "kboMergedOddsCount": 4,
+        "earliestCommenceTime": "2026-07-26T09:00:00Z",
+        "latestCommenceTime": "2026-07-26T09:00:00Z",
         "warning": null,
         "missingOddsEventIds": []
       }
