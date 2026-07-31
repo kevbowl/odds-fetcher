@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-07-31T13:30:36.790Z",
+  "lastUpdated": "2026-07-31T13:45:27.588Z",
   "quota": {
-    "remaining": 14237959,
-    "used": 762041,
-    "lastRequestCost": 0,
+    "remaining": 14237941,
+    "used": 762059,
+    "lastRequestCost": 3,
     "reserveCredits": 20
   },
   "sports": [
@@ -11,13 +11,13 @@
       "sport": "WNBA",
       "gameCount": 5,
       "fileName": "wnba.json",
-      "lastFetched": "2026-07-31T13:30:36.790Z"
+      "lastFetched": "2026-07-31T13:45:27.588Z"
     },
     {
       "sport": "MLB",
       "gameCount": 15,
       "fileName": "mlb.json",
-      "lastFetched": "2026-07-31T13:30:36.790Z",
+      "lastFetched": "2026-07-31T13:45:27.588Z",
       "debug": {
         "mlbWindowStart": "2026-07-31T02:00:00Z",
         "mlbWindowEnd": "2026-08-02T04:00:00Z",
@@ -34,19 +34,19 @@
     },
     {
       "sport": "KBO",
-      "gameCount": 0,
+      "gameCount": 5,
       "fileName": "kbo.json",
-      "lastFetched": "2026-07-31T13:30:36.790Z",
+      "lastFetched": "2026-07-31T13:45:27.588Z",
       "debug": {
         "kboWindowStart": "2026-07-30T13:00:00Z",
         "kboWindowEnd": "2026-08-01T15:00:00Z",
         "kboWindowTimeZone": "Asia/Seoul",
-        "kboEventCount": 0,
-        "kboEventOddsCount": 0,
-        "kboDirectOddsCount": 0,
-        "kboMergedOddsCount": 0,
-        "earliestCommenceTime": null,
-        "latestCommenceTime": null,
+        "kboEventCount": 5,
+        "kboEventOddsCount": 5,
+        "kboDirectOddsCount": 5,
+        "kboMergedOddsCount": 5,
+        "earliestCommenceTime": "2026-08-01T09:00:00Z",
+        "latestCommenceTime": "2026-08-01T09:00:00Z",
         "warning": null,
         "missingOddsEventIds": []
       }
