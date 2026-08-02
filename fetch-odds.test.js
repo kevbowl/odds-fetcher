@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { buildSummarySport } = require('./fetch-odds');
+const { buildSummarySport, isSportDue, RUN_EVERY_MIN } = require('./fetch-odds');
 
 const sport = { sport: 'WNBA', fileName: 'wnba' };
 const previous = {
@@ -50,5 +50,17 @@ const firstFailure = buildSummarySport(sport, {
 assert.equal(firstFailure.gameCount, 0);
 assert.equal(firstFailure.lastFetched, null);
 assert.equal(firstFailure.lastAttemptStatus, 'failed');
+
+assert.equal(RUN_EVERY_MIN, 5);
+const fiveMinuteSport = { fetchEveryMinutes: 5 };
+const cadenceNow = new Date('2026-08-02T16:05:00.000Z');
+assert.equal(
+  isSportDue(fiveMinuteSport, '2026-08-02T16:03:00.000Z', cadenceNow),
+  false
+);
+assert.equal(
+  isSportDue(fiveMinuteSport, '2026-08-02T16:02:00.000Z', cadenceNow),
+  true
+);
 
 console.log('odds-fetcher summary receipt tests passed');

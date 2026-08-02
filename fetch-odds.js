@@ -42,7 +42,7 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
 // request (World Cup h2h,totals x us = 2 credits).
-const RUN_EVERY_MIN = 15;
+const RUN_EVERY_MIN = 5;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
 //   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
@@ -54,28 +54,28 @@ const SPORTS = [
     markets: 'h2h,totals',
     regions: DEFAULT_REGIONS,
     window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
-    fetchEveryMinutes: 15, // every scheduled run (~5,760 credits/30-day month)
+    fetchEveryMinutes: 5, // every scheduled run (~17,280 credits/30-day month)
   },
   {
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [9, 10, 11, 12, 1, 2], // Sep - Feb
-    fetchEveryMinutes: 15,
+    fetchEveryMinutes: 5,
   },
   {
     sport: 'NCAA Football', sportKey: 'americanfootball_ncaaf', fileName: 'ncaaf',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [8, 9, 10, 11, 12, 1], // Aug - Jan
-    fetchEveryMinutes: 15,
+    fetchEveryMinutes: 5,
   },
   {
     sport: 'WNBA', sportKey: 'basketball_wnba', fileName: 'wnba',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [5, 6, 7, 8, 9, 10], // May - Oct
-    fetchEveryMinutes: 15,
+    fetchEveryMinutes: 5,
   },
   {
     sport: 'MLB', sportKey: MLB_SPORT_KEY, fileName: 'mlb',
@@ -83,7 +83,7 @@ const SPORTS = [
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10], // Mar - Oct
     estimatedPaidRequests: 2,
-    fetchEveryMinutes: 15,
+    fetchEveryMinutes: 5,
   },
   {
     sport: 'KBO', sportKey: KBO_SPORT_KEY, fileName: 'kbo',
@@ -91,7 +91,7 @@ const SPORTS = [
     regions: DEFAULT_REGIONS,
     seasonMonths: [3, 4, 5, 6, 7, 8, 9, 10, 11], // Mar - Nov
     estimatedPaidRequests: 2,
-    fetchEveryMinutes: 15,
+    fetchEveryMinutes: 5,
   },
 ];
 
@@ -562,7 +562,7 @@ async function fetchAllOdds() {
     }
     
     const now = new Date();
-    // Production uses workflow_dispatch every 15 minutes, so only FORCE_FETCH
+    // Production uses workflow_dispatch every 5 minutes, so only FORCE_FETCH
     // bypasses cadence. The quota reserve still applies before paid API calls.
     const isForced = process.env.FORCE_FETCH === 'true';
     const lastFetched = loadLastFetched();
@@ -659,5 +659,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  buildSummarySport
+  buildSummarySport,
+  isSportDue,
+  RUN_EVERY_MIN
 };

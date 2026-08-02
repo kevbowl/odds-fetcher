@@ -10,7 +10,7 @@ Odds Fetcher collects current bookmaker lines from [The Odds API](https://the-od
 ```text
 +--------------------+    +--------------------+    +--------------------+
 | cron-job.org       | -> | GitHub Actions     | -> | The Odds API       |
-| every 15 min       |    | workflow dispatch  |    | events + odds      |
+| every 5 min        |    | workflow dispatch  |    | events + odds      |
 +--------------------+    +--------------------+    +--------------------+
                                                               |
                                                               v
@@ -53,7 +53,7 @@ MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The 
 
 ### Fetch gating
 
-There is one production cadence: a workflow dispatch every 15 minutes. On each dispatch, a league is fetched only when all three conditions are true:
+There is one production cadence: a workflow dispatch every 5 minutes. On each dispatch, a league is fetched only when all three conditions are true:
 
 1. The league is inside its configured active window.
 2. At least its configured interval has elapsed since `lastFetched` in `odds/summary.json`.
@@ -76,6 +76,18 @@ Before any paid request, the fetcher calls the no-cost `/sports` endpoint and re
 For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched event-ID odds request and one direct windowed odds request. Event IDs are batched in groups of 50, so unusually large slates can cost more; empty API responses can cost less.
 
 The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
+
+At the five-minute cadence, the currently active NCAAF, WNBA, MLB, and KBO
+profiles reserve at most 18 credits per run, or about 155,520 credits in a
+30-day month if every run reaches the typical two-call baseball maximum. This
+is roughly 1.04% of a 15,000,000-credit plan. Historical acquisition must still
+leave its separately reviewed live-odds reserve; this repository never spends
+historical credits or weakens the provider-reported quota gate.
+
+The source freshness objective is a successful per-league attempt no more than
+10 minutes old: one five-minute collection interval plus one interval of
+dispatch/provider jitter. `lastAttemptStatus=failed`, a missing receipt, or an
+older successful `lastFetched` is degraded evidence, not a quiet market.
 
 ## Configuration
 
@@ -114,7 +126,7 @@ Production uses an external `workflow_dispatch`; there is no GitHub `schedule` t
 |---|---|
 | Method | `POST` |
 | URL | `https://api.github.com/repos/kevbowl/odds-fetcher/actions/workflows/fetch-odds-cron.yml/dispatches` |
-| Schedule | `*/15 * * * *` |
+| Schedule | `*/5 * * * *` |
 | Time zone | `Asia/Singapore` |
 | Body | `{"ref":"main"}` |
 | Expected response | `204 No Content` |
