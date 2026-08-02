@@ -53,11 +53,19 @@ MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The 
 
 ### Fetch gating
 
-There is one production cadence: a workflow dispatch every 5 minutes. On each dispatch, a league is fetched only when all three conditions are true:
+The target production cadence is one workflow dispatch every 5 minutes. On each dispatch, a league is fetched only when all three conditions are true:
 
 1. The league is inside its configured active window.
 2. At least its configured interval has elapsed since `lastFetched` in `odds/summary.json`.
 3. The estimated request cost fits above the configured quota reserve.
+
+Deployment status: the repository-side five-minute gate is live from commit
+`ecae422cf73ff7984fb190de9fc920b0d89d1f3d`. The external cron-job.org
+dispatcher must also be changed from 15 minutes to 5 minutes before the
+end-to-end cadence is five minutes. Until
+[`odds-fetcher#1`](https://github.com/kevbowl/odds-fetcher/issues/1) is closed
+with consecutive-run evidence, operators must treat the effective production
+cadence as 15 minutes.
 
 `FORCE_FETCH=true` bypasses the elapsed-time check for active leagues. It does not bypass season or quota checks.
 
