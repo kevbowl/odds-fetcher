@@ -266,7 +266,15 @@ function loadLastFetched() {
     const prev = JSON.parse(fs.readFileSync(path.join(ODDS_DIR, 'summary.json'), 'utf8'));
     const map = {};
     (prev.sports || []).forEach(s => {
-      if (s.fileName) map[s.fileName] = { lastFetched: s.lastFetched || null, gameCount: s.gameCount };
+      if (s.fileName) {
+        map[s.fileName] = {
+          lastFetched: s.lastFetched || null,
+          gameCount: s.gameCount,
+          lastAttemptAt: s.lastAttemptAt || null,
+          lastAttemptStatus: s.lastAttemptStatus || null,
+          lastError: s.lastError || null
+        };
+      }
     });
     return map;
   } catch {
@@ -507,8 +515,42 @@ async function fetchOdds(config) {
       console.error('Response status:', error.response.status);
       console.error('Response data:', error.response.data);
     }
-    return null;
+    return {
+      sport,
+      error: {
+        status: Number.isInteger(error.response?.status) ? error.response.status : null,
+        message: String(error.message || 'Unknown provider failure').slice(0, 500)
+      }
+    };
   }
+}
+
+function buildSummarySport(sportConfig, attempt, previous, nowIso) {
+  const successful = Boolean(attempt && !attempt.error);
+  const failed = Boolean(attempt?.error);
+  const summarySport = {
+    sport: sportConfig.sport,
+    gameCount: successful ? attempt.gameCount : (previous ? previous.gameCount : 0),
+    fileName: `${sportConfig.fileName}.json`,
+    lastFetched: successful ? nowIso : (previous ? previous.lastFetched : null)
+  };
+
+  if (successful) {
+    summarySport.lastAttemptAt = nowIso;
+    summarySport.lastAttemptStatus = 'success';
+    summarySport.lastError = null;
+  } else if (failed) {
+    summarySport.lastAttemptAt = nowIso;
+    summarySport.lastAttemptStatus = 'failed';
+    summarySport.lastError = attempt.error;
+  } else if (previous?.lastAttemptAt || previous?.lastAttemptStatus || previous?.lastError) {
+    summarySport.lastAttemptAt = previous.lastAttemptAt || null;
+    summarySport.lastAttemptStatus = previous.lastAttemptStatus || null;
+    summarySport.lastError = previous.lastError || null;
+  }
+
+  if (successful && attempt.debug) summarySport.debug = attempt.debug;
+  return summarySport;
 }
 
 async function fetchAllOdds() {
@@ -555,14 +597,18 @@ async function fetchAllOdds() {
       quotaAllowed.map(s => fetchOdds(s))
     );
     
-    // Map this run's successful fetches by output file.
+    // Map every selected league's attempt, including failures. A green workflow is
+    // not proof that every league refreshed; summary.json is the per-league receipt.
     const nowIso = now.toISOString();
-    const fetchedByFile = {};
-    quotaAllowed.forEach((s, i) => { if (results[i]) fetchedByFile[`${s.fileName}.json`] = results[i]; });
+    const attemptedByFile = {};
+    quotaAllowed.forEach((s, i) => {
+      if (results[i]) attemptedByFile[`${s.fileName}.json`] = results[i];
+    });
     const latestQuota = results
       .map(result => result?.quota)
       .filter(Boolean)
       .pop() || quotaBefore;
+    const failedAttempts = results.filter(result => result?.error);
     
     // Build summary for all in-season sports, carrying forward last-fetch state
     // for any in-season sport not (successfully) fetched on this run.
@@ -574,20 +620,19 @@ async function fetchAllOdds() {
         lastRequestCost: latestQuota.last,
         reserveCredits: QUOTA_RESERVE_CREDITS
       } : null,
+      status: failedAttempts.length > 0 || quotaSkipped.length > 0
+        ? 'degraded'
+        : 'healthy',
       sports: []
     };
     inSeason.forEach(s => {
       const fileKey = `${s.fileName}.json`;
-      const fetched = fetchedByFile[fileKey];
-      const prev = lastFetched[fileKey];
-      const summarySport = {
-        sport: s.sport,
-        gameCount: fetched ? fetched.gameCount : (prev ? prev.gameCount : 0),
-        fileName: fileKey,
-        lastFetched: fetched ? nowIso : (prev ? prev.lastFetched : null)
-      };
-      if (fetched?.debug) summarySport.debug = fetched.debug;
-      summary.sports.push(summarySport);
+      summary.sports.push(buildSummarySport(
+        s,
+        attemptedByFile[fileKey],
+        lastFetched[fileKey],
+        nowIso
+      ));
     });
     
     // Save combined summary
@@ -595,7 +640,13 @@ async function fetchAllOdds() {
     fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));
     
     console.log(`Summary saved to ${summaryPath}`);
-    console.log('Enhanced odds fetching completed successfully!');
+    if (failedAttempts.length > 0) {
+      console.warn(
+        `Odds fetching completed with ${failedAttempts.length} failed league attempt(s): ${failedAttempts.map(result => result.sport).join(', ')}`
+      );
+    } else {
+      console.log('Enhanced odds fetching completed successfully!');
+    }
     
   } catch (error) {
     console.error('Error in fetchAllOdds:', error.message);
@@ -603,5 +654,10 @@ async function fetchAllOdds() {
   }
 }
 
-// Run the enhanced fetch
-fetchAllOdds();
+if (require.main === module) {
+  fetchAllOdds();
+}
+
+module.exports = {
+  buildSummarySport
+};

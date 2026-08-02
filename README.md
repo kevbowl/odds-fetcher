@@ -199,12 +199,16 @@ League files are arrays of The Odds API game objects. Direct responses retain th
     "lastRequestCost": 3,
     "reserveCredits": 20
   },
+  "status": "healthy",
   "sports": [
     {
       "sport": "KBO",
       "gameCount": 5,
       "fileName": "kbo.json",
-      "lastFetched": "2026-07-15T15:15:00.000Z"
+      "lastFetched": "2026-07-15T15:15:00.000Z",
+      "lastAttemptAt": "2026-07-15T15:15:00.000Z",
+      "lastAttemptStatus": "success",
+      "lastError": null
     }
   ]
 }
@@ -226,6 +230,12 @@ A league file's Git timestamp advances only when its contents change. Use `lastF
 
 - **Workflow status:** [GitHub Actions](https://github.com/kevbowl/odds-fetcher/actions)
 - **Fetch freshness:** inspect `lastFetched` and `gameCount` in `odds/summary.json`.
+- **Per-league attempt health:** inspect `lastAttemptAt`,
+  `lastAttemptStatus`, and `lastError`. A failed attempt preserves the last
+  successful `lastFetched` and game count; workflow completion alone is not
+  per-league freshness evidence. The top-level `status` becomes `degraded`
+  when any selected league attempt fails or a due league is skipped by the
+  quota reserve.
 - **Baseball diagnostics:** inspect the MLB/KBO window, event count, direct odds count, and warning fields in `odds/summary.json`.
 - **Quota:** inspect the summary quota object and The Odds API account dashboard.
 - **Empty league file:** a recent `lastFetched` with `gameCount: 0` means the API returned no games; an old or missing `lastFetched` indicates the league was inactive, not due, quota-skipped, or failed.
