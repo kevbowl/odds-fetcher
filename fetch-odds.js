@@ -54,7 +54,7 @@ const SPORTS = [
     markets: 'h2h,totals',
     regions: DEFAULT_REGIONS,
     window: { start: '2026-06-07T00:00:00Z', end: '2026-07-20T00:00:00Z' },
-    fetchEveryMinutes: 5, // every scheduled run (~17,280 credits/30-day month)
+    fetchEveryMinutes: 5, // every scheduled run
   },
   {
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
@@ -562,8 +562,9 @@ async function fetchAllOdds() {
     }
     
     const now = new Date();
-    // Production uses workflow_dispatch every 5 minutes, so only FORCE_FETCH
-    // bypasses cadence. The quota reserve still applies before paid API calls.
+    // Production uses workflow_dispatch at RUN_EVERY_MIN cadence, so only
+    // FORCE_FETCH bypasses cadence. The quota reserve still applies before
+    // paid API calls.
     const isForced = process.env.FORCE_FETCH === 'true';
     const lastFetched = loadLastFetched();
     

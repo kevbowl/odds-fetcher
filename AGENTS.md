@@ -2,7 +2,7 @@
 
 ## Git workflow
 
-GitHub Actions updates `main` about every 15 minutes. Assume `origin/main` may advance while local work is in progress.
+GitHub Actions runs frequently and may update `main` at any time. Assume `origin/main` may advance while local work is in progress.
 
 Before changing files:
 
