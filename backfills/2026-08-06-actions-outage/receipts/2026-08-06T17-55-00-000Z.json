@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "incident": "2026-08-06-actions-outage",
+  "bucketUtc": "2026-08-06T17:55:00.000Z",
+  "requestedAtUtc": "2026-08-06T17:59:59Z",
+  "capturedAtUtc": "2026-08-06T17:59:59.000Z",
+  "creditsObserved": 91,
+  "quotaAfter": {
+    "remaining": 14978129,
+    "used": 21871,
+    "last": 30
+  },
+  "sports": [
+    {
+      "sport": "NCAA Football",
+      "sportKey": "americanfootball_ncaaf",
+      "fileName": "ncaaf.json",
+      "regions": "us",
+      "markets": "h2h,spreads,totals",
+      "gameCount": 126,
+      "reconstructionMethod": "provider-historical",
+      "providerTimestampUtc": "2026-08-06T17:55:38.000Z",
+      "sha256": "799719852f69763425398f1cb838761a5a7ef48b5d538808d01075b946198e0f",
+      "debug": null
+    },
+    {
+      "sport": "WNBA",
+      "sportKey": "basketball_wnba",
+      "fileName": "wnba.json",
+      "regions": "us",
+      "markets": "h2h,spreads,totals",
+      "gameCount": 6,
+      "reconstructionMethod": "provider-historical",
+      "providerTimestampUtc": "2026-08-06T17:55:38.000Z",
+      "sha256": "3e7d3c1090645e58bc151adc0e84976bec33b6f16b54437e1a046eddf2db76cd",
+      "debug": null
+    },
+    {
+      "sport": "MLB",
+      "sportKey": "baseball_mlb",
+      "fileName": "mlb.json",
+      "regions": "us",
+      "markets": "h2h,spreads,totals",
+      "gameCount": 14,
+      "reconstructionMethod": "provider-historical",
+      "providerTimestampUtc": "2026-08-06T17:55:38.000Z",
+      "sha256": "d70575c1bc30aca3fd0893079833bcf0b137ab983273af61d2a647bca04230f3",
+      "debug": {
+        "mlbWindowStart": "2026-08-06T02:00:00Z",
+        "mlbWindowEnd": "2026-08-08T04:00:00Z",
+        "mlbWindowTimeZone": "America/New_York",
+        "mlbEventsProviderTimestamp": "2026-08-06T17:55:38.000Z",
+        "mlbOddsProviderTimestamp": "2026-08-06T17:55:38.000Z",
+        "mlbEventCount": 14,
+        "mlbEventOddsCount": 0,
+        "mlbDirectOddsCount": 14,
+        "mlbMergedOddsCount": 14,
+        "earliestCommenceTime": "2026-08-06T16:36:00Z",
+        "latestCommenceTime": "2026-08-08T01:41:00Z",
+        "warning": null,
+        "missingOddsEventIds": []
+      }
+    },
+    {
+      "sport": "KBO",
+      "sportKey": "baseball_kbo",
+      "fileName": "kbo.json",
+      "regions": "us",
+      "markets": "h2h,spreads,totals",
+      "gameCount": 0,
+      "reconstructionMethod": "git-carry-forward",
+      "providerTimestampUtc": "2026-08-06T17:45:44.000Z",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "debug": {
+        "carryForwardReason": "No KBO historical snapshot was available from the provider for this interval",
+        "carryForwardCommit": "1f079ee07965d806a3bf5ef1121ef36998cb2830",
+        "carryForwardCapturedAtUtc": "2026-08-06T17:45:44.000Z",
+        "carryForwardAgeSeconds": 855
+      }
+    }
+  ]
+}
