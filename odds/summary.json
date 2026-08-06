@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-08-06T20:34:59.000Z",
+  "lastUpdated": "2026-08-06T20:49:59.000Z",
   "quota": {
-    "remaining": 14976218,
-    "used": 23782,
+    "remaining": 14976127,
+    "used": 23873,
     "lastRequestCost": 30,
     "reserveCredits": 20
   },
@@ -10,17 +10,17 @@
   "source": {
     "type": "the-odds-api-historical-backfill",
     "incident": "2026-08-06-actions-outage",
-    "bucketUtc": "2026-08-06T20:30:00.000Z",
-    "requestedAtUtc": "2026-08-06T20:34:59Z",
-    "capturedAtUtc": "2026-08-06T20:34:59.000Z"
+    "bucketUtc": "2026-08-06T20:45:00.000Z",
+    "requestedAtUtc": "2026-08-06T20:49:59Z",
+    "capturedAtUtc": "2026-08-06T20:49:59.000Z"
   },
   "sports": [
     {
       "sport": "NCAA Football",
       "gameCount": 126,
       "fileName": "ncaaf.json",
-      "lastFetched": "2026-08-06T20:30:38.000Z",
-      "lastAttemptAt": "2026-08-06T20:30:38.000Z",
+      "lastFetched": "2026-08-06T20:45:38.000Z",
+      "lastAttemptAt": "2026-08-06T20:45:38.000Z",
       "lastAttemptStatus": "success",
       "lastError": null
     },
@@ -28,8 +28,8 @@
       "sport": "WNBA",
       "gameCount": 6,
       "fileName": "wnba.json",
-      "lastFetched": "2026-08-06T20:30:38.000Z",
-      "lastAttemptAt": "2026-08-06T20:30:38.000Z",
+      "lastFetched": "2026-08-06T20:45:38.000Z",
+      "lastAttemptAt": "2026-08-06T20:45:38.000Z",
       "lastAttemptStatus": "success",
       "lastError": null
     },
@@ -37,16 +37,16 @@
       "sport": "MLB",
       "gameCount": 14,
       "fileName": "mlb.json",
-      "lastFetched": "2026-08-06T20:30:38.000Z",
-      "lastAttemptAt": "2026-08-06T20:30:38.000Z",
+      "lastFetched": "2026-08-06T20:45:38.000Z",
+      "lastAttemptAt": "2026-08-06T20:45:38.000Z",
       "lastAttemptStatus": "success",
       "lastError": null,
       "debug": {
         "mlbWindowStart": "2026-08-06T02:00:00Z",
         "mlbWindowEnd": "2026-08-08T04:00:00Z",
         "mlbWindowTimeZone": "America/New_York",
-        "mlbEventsProviderTimestamp": "2026-08-06T20:30:38.000Z",
-        "mlbOddsProviderTimestamp": "2026-08-06T20:30:38.000Z",
+        "mlbEventsProviderTimestamp": "2026-08-06T20:45:38.000Z",
+        "mlbOddsProviderTimestamp": "2026-08-06T20:45:38.000Z",
         "mlbEventCount": 14,
         "mlbEventOddsCount": 0,
         "mlbDirectOddsCount": 14,
@@ -61,15 +61,15 @@
       "sport": "KBO",
       "gameCount": 0,
       "fileName": "kbo.json",
-      "lastFetched": "2026-08-06T20:25:28.000Z",
-      "lastAttemptAt": "2026-08-06T20:25:28.000Z",
+      "lastFetched": "2026-08-06T20:40:34.000Z",
+      "lastAttemptAt": "2026-08-06T20:40:34.000Z",
       "lastAttemptStatus": "success",
       "lastError": null,
       "debug": {
         "carryForwardReason": "No KBO historical snapshot was available from the provider for this interval",
-        "carryForwardCommit": "48d249e288a0f1b74c391385d1215504b3836add",
-        "carryForwardCapturedAtUtc": "2026-08-06T20:25:28.000Z",
-        "carryForwardAgeSeconds": 571
+        "carryForwardCommit": "e0f2af1dddf2e2b42421a3055478cef681a72114",
+        "carryForwardCapturedAtUtc": "2026-08-06T20:40:34.000Z",
+        "carryForwardAgeSeconds": 565
       }
     }
   ]
