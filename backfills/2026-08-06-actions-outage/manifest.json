@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "incident": "2026-08-06-actions-outage",
+  "startUtc": "2026-08-06T15:35:00Z",
+  "endUtc": "2026-08-06T22:00:00Z",
+  "intervalMinutes": 5,
+  "originalHead": "3d07509420b3b767f3d749a7767713a98c262951",
+  "expectedBucketCount": 78,
+  "recoveredBucketCount": 55,
+  "missingBuckets": [
+    "2026-08-06T15:40:00.000Z",
+    "2026-08-06T15:50:00.000Z",
+    "2026-08-06T15:55:00.000Z",
+    "2026-08-06T16:00:00.000Z",
+    "2026-08-06T16:10:00.000Z",
+    "2026-08-06T16:15:00.000Z",
+    "2026-08-06T16:20:00.000Z",
+    "2026-08-06T16:25:00.000Z",
+    "2026-08-06T16:30:00.000Z",
+    "2026-08-06T16:35:00.000Z",
+    "2026-08-06T16:40:00.000Z",
+    "2026-08-06T16:45:00.000Z",
+    "2026-08-06T16:55:00.000Z",
+    "2026-08-06T17:00:00.000Z",
+    "2026-08-06T17:05:00.000Z",
+    "2026-08-06T17:10:00.000Z",
+    "2026-08-06T17:15:00.000Z",
+    "2026-08-06T17:20:00.000Z",
+    "2026-08-06T17:25:00.000Z",
+    "2026-08-06T17:40:00.000Z",
+    "2026-08-06T17:50:00.000Z",
+    "2026-08-06T17:55:00.000Z",
+    "2026-08-06T18:00:00.000Z",
+    "2026-08-06T18:05:00.000Z",
+    "2026-08-06T18:10:00.000Z",
+    "2026-08-06T18:15:00.000Z",
+    "2026-08-06T18:20:00.000Z",
+    "2026-08-06T18:25:00.000Z",
+    "2026-08-06T18:30:00.000Z",
+    "2026-08-06T18:35:00.000Z",
+    "2026-08-06T18:40:00.000Z",
+    "2026-08-06T18:45:00.000Z",
+    "2026-08-06T18:50:00.000Z",
+    "2026-08-06T18:55:00.000Z",
+    "2026-08-06T19:00:00.000Z",
+    "2026-08-06T19:05:00.000Z",
+    "2026-08-06T19:10:00.000Z",
+    "2026-08-06T19:15:00.000Z",
+    "2026-08-06T19:25:00.000Z",
+    "2026-08-06T19:45:00.000Z",
+    "2026-08-06T19:55:00.000Z",
+    "2026-08-06T20:00:00.000Z",
+    "2026-08-06T20:30:00.000Z",
+    "2026-08-06T20:45:00.000Z",
+    "2026-08-06T20:50:00.000Z",
+    "2026-08-06T20:55:00.000Z",
+    "2026-08-06T21:00:00.000Z",
+    "2026-08-06T21:05:00.000Z",
+    "2026-08-06T21:10:00.000Z",
+    "2026-08-06T21:15:00.000Z",
+    "2026-08-06T21:20:00.000Z",
+    "2026-08-06T21:25:00.000Z",
+    "2026-08-06T21:30:00.000Z",
+    "2026-08-06T21:40:00.000Z",
+    "2026-08-06T21:45:00.000Z"
+  ],
+  "activeSports": [
+    "NCAA Football",
+    "WNBA",
+    "MLB",
+    "KBO"
+  ],
+  "maxCredits": 10000,
+  "observedCredits": 5005,
+  "quotaBefore": {
+    "remaining": 14980131,
+    "used": 19869,
+    "last": 0
+  },
+  "quotaAfter": {
+    "remaining": 14975126,
+    "used": 24874,
+    "last": 30
+  },
+  "liveOddsSha256": {
+    "kbo.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "mlb.json": "1368dfd0abe52a3280b006de1a7d7e886c77bd126e5e35958ef3c9e720537876",
+    "ncaaf.json": "4e2b0aa65df5745ca11b9837a4e87a6a4afaff6a9b9987006101ddf9c0b1b6ca",
+    "nfl.json": "e8745d7c89d9789c4d2f6e6bae268383b0a206eec3d88e498685b1fa690a4a40",
+    "summary.json": "4d8bdfc45316fde4467cab517bb25121eadeb0230c30d205cb8574263e325117",
+    "wnba.json": "4284d98b0c2e8e20851f7041bb7e65adb0f3b8420f1841e3b7d781aac7574f26",
+    "worldcup.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "commits": [
+    {
+      "bucketUtc": "2026-08-06T15:40:00.000Z",
+      "capturedAtUtc": "2026-08-06T15:44:59.000Z",
+      "commitSha": "679b86ca1cbdeb71d68fa00da231a35da44f5bab"
+    },
+    {
+      "bucketUtc": "2026-08-06T15:50:00.000Z",
+      "capturedAtUtc": "2026-08-06T15:54:59.000Z",
+      "commitSha": "049a9b913b80a81dcf390a8bd58129ca0d704105"
+    },
+    {
+      "bucketUtc": "2026-08-06T15:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T15:59:59.000Z",
+      "commitSha": "d00325e4e1e9f60804971c0a8452d7e7572c3d0f"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:04:59.000Z",
+      "commitSha": "9aeae13368ba9b63ee53b978da4ecec51a57ac01"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:10:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:14:59.000Z",
+      "commitSha": "cfe599abda795611fcc08ba91d13ed093dbc6518"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:15:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:19:59.000Z",
+      "commitSha": "813ce9d73c1054251e8778464123997fa5da2970"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:20:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:24:59.000Z",
+      "commitSha": "76d460f2e83a1718f75d597f01d88cf640940f2c"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:25:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:29:59.000Z",
+      "commitSha": "d7e91e088542374fcc9387bdc3025a83c538b710"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:30:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:34:59.000Z",
+      "commitSha": "90ed2424bdef93a181bce44d58243af5813da4f9"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:35:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:39:59.000Z",
+      "commitSha": "3ab47d3de2a8fccb7bbd96d6287c228087b820cf"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:40:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:44:59.000Z",
+      "commitSha": "b84c63d4b8faea73c2fff9e06f594e9832808004"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:45:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:49:59.000Z",
+      "commitSha": "5ded7201f2cc82f58d558f6ba5362817bfabb114"
+    },
+    {
+      "bucketUtc": "2026-08-06T16:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T16:59:59.000Z",
+      "commitSha": "a2f8a83d007475273223ed5a0f6552b9bc7a5bce"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:04:59.000Z",
+      "commitSha": "668d3fe0e0d15ba3993d609398e1a7ce2325520b"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:05:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:09:59.000Z",
+      "commitSha": "da5e2f185d28cb142ae4dd51ce961fe69603e19c"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:10:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:14:59.000Z",
+      "commitSha": "8d29bd7b8cd4a7e0b2308b2960211495f9442346"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:15:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:19:59.000Z",
+      "commitSha": "5fbab3c85d56d07310b42679cacff161328a75b1"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:20:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:24:59.000Z",
+      "commitSha": "9a7b4344e5dd67d92a12b2353028f0ed7dde39c8"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:25:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:29:59.000Z",
+      "commitSha": "44eb7b8cb51e5c13ba88e9fcdd2f738e483b5bde"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:40:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:44:59.000Z",
+      "commitSha": "798b2e401c1996ebfed04b33231c551aa15802a2"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:50:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:54:59.000Z",
+      "commitSha": "da917fbf901c70e0eefd4013eb4d8f6791d91fab"
+    },
+    {
+      "bucketUtc": "2026-08-06T17:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T17:59:59.000Z",
+      "commitSha": "2da4377b1872728494166ec6f9cb9535a302eac3"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:04:59.000Z",
+      "commitSha": "2ddc98d9182c071e9703553ebbfd74d236b63b59"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:05:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:09:59.000Z",
+      "commitSha": "fb673258d5ac78f2bb2df2178405f34bb42c87f6"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:10:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:14:59.000Z",
+      "commitSha": "2ca62ebb0992557e1b91f165f53476f86393bc54"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:15:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:19:59.000Z",
+      "commitSha": "542558b32d48310448a958c4d3a75e955e4500cd"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:20:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:24:59.000Z",
+      "commitSha": "c645efcdfc16d00d7da37e4e16f4b3ee0629beb8"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:25:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:29:59.000Z",
+      "commitSha": "0016248c97fc75aa3798a1fb625031d6e3bb7ceb"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:30:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:34:59.000Z",
+      "commitSha": "f044fe96f2918d6d9e8bc0af8b74637c9fcae84d"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:35:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:39:59.000Z",
+      "commitSha": "d0ced05325df6cb0796dd58f38c1aa1d0dd07780"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:40:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:44:59.000Z",
+      "commitSha": "f897a06f255358caa765cfa7ad96713bf4972104"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:45:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:49:59.000Z",
+      "commitSha": "1fc87d73cf5611a50b8aeef68cee0f59d27bca83"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:50:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:54:59.000Z",
+      "commitSha": "f2554229b92d2e230eba983449ac34ea31222aea"
+    },
+    {
+      "bucketUtc": "2026-08-06T18:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T18:59:59.000Z",
+      "commitSha": "0581d2fa4e8778109b47fd83ed32a3ad43d50159"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:04:59.000Z",
+      "commitSha": "7958581cd3df3d790b8a21c4883d387adaf11bc3"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:05:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:09:59.000Z",
+      "commitSha": "23810642c5f84149992c9a5f6ed0d88298d9e66a"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:10:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:14:59.000Z",
+      "commitSha": "fb420fe3103669833aa7ec200541ff05ef29c761"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:15:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:19:59.000Z",
+      "commitSha": "e1c50d65906436deefa3eb40d25aa18b0ab665aa"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:25:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:29:59.000Z",
+      "commitSha": "c2a6d27f80ad1e2d47251de6f8866aa460ee528e"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:45:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:49:59.000Z",
+      "commitSha": "9daaf580837610e96ddc4aff94b90f51e9f56cd6"
+    },
+    {
+      "bucketUtc": "2026-08-06T19:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T19:59:59.000Z",
+      "commitSha": "1f7c451678850fca39525598e88b3a86041237a3"
+    },
+    {
+      "bucketUtc": "2026-08-06T20:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T20:04:59.000Z",
+      "commitSha": "cc4b6d392750250ed8babe7703409f7d54bf44ae"
+    },
+    {
+      "bucketUtc": "2026-08-06T20:30:00.000Z",
+      "capturedAtUtc": "2026-08-06T20:34:59.000Z",
+      "commitSha": "b0b3b21b7241741ff0427f0cb9c4f9a9991d4853"
+    },
+    {
+      "bucketUtc": "2026-08-06T20:45:00.000Z",
+      "capturedAtUtc": "2026-08-06T20:49:59.000Z",
+      "commitSha": "2c39098524ce5ba53f142e5cd294d709bc91cd8e"
+    },
+    {
+      "bucketUtc": "2026-08-06T20:50:00.000Z",
+      "capturedAtUtc": "2026-08-06T20:54:59.000Z",
+      "commitSha": "ae3d58c9be3af2d124107125f06c3a0c9acbd579"
+    },
+    {
+      "bucketUtc": "2026-08-06T20:55:00.000Z",
+      "capturedAtUtc": "2026-08-06T20:59:59.000Z",
+      "commitSha": "777903835ab5045ae94ef42216edc4f103b3bf49"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:00:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:04:59.000Z",
+      "commitSha": "fdfa9b89e102b7722ab8109ad2fc8873f7d96e0d"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:05:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:09:59.000Z",
+      "commitSha": "a3d52dc492faacfafa2a336034a4803bed631d59"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:10:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:14:59.000Z",
+      "commitSha": "004cf42e01234615c1744da45ccaa6c06be3a979"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:15:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:19:59.000Z",
+      "commitSha": "8c555f5719d869f54274eae7ba049f87f0da2d78"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:20:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:24:59.000Z",
+      "commitSha": "1bee2410ed63712b76ddc04d64a1733375f75143"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:25:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:29:59.000Z",
+      "commitSha": "a14cd2d3d960f53e4baff01b04ec1a742c5eb4c4"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:30:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:34:59.000Z",
+      "commitSha": "2294f3bfdb7be96d744e118738d9298369d21c40"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:40:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:44:59.000Z",
+      "commitSha": "0d05cc7ddb25591f59e37cf9f7523c2786d619ec"
+    },
+    {
+      "bucketUtc": "2026-08-06T21:45:00.000Z",
+      "capturedAtUtc": "2026-08-06T21:49:59.000Z",
+      "commitSha": "b0eae2c2b462e9717a3f66986c552cd1fe5c0a60"
+    }
+  ],
+  "receipts": [
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T15-40-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T15-50-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T15-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-10-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-15-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-20-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-25-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-30-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-35-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-40-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-45-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T16-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-05-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-10-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-15-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-20-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-25-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-40-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-50-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T17-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-05-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-10-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-15-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-20-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-25-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-30-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-35-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-40-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-45-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-50-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T18-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-05-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-10-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-15-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-25-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-45-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T19-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T20-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T20-30-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T20-45-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T20-50-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T20-55-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-00-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-05-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-10-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-15-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-20-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-25-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-30-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-40-00-000Z.json",
+    "backfills/2026-08-06-actions-outage/receipts/2026-08-06T21-45-00-000Z.json"
+  ]
+}
