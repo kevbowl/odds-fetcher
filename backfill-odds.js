@@ -122,7 +122,7 @@ function restoreLiveOddsSnapshot(snapshot) {
 }
 
 function assertCleanWorktree() {
-  const status = git(['status', '--porcelain']);
+  const status = git(['status', '--porcelain', '--untracked-files=no']);
   if (status) throw new Error(`Backfill requires a clean worktree; found:\n${status}`);
 }
 
