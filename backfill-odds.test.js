@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {
   buildExpectedBuckets,
+  buildHistoricalSummary,
   findMissingBuckets,
   floorToFiveMinuteBucket,
   queryAtForBucket,
@@ -61,5 +62,22 @@ const carriedKbo = readCarriedForwardSportSnapshot(
 assert.ok(Array.isArray(carriedKbo.data));
 assert.equal(carriedKbo.reconstructionMethod, 'git-carry-forward');
 assert.ok(new Date(carriedKbo.providerTimestamp) <= new Date('2026-08-06T15:44:59Z'));
+
+const summary = buildHistoricalSummary(
+  [{
+    sport: kbo,
+    result: {
+      data: carriedKbo.data,
+      providerTimestamp: carriedKbo.providerTimestamp,
+      debug: carriedKbo.debug
+    }
+  }],
+  '2026-08-06T15:44:59.000Z',
+  { latestQuota: null },
+  '2026-08-06T15:40:00.000Z',
+  '2026-08-06T15:44:59Z'
+);
+assert.equal(summary.lastUpdated, '2026-08-06T15:44:59.000Z');
+assert.equal(summary.sports[0].lastFetched, carriedKbo.providerTimestamp);
 
 console.log('historical backfill planning tests passed');

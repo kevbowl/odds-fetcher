@@ -430,8 +430,8 @@ function buildHistoricalSummary(results, capturedAt, client, bucket, queryAt) {
         sport: sport.sport,
         gameCount: result.data.length,
         fileName: `${sport.fileName}.json`,
-        lastFetched: providerTimestamp,
-        lastAttemptAt: providerTimestamp,
+        lastFetched: result.providerTimestamp,
+        lastAttemptAt: result.providerTimestamp,
         lastAttemptStatus: 'success',
         lastError: null
       };
@@ -631,6 +631,7 @@ if (require.main === module) {
 
 module.exports = {
   buildExpectedBuckets,
+  buildHistoricalSummary,
   findMissingBuckets,
   floorToFiveMinuteBucket,
   queryAtForBucket,
