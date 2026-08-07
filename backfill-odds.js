@@ -22,6 +22,7 @@ const DEFAULT_END_UTC = '2026-08-06T22:00:00Z';
 const DEFAULT_MAX_CREDITS = 10000;
 const DEFAULT_TIMEOUT_MS = 30000;
 const BACKFILL_ROOT = 'backfills/2026-08-06-actions-outage';
+const CARRY_FORWARD_SPORT_KEYS = new Set(['baseball_kbo']);
 
 function requireUtcInstant(value, name) {
   const parsed = new Date(value);
@@ -103,6 +104,60 @@ function git(args, options = {}) {
 function getObservedSummaryCommitDates() {
   const output = git(['log', '--format=%aI', '--', `${ODDS_DIR}/summary.json`]);
   return output ? output.split(/\r?\n/).filter(Boolean) : [];
+}
+
+function readCarriedForwardSportSnapshot(originalHead, sport, queryAt) {
+  const cutoff = requireUtcInstant(queryAt, 'queryAt');
+  const log = git([
+    'log',
+    originalHead,
+    '--format=%H%x09%aI',
+    '--',
+    `${ODDS_DIR}/summary.json`
+  ]);
+  const candidate = log
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .map(line => {
+      const [commitSha, authorDate] = line.split('\t');
+      return {
+        commitSha,
+        authorDate,
+        capturedAt: new Date(authorDate)
+      };
+    })
+    .filter(item => Number.isFinite(item.capturedAt.getTime()) && item.capturedAt <= cutoff)
+    .sort((a, b) => b.capturedAt - a.capturedAt)[0];
+
+  if (!candidate) {
+    throw new Error(`No prior repository snapshot is available for ${sport.sport} at ${queryAt}`);
+  }
+
+  const filePath = `${ODDS_DIR}/${sport.fileName}.json`;
+  const serialized = git(['show', `${candidate.commitSha}:${filePath}`]);
+  let data;
+  try {
+    data = JSON.parse(serialized);
+  } catch (error) {
+    throw new Error(`Prior ${sport.sport} snapshot ${candidate.commitSha} is not valid JSON`);
+  }
+  if (!Array.isArray(data)) {
+    throw new Error(`Prior ${sport.sport} snapshot ${candidate.commitSha} is not an array`);
+  }
+
+  const capturedAt = candidate.capturedAt.toISOString();
+  return {
+    data,
+    providerTimestamp: capturedAt,
+    reconstructionMethod: 'git-carry-forward',
+    response: null,
+    debug: {
+      carryForwardReason: 'No KBO historical snapshot was available from the provider for this interval',
+      carryForwardCommit: candidate.commitSha,
+      carryForwardCapturedAtUtc: capturedAt,
+      carryForwardAgeSeconds: Math.floor((cutoff - candidate.capturedAt) / 1000)
+    }
+  };
 }
 
 function readLiveOddsSnapshot() {
@@ -252,6 +307,7 @@ async function fetchStandardHistoricalOdds(client, sport, bucket, queryAt) {
   return {
     data: envelope.data,
     providerTimestamp: envelope.timestamp,
+    reconstructionMethod: 'provider-historical',
     debug: null,
     response: envelope
   };
@@ -324,6 +380,7 @@ async function fetchBaseballHistoricalOdds(client, sport, bucket, queryAt, windo
   return {
     data: oddsData,
     providerTimestamp: directEnvelope.timestamp,
+    reconstructionMethod: 'provider-historical',
     response: directEnvelope,
     debug: {
       [`${windowConfig.debugPrefix}WindowStart`]: window.commenceTimeFrom,
@@ -351,9 +408,9 @@ async function fetchSportHistoricalOdds(client, sport, bucket, queryAt) {
     : fetchStandardHistoricalOdds(client, sport, bucket, queryAt);
 }
 
-function buildHistoricalSummary(results, providerTimestamp, client, bucket, queryAt) {
+function buildHistoricalSummary(results, capturedAt, client, bucket, queryAt) {
   return {
-    lastUpdated: providerTimestamp,
+    lastUpdated: capturedAt,
     quota: client.latestQuota ? {
       remaining: client.latestQuota.remaining,
       used: client.latestQuota.used,
@@ -366,7 +423,7 @@ function buildHistoricalSummary(results, providerTimestamp, client, bucket, quer
       incident: '2026-08-06-actions-outage',
       bucketUtc: bucket,
       requestedAtUtc: queryAt,
-      providerTimestampUtc: providerTimestamp
+      capturedAtUtc: capturedAt
     },
     sports: results.map(({ sport, result }) => {
       const summary = {
@@ -389,14 +446,14 @@ function writeJson(filePath, value) {
   fs.writeFileSync(filePath, stableJson(value));
 }
 
-function commitHistoricalBucket(bucket, providerTimestamp, receiptPath) {
+function commitHistoricalBucket(bucket, capturedAt, receiptPath) {
   git(['add', ODDS_DIR, receiptPath], { capture: false });
-  const message = `Backfill odds snapshot - ${providerTimestamp}`;
+  const message = `Backfill odds snapshot - ${capturedAt}`;
   git(['commit', '-m', message], {
     capture: false,
     env: {
-      GIT_AUTHOR_DATE: providerTimestamp,
-      GIT_COMMITTER_DATE: providerTimestamp
+      GIT_AUTHOR_DATE: capturedAt,
+      GIT_COMMITTER_DATE: capturedAt
     }
   });
   return git(['rev-parse', 'HEAD']);
@@ -434,17 +491,15 @@ async function executeBackfill({ startUtc, endUtc, maxCredits, timeoutMs }) {
       const creditsBefore = client.observedCredits;
       const results = [];
       for (const sport of activeSports) {
-        console.log(`Fetching ${sport.sport} historical snapshot for ${bucket}...`);
-        const result = await fetchSportHistoricalOdds(client, sport, bucket, queryAt);
+        const carriesForward = CARRY_FORWARD_SPORT_KEYS.has(sport.sportKey);
+        console.log(`${carriesForward ? 'Reconstructing' : 'Fetching'} ${sport.sport} historical snapshot for ${bucket}...`);
+        const result = carriesForward
+          ? readCarriedForwardSportSnapshot(originalHead, sport, queryAt)
+          : await fetchSportHistoricalOdds(client, sport, bucket, queryAt);
         results.push({ sport, result });
       }
 
-      const timestamps = new Set(results.map(item => item.result.providerTimestamp));
-      if (timestamps.size !== 1) {
-        throw new Error(`Sports returned mismatched provider timestamps for bucket ${bucket}`);
-      }
-      const providerTimestamp = [...timestamps][0];
-      validateProviderTimestamp(bucket, queryAt, providerTimestamp);
+      const capturedAt = requireUtcInstant(queryAt, 'queryAt').toISOString();
 
       const sportsReceipt = [];
       for (const { sport, result } of results) {
@@ -457,6 +512,7 @@ async function executeBackfill({ startUtc, endUtc, maxCredits, timeoutMs }) {
           regions: sport.regions,
           markets: sport.markets,
           gameCount: result.data.length,
+          reconstructionMethod: result.reconstructionMethod,
           providerTimestampUtc: result.providerTimestamp,
           sha256: sha256(serialized),
           debug: result.debug
@@ -465,14 +521,14 @@ async function executeBackfill({ startUtc, endUtc, maxCredits, timeoutMs }) {
 
       writeJson(
         path.join(ODDS_DIR, 'summary.json'),
-        buildHistoricalSummary(results, providerTimestamp, client, bucket, queryAt)
+        buildHistoricalSummary(results, capturedAt, client, bucket, queryAt)
       );
       const receipt = {
         schemaVersion: 1,
         incident: '2026-08-06-actions-outage',
         bucketUtc: bucket,
         requestedAtUtc: queryAt,
-        providerTimestampUtc: providerTimestamp,
+        capturedAtUtc: capturedAt,
         creditsObserved: client.observedCredits - creditsBefore,
         quotaAfter: client.latestQuota,
         sports: sportsReceipt
@@ -480,8 +536,8 @@ async function executeBackfill({ startUtc, endUtc, maxCredits, timeoutMs }) {
       const receiptName = `${bucket.replace(/[:.]/g, '-').replace('Z', 'Z')}.json`;
       const receiptPath = path.join(BACKFILL_ROOT, 'receipts', receiptName);
       writeJson(receiptPath, receipt);
-      const commitSha = commitHistoricalBucket(bucket, providerTimestamp, receiptPath);
-      commits.push({ bucketUtc: bucket, providerTimestampUtc: providerTimestamp, commitSha });
+      const commitSha = commitHistoricalBucket(bucket, capturedAt, receiptPath);
+      commits.push({ bucketUtc: bucket, capturedAtUtc: capturedAt, commitSha });
       receipts.push(receiptPath);
     }
   } catch (error) {
@@ -578,5 +634,6 @@ module.exports = {
   findMissingBuckets,
   floorToFiveMinuteBucket,
   queryAtForBucket,
+  readCarriedForwardSportSnapshot,
   validateProviderTimestamp
 };
