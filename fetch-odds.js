@@ -660,15 +660,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  BASEBALL_EVENT_WINDOW_SPORTS,
-  BASEBALL_EVENT_ID_BATCH_SIZE,
-  SPORTS,
   buildSummarySport,
-  buildBaseballEventWindow,
-  chunkArray,
-  isGameWithinWindow,
-  isSportActive,
   isSportDue,
-  parseQuotaHeaders,
   RUN_EVERY_MIN
 };
