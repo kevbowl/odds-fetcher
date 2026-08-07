@@ -5,7 +5,8 @@
   "main": "fetch-odds.js",
   "scripts": {
     "start": "node fetch-odds.js",
-    "test": "node fetch-odds.test.js"
+    "backfill": "node backfill-odds.js",
+    "test": "node fetch-odds.test.js && node backfill-odds.test.js"
   },
   "dependencies": {
     "axios": "^1.6.0"
@@ -14,7 +15,6 @@
   "author": "kevbowl",
   "license": "MIT"
 }
-
 
 
 

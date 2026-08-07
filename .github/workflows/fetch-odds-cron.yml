@@ -3,6 +3,10 @@ name: Fetch Odds Cron
 on:
   workflow_dispatch:
 
+concurrency:
+  group: odds-writes
+  cancel-in-progress: false
+
 jobs:
   fetch-odds:
     runs-on: ubuntu-24.04
