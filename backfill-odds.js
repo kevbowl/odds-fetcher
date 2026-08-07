@@ -272,7 +272,6 @@ async function fetchBaseballHistoricalOdds(client, sport, bucket, queryAt, windo
     `${sport.sport} historical events for ${bucket}`
   );
   const eventsEnvelope = unwrapHistoricalResponse(eventResponse, `${sport.sport} historical events`);
-  validateProviderTimestamp(bucket, queryAt, eventsEnvelope.timestamp);
 
   const directResponse = await client.get(
     `/historical/sports/${sport.sportKey}/odds`,
@@ -308,7 +307,6 @@ async function fetchBaseballHistoricalOdds(client, sport, bucket, queryAt, windo
   }
 
   const timestamps = new Set([
-    eventsEnvelope.timestamp,
     directEnvelope.timestamp,
     ...supplementalTimestamps
   ]);
@@ -331,6 +329,8 @@ async function fetchBaseballHistoricalOdds(client, sport, bucket, queryAt, windo
       [`${windowConfig.debugPrefix}WindowStart`]: window.commenceTimeFrom,
       [`${windowConfig.debugPrefix}WindowEnd`]: window.commenceTimeTo,
       [`${windowConfig.debugPrefix}WindowTimeZone`]: window.timeZone,
+      [`${windowConfig.debugPrefix}EventsProviderTimestamp`]: eventsEnvelope.timestamp,
+      [`${windowConfig.debugPrefix}OddsProviderTimestamp`]: directEnvelope.timestamp,
       [`${windowConfig.debugPrefix}EventCount`]: eventsEnvelope.data.length,
       [`${windowConfig.debugPrefix}EventOddsCount`]: supplementalById.size,
       [`${windowConfig.debugPrefix}DirectOddsCount`]: directById.size,
