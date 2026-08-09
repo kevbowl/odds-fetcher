@@ -1,5 +1,11 @@
 const assert = require('node:assert/strict');
-const { buildSummarySport, isSportDue, RUN_EVERY_MIN } = require('./fetch-odds');
+const {
+  SPORTS,
+  buildSummarySport,
+  isSportActive,
+  isSportDue,
+  RUN_EVERY_MIN
+} = require('./fetch-odds');
 
 const sport = { sport: 'WNBA', fileName: 'wnba' };
 const previous = {
@@ -52,6 +58,10 @@ assert.equal(firstFailure.lastFetched, null);
 assert.equal(firstFailure.lastAttemptStatus, 'failed');
 
 assert.equal(RUN_EVERY_MIN, 5);
+const nfl = SPORTS.find(candidate => candidate.sportKey === 'americanfootball_nfl');
+assert.ok(nfl, 'NFL configuration should exist');
+assert.equal(isSportActive(nfl, new Date('2026-08-01T00:00:00Z')), true);
+assert.equal(isSportActive(nfl, new Date('2026-07-31T23:59:59Z')), false);
 const fiveMinuteSport = { fetchEveryMinutes: 5 };
 const cadenceNow = new Date('2026-08-02T16:05:00.000Z');
 assert.equal(

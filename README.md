@@ -36,7 +36,7 @@ All timestamps returned by the API remain in ISO 8601 UTC format.
 | League | API sport key | Active window | Collection scope | Output |
 |---|---|---|---|---|
 | FIFA World Cup | `soccer_fifa_world_cup` | Jun 7-Jul 20, 2026 | All available events | `odds/worldcup.json` |
-| NFL | `americanfootball_nfl` | Sep-Feb | All available events | `odds/nfl.json` |
+| NFL | `americanfootball_nfl` | Aug-Feb | All available events | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug-Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May-Oct | All available events | `odds/wnba.json` |
 | MLB | `baseball_mlb` | Mar-Oct | Current and next New York-local slate | `odds/mlb.json` |
@@ -77,10 +77,10 @@ For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched 
 
 The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-At the five-minute cadence, the currently active NCAAF, WNBA, MLB, and KBO
-profiles reserve at most 18 credits per run, or about 155,520 credits in a
+At the five-minute cadence, the August-active NFL, NCAAF, WNBA, MLB, and KBO
+profiles reserve at most 21 credits per run, or about 181,440 credits in a
 30-day month if every run reaches the typical two-call baseball maximum. This
-is roughly 1.04% of a 15,000,000-credit plan. Historical acquisition must still
+is roughly 1.21% of a 15,000,000-credit plan. Historical acquisition must still
 leave its separately reviewed live-odds reserve; this repository never spends
 historical credits or weakens the provider-reported quota gate.
 

@@ -60,7 +60,7 @@ const SPORTS = [
     sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
-    seasonMonths: [9, 10, 11, 12, 1, 2], // Sep - Feb
+    seasonMonths: [8, 9, 10, 11, 12, 1, 2], // Aug - Feb
     fetchEveryMinutes: 5,
   },
   {
@@ -660,7 +660,9 @@ if (require.main === module) {
 }
 
 module.exports = {
+  SPORTS,
   buildSummarySport,
+  isSportActive,
   isSportDue,
   RUN_EVERY_MIN
 };
