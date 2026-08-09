@@ -36,7 +36,7 @@ All timestamps returned by the API remain in ISO 8601 UTC format.
 | League | API sport key | Active window | Collection scope | Output |
 |---|---|---|---|---|
 | FIFA World Cup | `soccer_fifa_world_cup` | Jun 7-Jul 20, 2026 | All available events | `odds/worldcup.json` |
-| NFL | `americanfootball_nfl` | Aug-Feb | All available events | `odds/nfl.json` |
+| NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug-Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug-Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May-Oct | All available events | `odds/wnba.json` |
 | MLB | `baseball_mlb` | Mar-Oct | Current and next New York-local slate | `odds/mlb.json` |
@@ -44,10 +44,17 @@ All timestamps returned by the API remain in ISO 8601 UTC format.
 
 Market profiles are defined once and shared by league configuration:
 
-- **Standard:** `h2h,spreads,totals` for NFL, NCAA Football, WNBA, MLB, and KBO.
+- **Standard:** `h2h,spreads,totals` for both NFL feeds, NCAA Football, WNBA, MLB, and KBO.
 - **Soccer:** `h2h,totals` for the FIFA World Cup. Soccer `h2h` is a three-way market that includes `Draw`.
 
 MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher combines event-ID odds with a direct windowed odds request, de-duplicates by event ID, and writes the same response shape used by the other leagues.
+
+The NFL output combines the regular-season and preseason feeds, de-duplicates
+by provider event ID, and sorts by `commence_time` and then event ID. Each game
+keeps its provider `sport_key`. The no-cost `/sports` response controls whether
+the preseason endpoint is polled. If that availability check fails, polling is
+bounded to August 1 through September 9 UTC. Both required NFL requests must
+succeed before the existing `odds/nfl.json` snapshot is replaced.
 
 ## Scheduling and quota
 
@@ -70,7 +77,8 @@ Before any paid request, the fetcher calls the no-cost `/sports` endpoint and re
 | Fetch profile | Leagues | Markets | Estimated paid odds calls | Reserved credits per fetch |
 |---|---|---:|---:|---:|
 | Soccer direct | FIFA World Cup | 2 | 1 | 2 |
-| Standard direct | NFL, NCAA Football, WNBA | 3 | 1 | 3 |
+| Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
+| NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
 | Windowed baseball | MLB, KBO | 3 | 2 | 6 |
 
 For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched event-ID odds request and one direct windowed odds request. Event IDs are batched in groups of 50, so unusually large slates can cost more; empty API responses can cost less.
@@ -78,11 +86,13 @@ For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched 
 The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
 At the five-minute cadence, the August-active NFL, NCAAF, WNBA, MLB, and KBO
-profiles reserve at most 21 credits per run, or about 181,440 credits in a
-30-day month if every run reaches the typical two-call baseball maximum. This
-is roughly 1.21% of a 15,000,000-credit plan. Historical acquisition must still
-leave its separately reviewed live-odds reserve; this repository never spends
-historical credits or weakens the provider-reported quota gate.
+profiles reserve at most 24 credits per run while NFL preseason is available,
+or about 207,360 credits in a 30-day month if every run reaches the typical
+two-call baseball maximum. This
+is roughly 1.38% of a 15,000,000-credit plan. Outside the preseason availability
+window, the maximum returns to 21 credits per run. Historical acquisition must
+still leave its separately reviewed live-odds reserve; this repository never
+spends historical credits or weakens the provider-reported quota gate.
 
 The source freshness objective is a successful per-league attempt no more than
 10 minutes old: one five-minute collection interval plus one interval of
@@ -214,9 +224,11 @@ League files are arrays of The Odds API game objects. Direct responses retain th
   "status": "healthy",
   "sports": [
     {
-      "sport": "KBO",
-      "gameCount": 5,
-      "fileName": "kbo.json",
+      "sport": "NFL",
+      "gameCount": 285,
+      "regularSeasonGameCount": 272,
+      "preseasonGameCount": 13,
+      "fileName": "nfl.json",
       "lastFetched": "2026-07-15T15:15:00.000Z",
       "lastAttemptAt": "2026-07-15T15:15:00.000Z",
       "lastAttemptStatus": "success",
@@ -249,6 +261,7 @@ A league file's Git timestamp advances only when its contents change. Use `lastF
   when any selected league attempt fails or a due league is skipped by the
   quota reserve.
 - **Baseball diagnostics:** inspect the MLB/KBO window, event count, direct odds count, and warning fields in `odds/summary.json`.
+- **NFL feed counts:** inspect `regularSeasonGameCount` and `preseasonGameCount`; `gameCount` is the de-duplicated combined total.
 - **Quota:** inspect the summary quota object and The Odds API account dashboard.
 - **Empty league file:** a recent `lastFetched` with `gameCount: 0` means the API returned no games; an old or missing `lastFetched` indicates the league was inactive, not due, quota-skipped, or failed.
 

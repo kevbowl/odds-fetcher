@@ -19,6 +19,8 @@ const parsedQuotaReserveCredits = Number.parseInt(
 const QUOTA_RESERVE_CREDITS = Number.isFinite(parsedQuotaReserveCredits)
   ? Math.max(parsedQuotaReserveCredits, 0)
   : 20;
+const NFL_REGULAR_SPORT_KEY = 'americanfootball_nfl';
+const NFL_PRESEASON_SPORT_KEY = 'americanfootball_nfl_preseason';
 const MLB_SPORT_KEY = 'baseball_mlb';
 const KBO_SPORT_KEY = 'baseball_kbo';
 const MLB_TIME_ZONE = 'America/New_York';
@@ -57,7 +59,12 @@ const SPORTS = [
     fetchEveryMinutes: 5, // every scheduled run
   },
   {
-    sport: 'NFL', sportKey: 'americanfootball_nfl', fileName: 'nfl',
+    sport: 'NFL', sportKey: NFL_REGULAR_SPORT_KEY, fileName: 'nfl',
+    preseasonSportKey: NFL_PRESEASON_SPORT_KEY,
+    preseasonFallbackWindow: {
+      start: { month: 8, day: 1 },
+      end: { month: 9, day: 10 }
+    },
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [8, 9, 10, 11, 12, 1, 2], // Aug - Feb
@@ -104,7 +111,8 @@ function countCsvValues(value) {
 }
 
 function estimateCredits(sport) {
-  const paidRequests = sport.estimatedPaidRequests || 1;
+  const paidRequests = (sport.estimatedPaidRequests || 1)
+    + (sport.includePreseason ? 1 : 0);
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
     * paidRequests;
@@ -124,6 +132,39 @@ function parseQuotaHeaders(headers) {
   const last = readNumberHeader(headers, 'x-requests-last');
   if (remaining === null && used === null && last === null) return null;
   return { remaining, used, last };
+}
+
+function parseAvailableSportKeys(sportsData) {
+  if (!Array.isArray(sportsData)) return null;
+  return new Set(
+    sportsData
+      .filter(sport => sport?.key && sport.active !== false)
+      .map(sport => sport.key)
+  );
+}
+
+function monthDayValue({ month, day }) {
+  return month * 100 + day;
+}
+
+function isPreseasonActive(sport, availableSportKeys, now = new Date()) {
+  if (!sport.preseasonSportKey) return false;
+
+  // The no-cost /sports response is the strongest signal: by default it lists
+  // sports that are currently offered. An empty Set is known availability with
+  // no preseason feed; null means the availability request failed.
+  if (availableSportKeys instanceof Set) {
+    return availableSportKeys.has(sport.preseasonSportKey);
+  }
+
+  const fallback = sport.preseasonFallbackWindow;
+  if (!fallback) return false;
+  const current = monthDayValue({
+    month: now.getUTCMonth() + 1,
+    day: now.getUTCDate()
+  });
+  return current >= monthDayValue(fallback.start)
+    && current < monthDayValue(fallback.end);
 }
 
 function getZonedParts(date, timeZone) {
@@ -234,6 +275,41 @@ function summarizeGames(oddsData) {
   }));
 }
 
+function compareOddsGames(left, right) {
+  const leftTime = String(left?.commence_time || '');
+  const rightTime = String(right?.commence_time || '');
+  if (leftTime < rightTime) return -1;
+  if (leftTime > rightTime) return 1;
+
+  const leftId = String(left?.id || '');
+  const rightId = String(right?.id || '');
+  if (leftId < rightId) return -1;
+  if (leftId > rightId) return 1;
+  return 0;
+}
+
+function mergeOddsGames(...feeds) {
+  const gamesById = new Map();
+  feeds.forEach(feed => {
+    (Array.isArray(feed) ? feed : []).forEach(game => {
+      if (game?.id) gamesById.set(game.id, game);
+    });
+  });
+  return Array.from(gamesById.values()).sort(compareOddsGames);
+}
+
+function countNflGamesByFeed(games) {
+  const list = Array.isArray(games) ? games : [];
+  return {
+    regularSeasonGameCount: list.filter(
+      game => game?.sport_key === NFL_REGULAR_SPORT_KEY
+    ).length,
+    preseasonGameCount: list.filter(
+      game => game?.sport_key === NFL_PRESEASON_SPORT_KEY
+    ).length
+  };
+}
+
 function addOddsGamesById(target, oddsData) {
   (Array.isArray(oddsData) ? oddsData : []).forEach(game => {
     if (game?.id) target.set(game.id, game);
@@ -272,10 +348,27 @@ function loadLastFetched() {
           gameCount: s.gameCount,
           lastAttemptAt: s.lastAttemptAt || null,
           lastAttemptStatus: s.lastAttemptStatus || null,
-          lastError: s.lastError || null
+          lastError: s.lastError || null,
+          regularSeasonGameCount: s.regularSeasonGameCount,
+          preseasonGameCount: s.preseasonGameCount
         };
       }
     });
+    const nflState = map['nfl.json'];
+    if (nflState && (
+      !Number.isInteger(nflState.regularSeasonGameCount)
+      || !Number.isInteger(nflState.preseasonGameCount)
+    )) {
+      try {
+        const existingNfl = JSON.parse(
+          fs.readFileSync(path.join(ODDS_DIR, 'nfl.json'), 'utf8')
+        );
+        Object.assign(nflState, countNflGamesByFeed(existingNfl));
+      } catch {
+        nflState.regularSeasonGameCount ??= 0;
+        nflState.preseasonGameCount ??= 0;
+      }
+    }
     return map;
   } catch {
     return {};
@@ -325,7 +418,7 @@ async function fetchWithRetry(url, params, maxRetries = 3, delay = 1000) {
   }
 }
 
-async function fetchQuotaStatus() {
+async function fetchProviderStatus() {
   try {
     const response = await fetchWithRetry('https://api.the-odds-api.com/v4/sports/', {
       apiKey: ODDS_API_KEY
@@ -334,10 +427,13 @@ async function fetchQuotaStatus() {
     if (quota) {
       console.log(`Quota check: ${quota.remaining ?? 'unknown'} credits remaining, ${quota.used ?? 'unknown'} used`);
     }
-    return quota;
+    return {
+      quota,
+      availableSportKeys: parseAvailableSportKeys(response.data)
+    };
   } catch (error) {
     console.warn(`Quota check failed (${error.message}); proceeding with cadence guards only.`);
-    return null;
+    return { quota: null, availableSportKeys: null };
   }
 }
 
@@ -467,6 +563,71 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   };
 }
 
+async function fetchNflOdds(config, dependencies = {}) {
+  const request = dependencies.fetchRequest || fetchWithRetry;
+  const writeFile = dependencies.writeFile || fs.writeFileSync;
+  const {
+    sport,
+    sportKey,
+    preseasonSportKey,
+    fileName,
+    markets = 'h2h,spreads,totals',
+    regions = DEFAULT_REGIONS,
+    includePreseason = false
+  } = config;
+  const requestParams = {
+    apiKey: ODDS_API_KEY,
+    regions,
+    markets,
+    oddsFormat: 'american',
+    dateFormat: 'iso'
+  };
+
+  console.log(`Fetching ${sport} regular-season odds...`);
+  const regularPromise = request(
+    `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`,
+    requestParams
+  );
+  const preseasonPromise = includePreseason
+    ? request(
+      `https://api.the-odds-api.com/v4/sports/${preseasonSportKey}/odds/`,
+      requestParams
+    )
+    : Promise.resolve(null);
+
+  // Wait for both required feeds before publishing. Promise.all rejects if
+  // either request fails, leaving the last known-good nfl.json untouched.
+  const [regularResponse, preseasonResponse] = await Promise.all([
+    regularPromise,
+    preseasonPromise
+  ]);
+  const regularSeasonOdds = Array.isArray(regularResponse.data)
+    ? regularResponse.data
+    : [];
+  const preseasonOdds = Array.isArray(preseasonResponse?.data)
+    ? preseasonResponse.data
+    : [];
+  const oddsData = mergeOddsGames(regularSeasonOdds, preseasonOdds);
+  const filePath = path.join(ODDS_DIR, `${fileName}.json`);
+
+  writeFile(filePath, JSON.stringify(oddsData, null, 2));
+  console.log(
+    `Fetched ${regularSeasonOdds.length} regular-season and ${preseasonOdds.length} preseason ${sport} games with odds`
+  );
+  console.log(`${sport} odds saved to ${filePath}`);
+
+  return {
+    sport,
+    gameCount: oddsData.length,
+    regularSeasonGameCount: regularSeasonOdds.length,
+    preseasonGameCount: preseasonOdds.length,
+    estimatedCredits: estimateCredits(config),
+    quota: parseQuotaHeaders(preseasonResponse?.headers)
+      || parseQuotaHeaders(regularResponse.headers),
+    games: summarizeGames(oddsData)
+  };
+}
+
 async function fetchOdds(config) {
   const {
     sport,
@@ -477,6 +638,10 @@ async function fetchOdds(config) {
   } = config;
 
   try {
+    if (config.preseasonSportKey) {
+      return await fetchNflOdds(config);
+    }
+
     const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
     if (baseballWindowConfig) {
       return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig);
@@ -550,6 +715,14 @@ function buildSummarySport(sportConfig, attempt, previous, nowIso) {
   }
 
   if (successful && attempt.debug) summarySport.debug = attempt.debug;
+  if (sportConfig.preseasonSportKey) {
+    summarySport.regularSeasonGameCount = successful
+      ? attempt.regularSeasonGameCount
+      : (previous?.regularSeasonGameCount ?? 0);
+    summarySport.preseasonGameCount = successful
+      ? attempt.preseasonGameCount
+      : (previous?.preseasonGameCount ?? 0);
+  }
   return summarySport;
 }
 
@@ -581,8 +754,24 @@ async function fetchAllOdds() {
     }
     console.log(`Fetching this run${isForced ? ' (forced)' : ''}: ${due.map(s => s.sport).join(', ')}`);
 
-    const quotaBefore = await fetchQuotaStatus();
-    const { selected: quotaAllowed, skipped: quotaSkipped } = selectSportsWithinQuota(due, quotaBefore);
+    const providerStatus = await fetchProviderStatus();
+    const dueWithAvailability = due.map(sport => {
+      if (!sport.preseasonSportKey) return sport;
+      const includePreseason = isPreseasonActive(
+        sport,
+        providerStatus.availableSportKeys,
+        now
+      );
+      console.log(
+        `NFL preseason feed ${includePreseason ? 'is available; including it' : 'is not active; skipping it'} this run.`
+      );
+      return { ...sport, includePreseason };
+    });
+    const quotaBefore = providerStatus.quota;
+    const { selected: quotaAllowed, skipped: quotaSkipped } = selectSportsWithinQuota(
+      dueWithAvailability,
+      quotaBefore
+    );
     quotaSkipped.forEach(({ sport, estimatedCredits }) => {
       console.log(
         `Skipping ${sport.sport}: needs ${estimatedCredits} credits and reserve is ${QUOTA_RESERVE_CREDITS}`
@@ -662,7 +851,13 @@ if (require.main === module) {
 module.exports = {
   SPORTS,
   buildSummarySport,
+  countNflGamesByFeed,
+  estimateCredits,
+  fetchNflOdds,
   isSportActive,
   isSportDue,
+  isPreseasonActive,
+  mergeOddsGames,
+  parseAvailableSportKeys,
   RUN_EVERY_MIN
 };
