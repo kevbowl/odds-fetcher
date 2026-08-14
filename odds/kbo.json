@@ -10,19 +10,93 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-08-14T16:05:07Z",
+        "last_update": "2026-08-14T16:10:25Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-14T16:05:07Z",
+            "last_update": "2026-08-14T16:10:25Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": 118
+                "price": 122
               },
               {
                 "name": "Kia Tigers",
-                "price": -144
+                "price": -150
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Doosan Bears",
+                "price": 115
+              },
+              {
+                "name": "Kia Tigers",
+                "price": -147
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-14T16:09:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Doosan Bears",
+                "price": 125
+              },
+              {
+                "name": "Kia Tigers",
+                "price": -145
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Doosan Bears",
+                "price": -160,
+                "point": 1.5
+              },
+              {
+                "name": "Kia Tigers",
+                "price": 125,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -110,
+                "point": 9.5
               }
             ]
           }
@@ -37,7 +111,71 @@
     "commence_time": "2026-08-15T10:00:00Z",
     "home_team": "Samsung Lions",
     "away_team": "Hanwha Eagles",
-    "bookmakers": []
+    "bookmakers": [
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 117
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -149
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-14T16:09:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 120
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -140
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 120
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -148
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "9d16414175621c55b6aebed2bee841d1",
@@ -50,11 +188,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-08-14T16:05:07Z",
+        "last_update": "2026-08-14T16:10:25Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-14T16:05:07Z",
+            "last_update": "2026-08-14T16:10:25Z",
             "outcomes": [
               {
                 "name": "Kiwoom Heroes",
@@ -63,6 +201,48 @@
               {
                 "name": "KT Wiz",
                 "price": -215
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 164
+              },
+              {
+                "name": "KT Wiz",
+                "price": -214
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-14T16:09:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 170
+              },
+              {
+                "name": "KT Wiz",
+                "price": -210
               }
             ]
           }
@@ -77,7 +257,103 @@
     "commence_time": "2026-08-15T10:00:00Z",
     "home_team": "LG Twins",
     "away_team": "SSG Landers",
-    "bookmakers": []
+    "bookmakers": [
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -152
+              },
+              {
+                "name": "SSG Landers",
+                "price": 119
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-14T16:09:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -145
+              },
+              {
+                "name": "SSG Landers",
+                "price": 125
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 125,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -160,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-08-14T16:09:39Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -150
+              },
+              {
+                "name": "SSG Landers",
+                "price": 122
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "95793be70d39367756a99a63fe744c61",
@@ -90,11 +366,53 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-08-14T16:05:07Z",
+        "last_update": "2026-08-14T16:10:25Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-14T16:05:07Z",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Lotte Giants",
+                "price": -115
+              },
+              {
+                "name": "NC Dinos",
+                "price": -105
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-08-14T16:10:25Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:10:25Z",
+            "outcomes": [
+              {
+                "name": "Lotte Giants",
+                "price": -118
+              },
+              {
+                "name": "NC Dinos",
+                "price": -107
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-14T16:09:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-08-14T16:09:39Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
