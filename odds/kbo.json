@@ -10,11 +10,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-08-15T13:25:24Z",
+        "last_update": "2026-08-15T13:30:20Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-15T13:25:24Z",
+            "last_update": "2026-08-15T13:30:20Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
@@ -22,13 +22,59 @@
               },
               {
                 "name": "NC Dinos",
-                "price": 1700
+                "price": 1800
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:24Z",
+            "last_update": "2026-08-15T13:30:20Z",
+            "outcomes": [
+              {
+                "name": "Lotte Giants",
+                "price": -360,
+                "point": -2.5
+              },
+              {
+                "name": "NC Dinos",
+                "price": 255,
+                "point": 2.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-08-15T13:28:35Z",
+        "markets": [
+          {
+            "key": "spreads",
+            "last_update": "2026-08-15T13:28:35Z",
+            "outcomes": [
+              {
+                "name": "Lotte Giants",
+                "price": -350,
+                "point": -2.5
+              },
+              {
+                "name": "NC Dinos",
+                "price": 220,
+                "point": 2.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-08-15T13:29:57Z",
+        "markets": [
+          {
+            "key": "spreads",
+            "last_update": "2026-08-15T13:29:57Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
@@ -44,7 +90,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:25:24Z",
+            "last_update": "2026-08-15T13:29:57Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -61,105 +107,13 @@
         ]
       },
       {
-        "key": "fanatics",
-        "title": "Fanatics",
-        "last_update": "2026-08-15T13:25:02Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-08-15T13:25:02Z",
-            "outcomes": [
-              {
-                "name": "Lotte Giants",
-                "price": -10000
-              },
-              {
-                "name": "NC Dinos",
-                "price": 950
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-08-15T13:25:02Z",
-            "outcomes": [
-              {
-                "name": "Lotte Giants",
-                "price": -320,
-                "point": -2.5
-              },
-              {
-                "name": "NC Dinos",
-                "price": 205,
-                "point": 2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-08-15T13:25:02Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 205,
-                "point": 13.5
-              },
-              {
-                "name": "Under",
-                "price": -320,
-                "point": 13.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-08-15T13:25:02Z",
-        "markets": [
-          {
-            "key": "spreads",
-            "last_update": "2026-08-15T13:25:02Z",
-            "outcomes": [
-              {
-                "name": "Lotte Giants",
-                "price": -295,
-                "point": -2.5
-              },
-              {
-                "name": "NC Dinos",
-                "price": 215,
-                "point": 2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-08-15T13:25:02Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 205,
-                "point": 13.5
-              },
-              {
-                "name": "Under",
-                "price": -285,
-                "point": 13.5
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-08-15T13:23:23Z",
+        "last_update": "2026-08-15T13:27:57Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-15T13:23:23Z",
+            "last_update": "2026-08-15T13:27:57Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
@@ -173,32 +127,32 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:23:23Z",
+            "last_update": "2026-08-15T13:27:57Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
-                "price": 285,
-                "point": -3.5
+                "price": -360,
+                "point": -2.5
               },
               {
                 "name": "NC Dinos",
-                "price": -450,
-                "point": 3.5
+                "price": 240,
+                "point": 2.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:23:23Z",
+            "last_update": "2026-08-15T13:27:57Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 100,
+                "price": 235,
                 "point": 13.5
               },
               {
                 "name": "Under",
-                "price": -135,
+                "price": -350,
                 "point": 13.5
               }
             ]
@@ -208,35 +162,19 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-08-15T13:19:55Z",
+        "last_update": "2026-08-15T13:28:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-15T13:19:55Z",
+            "last_update": "2026-08-15T13:28:34Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
-                "price": -10000
+                "price": -7500
               },
               {
                 "name": "NC Dinos",
-                "price": 1400
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-08-15T13:19:55Z",
-            "outcomes": [
-              {
-                "name": "Lotte Giants",
-                "price": -380,
-                "point": -2.5
-              },
-              {
-                "name": "NC Dinos",
-                "price": 260,
-                "point": 2.5
+                "price": 1200
               }
             ]
           }
@@ -245,11 +183,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-08-15T13:25:23Z",
+        "last_update": "2026-08-15T13:28:35Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
@@ -257,13 +195,13 @@
               },
               {
                 "name": "NC Dinos",
-                "price": 1650
+                "price": 1600
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Lotte Giants",
@@ -279,16 +217,16 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 210,
+                "price": 195,
                 "point": 13.5
               },
               {
                 "name": "Under",
-                "price": -275,
+                "price": -250,
                 "point": 13.5
               }
             ]
@@ -430,43 +368,6 @@
         ]
       },
       {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-08-15T13:14:31Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-08-15T13:14:31Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -7500
-              },
-              {
-                "name": "KT Wiz",
-                "price": 1200
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-08-15T13:14:31Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -130,
-                "point": -4.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 100,
-                "point": 4.5
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "betrivers",
         "title": "BetRivers",
         "last_update": "2026-08-15T13:17:23Z",
@@ -571,20 +472,20 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-08-15T13:25:02Z",
+        "last_update": "2026-08-15T13:28:35Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:02Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 360,
+                "price": 340,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -650,
+                "price": -600,
                 "point": -4.5
               }
             ]
@@ -594,20 +495,20 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-08-15T13:25:24Z",
+        "last_update": "2026-08-15T13:30:20Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:24Z",
+            "last_update": "2026-08-15T13:30:20Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 415,
+                "price": 390,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -670,
+                "price": -620,
                 "point": -4.5
               }
             ]
@@ -617,36 +518,36 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-08-15T13:25:02Z",
+        "last_update": "2026-08-15T13:28:35Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:02Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 425,
+                "price": 390,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -700,
+                "price": -650,
                 "point": -4.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:25:02Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 425,
+                "price": 390,
                 "point": 17.5
               },
               {
                 "name": "Under",
-                "price": -700,
+                "price": -650,
                 "point": 17.5
               }
             ]
@@ -656,36 +557,36 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-08-15T13:23:23Z",
+        "last_update": "2026-08-15T13:27:57Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:23:23Z",
+            "last_update": "2026-08-15T13:27:57Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 500,
+                "price": 335,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -1000,
+                "price": -550,
                 "point": -4.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:23:23Z",
+            "last_update": "2026-08-15T13:27:57Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 500,
+                "price": 335,
                 "point": 17.5
               },
               {
                 "name": "Under",
-                "price": -1000,
+                "price": -550,
                 "point": 17.5
               }
             ]
@@ -718,36 +619,36 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-08-15T13:25:04Z",
+        "last_update": "2026-08-15T13:28:35Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:04Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 375,
+                "price": 320,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -1000,
+                "price": -670,
                 "point": -4.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:25:04Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 375,
+                "price": 320,
                 "point": 17.5
               },
               {
                 "name": "Under",
-                "price": -1000,
+                "price": -670,
                 "point": 17.5
               }
             ]
@@ -757,11 +658,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-08-15T13:25:23Z",
+        "last_update": "2026-08-15T13:28:35Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
@@ -775,32 +676,32 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Hanwha Eagles",
-                "price": 350,
+                "price": 340,
                 "point": 4.5
               },
               {
                 "name": "Samsung Lions",
-                "price": -525,
+                "price": -500,
                 "point": -4.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-08-15T13:25:23Z",
+            "last_update": "2026-08-15T13:28:35Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 350,
+                "price": 340,
                 "point": 17.5
               },
               {
                 "name": "Under",
-                "price": -525,
+                "price": -500,
                 "point": 17.5
               }
             ]
