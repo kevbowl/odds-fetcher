@@ -1,13 +1,22 @@
 {
-  "lastUpdated": "2026-08-19T15:55:29.233Z",
+  "lastUpdated": "2026-08-19T15:57:47.428Z",
   "quota": {
-    "remaining": 99979,
-    "used": 21,
-    "lastRequestCost": 3,
+    "remaining": 99974,
+    "used": 26,
+    "lastRequestCost": 2,
     "reserveCredits": 20
   },
   "status": "healthy",
   "sports": [
+    {
+      "sport": "epl",
+      "gameCount": 10,
+      "fileName": "epl.json",
+      "lastFetched": "2026-08-19T15:57:47.428Z",
+      "lastAttemptAt": "2026-08-19T15:57:47.428Z",
+      "lastAttemptStatus": "success",
+      "lastError": null
+    },
     {
       "sport": "NFL",
       "gameCount": 288,
@@ -44,20 +53,7 @@
       "lastFetched": "2026-08-19T15:55:29.233Z",
       "lastAttemptAt": "2026-08-19T15:55:29.233Z",
       "lastAttemptStatus": "success",
-      "lastError": null,
-      "debug": {
-        "mlbWindowStart": "2026-08-19T02:00:00Z",
-        "mlbWindowEnd": "2026-08-21T04:00:00Z",
-        "mlbWindowTimeZone": "America/New_York",
-        "mlbEventCount": 15,
-        "mlbEventOddsCount": 15,
-        "mlbDirectOddsCount": 15,
-        "mlbMergedOddsCount": 15,
-        "earliestCommenceTime": "2026-08-19T16:36:00Z",
-        "latestCommenceTime": "2026-08-20T00:40:00Z",
-        "warning": null,
-        "missingOddsEventIds": []
-      }
+      "lastError": null
     },
     {
       "sport": "KBO",
@@ -66,20 +62,7 @@
       "lastFetched": "2026-08-19T15:55:29.233Z",
       "lastAttemptAt": "2026-08-19T15:55:29.233Z",
       "lastAttemptStatus": "success",
-      "lastError": null,
-      "debug": {
-        "kboWindowStart": "2026-08-19T13:00:00Z",
-        "kboWindowEnd": "2026-08-21T15:00:00Z",
-        "kboWindowTimeZone": "Asia/Seoul",
-        "kboEventCount": 5,
-        "kboEventOddsCount": 5,
-        "kboDirectOddsCount": 5,
-        "kboMergedOddsCount": 5,
-        "earliestCommenceTime": "2026-08-20T10:00:00Z",
-        "latestCommenceTime": "2026-08-20T10:00:00Z",
-        "warning": null,
-        "missingOddsEventIds": []
-      }
+      "lastError": null
     }
   ]
 }
