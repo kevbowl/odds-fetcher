@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {
   SPORTS,
+  assertExpectedSportKey,
   buildSummarySport,
   countNflGamesByFeed,
   estimateCredits,
@@ -64,6 +65,59 @@ assert.equal(firstFailure.lastFetched, null);
 assert.equal(firstFailure.lastAttemptStatus, 'failed');
 
 assert.equal(RUN_EVERY_MIN, 5);
+const epl = SPORTS.find(candidate => candidate.sportKey === 'soccer_epl');
+assert.ok(epl, 'EPL configuration should exist');
+assert.equal(epl.sport, 'epl');
+assert.equal(epl.fileName, 'epl');
+assert.equal(epl.markets, 'h2h,totals');
+assert.equal(epl.regions, 'us');
+assert.equal(epl.fetchEveryMinutes, 5);
+assert.equal(epl.preseasonSportKey, undefined);
+assert.equal(estimateCredits(epl), 2);
+assert.equal(isSportActive(epl, new Date('2026-08-20T00:00:00Z')), true);
+assert.equal(isSportActive(epl, new Date('2026-05-31T23:59:59Z')), true);
+assert.equal(isSportActive(epl, new Date('2026-06-01T00:00:00Z')), false);
+assert.equal(isSportActive(epl, new Date('2026-07-19T00:00:00Z')), false);
+assert.doesNotThrow(() => assertExpectedSportKey([
+  { id: 'epl-1', sport_key: 'soccer_epl' }
+], 'soccer_epl'));
+assert.doesNotThrow(() => assertExpectedSportKey([], 'soccer_epl'));
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'epl-1', sport_key: 'soccer_epl' },
+    { id: 'wcup-1', sport_key: 'soccer_fifa_world_cup' }
+  ], 'soccer_epl'),
+  /soccer_fifa_world_cup/
+);
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'mls-1', sport_key: 'soccer_usa_mls' }
+  ], 'soccer_epl'),
+  /soccer_usa_mls/
+);
+const worldcup = SPORTS.find(candidate => candidate.sportKey === 'soccer_fifa_world_cup');
+assert.ok(worldcup, 'World Cup configuration should remain separate');
+assert.equal(worldcup.fileName, 'worldcup');
+assert.notEqual(epl.fileName, worldcup.fileName);
+assert.notEqual(epl.sportKey, worldcup.sportKey);
+const eplSummary = buildSummarySport(epl, {
+  sport: 'epl',
+  gameCount: 10
+}, undefined, nowIso);
+assert.equal(eplSummary.fileName, 'epl.json');
+assert.equal(eplSummary.sport, 'epl');
+assert.equal(eplSummary.gameCount, 10);
+assert.equal(eplSummary.lastFetched, nowIso);
+assert.equal(eplSummary.lastAttemptAt, nowIso);
+assert.equal(eplSummary.lastAttemptStatus, 'success');
+const failedEplSummary = buildSummarySport(epl, {
+  sport: 'epl',
+  error: { status: 503, message: 'provider failure' }
+}, undefined, nowIso);
+assert.equal(failedEplSummary.lastFetched, null);
+assert.equal(failedEplSummary.gameCount, 0);
+assert.equal(failedEplSummary.lastAttemptStatus, 'failed');
+assert.notEqual(failedEplSummary.lastAttemptStatus, 'success');
 const nfl = SPORTS.find(candidate => candidate.sportKey === 'americanfootball_nfl');
 assert.ok(nfl, 'NFL configuration should exist');
 assert.equal(isSportActive(nfl, new Date('2026-08-01T00:00:00Z')), true);

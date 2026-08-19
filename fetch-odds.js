@@ -59,6 +59,15 @@ const SPORTS = [
     fetchEveryMinutes: 5, // every scheduled run
   },
   {
+    // Same soccer profile as World Cup: three-way h2h (home/away/Draw) + totals.
+    // Dedicated epl.json so Prophet never mixes this feed with worldcup.json.
+    sport: 'epl', sportKey: 'soccer_epl', fileName: 'epl',
+    markets: 'h2h,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [8, 9, 10, 11, 12, 1, 2, 3, 4, 5], // Aug - May
+    fetchEveryMinutes: 5,
+  },
+  {
     sport: 'NFL', sportKey: NFL_REGULAR_SPORT_KEY, fileName: 'nfl',
     preseasonSportKey: NFL_PRESEASON_SPORT_KEY,
     preseasonFallbackWindow: {
@@ -296,6 +305,20 @@ function mergeOddsGames(...feeds) {
     });
   });
   return Array.from(gamesById.values()).sort(compareOddsGames);
+}
+
+function assertExpectedSportKey(oddsData, sportKey) {
+  const games = Array.isArray(oddsData) ? oddsData : [];
+  const unexpectedKeys = [...new Set(
+    games
+      .filter(game => game?.sport_key !== sportKey)
+      .map(game => game?.sport_key || '(missing)')
+  )];
+  if (unexpectedKeys.length > 0) {
+    throw new Error(
+      `Refusing to write ${sportKey} odds: feed included foreign sport_key(s) ${unexpectedKeys.join(', ')}`
+    );
+  }
 }
 
 function countNflGamesByFeed(games) {
@@ -657,7 +680,11 @@ async function fetchOdds(config) {
       dateFormat: 'iso'
     });
 
-    const oddsData = response.data;
+    const oddsData = Array.isArray(response.data) ? response.data : null;
+    if (!oddsData) {
+      throw new Error(`Unexpected ${sport} odds payload`);
+    }
+    assertExpectedSportKey(oddsData, sportKey);
     console.log(`Fetched ${oddsData.length} ${sport} games with odds`);
 
     // Save to sport-specific JSON file
@@ -850,6 +877,7 @@ if (require.main === module) {
 
 module.exports = {
   SPORTS,
+  assertExpectedSportKey,
   buildSummarySport,
   countNflGamesByFeed,
   estimateCredits,

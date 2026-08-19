@@ -36,6 +36,7 @@ All timestamps returned by the API remain in ISO 8601 UTC format.
 | League | API sport key | Active window | Collection scope | Output |
 |---|---|---|---|---|
 | FIFA World Cup | `soccer_fifa_world_cup` | Jun 7-Jul 20, 2026 | All available events | `odds/worldcup.json` |
+| Premier League | `soccer_epl` | Aug-May | All available events | `odds/epl.json` |
 | NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug-Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug-Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May-Oct | All available events | `odds/wnba.json` |
@@ -45,7 +46,7 @@ All timestamps returned by the API remain in ISO 8601 UTC format.
 Market profiles are defined once and shared by league configuration:
 
 - **Standard:** `h2h,spreads,totals` for both NFL feeds, NCAA Football, WNBA, MLB, and KBO.
-- **Soccer:** `h2h,totals` for the FIFA World Cup. Soccer `h2h` is a three-way market that includes `Draw`.
+- **Soccer:** `h2h,totals` for the FIFA World Cup and Premier League. Soccer `h2h` is a three-way market that includes `Draw`. Premier League events are written only to `odds/epl.json`; every event `sport_key` must be `soccer_epl`.
 
 MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher combines event-ID odds with a direct windowed odds request, de-duplicates by event ID, and writes the same response shape used by the other leagues.
 
@@ -76,7 +77,7 @@ Before any paid request, the fetcher calls the no-cost `/sports` endpoint and re
 
 | Fetch profile | Leagues | Markets | Estimated paid odds calls | Reserved credits per fetch |
 |---|---|---:|---:|---:|
-| Soccer direct | FIFA World Cup | 2 | 1 | 2 |
+| Soccer direct | FIFA World Cup, Premier League | 2 | 1 | 2 |
 | Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
 | NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
 | Windowed baseball | MLB, KBO | 3 | 2 | 6 |
@@ -85,12 +86,12 @@ For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched 
 
 The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-At the five-minute cadence, the August-active NFL, NCAAF, WNBA, MLB, and KBO
-profiles reserve at most 24 credits per run while NFL preseason is available,
-or about 207,360 credits in a 30-day month if every run reaches the typical
+At the five-minute cadence, the August-active EPL, NFL, NCAAF, WNBA, MLB, and KBO
+profiles reserve at most 26 credits per run while NFL preseason is available,
+or about 224,640 credits in a 30-day month if every run reaches the typical
 two-call baseball maximum. This
-is roughly 1.38% of a 15,000,000-credit plan. Outside the preseason availability
-window, the maximum returns to 21 credits per run. Historical acquisition must
+is roughly 1.50% of a 15,000,000-credit plan. Outside the preseason availability
+window, the maximum returns to 23 credits per run. Historical acquisition must
 still leave its separately reviewed live-odds reserve; this repository never
 spends historical credits or weakens the provider-reported quota gate.
 
@@ -170,9 +171,10 @@ Files are publicly available from:
 https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
 ```
 
-Valid data files are `worldcup`, `nfl`, `ncaaf`, `wnba`, `mlb`, `kbo`, and `summary`. For example:
+Valid data files are `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `mlb`, `kbo`, and `summary`. For example:
 
 ```bash
+curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/epl.json
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/kbo.json
 curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.json
 ```
