@@ -1,4 +1,3 @@
-const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
@@ -413,16 +412,63 @@ if (!fs.existsSync(ODDS_DIR)) {
   fs.mkdirSync(ODDS_DIR, { recursive: true });
 }
 
+function buildApiRequestUrl(url, params = {}) {
+  const requestUrl = new URL(url);
+  Object.entries(params).forEach(([name, value]) => {
+    if (value !== undefined && value !== null) {
+      requestUrl.searchParams.set(name, String(value));
+    }
+  });
+  return requestUrl;
+}
+
+async function fetchJson(url, params, options = {}) {
+  const fetchImpl = options.fetchImpl || globalThis.fetch;
+  const timeoutMs = options.timeoutMs || ODDS_API_TIMEOUT_MS;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetchImpl(buildApiRequestUrl(url, params), {
+      headers: { accept: 'application/json' },
+      signal: controller.signal
+    });
+    const rawBody = await response.text();
+    let data = null;
+    if (rawBody) {
+      try {
+        data = JSON.parse(rawBody);
+      } catch {
+        data = rawBody;
+      }
+    }
+    const headers = Object.fromEntries(response.headers.entries());
+
+    if (!response.ok) {
+      const error = new Error(`Request failed with status code ${response.status}`);
+      error.response = { status: response.status, data, headers };
+      throw error;
+    }
+
+    return { data, headers, status: response.status };
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      const timeoutError = new Error(`Request timed out after ${timeoutMs}ms`);
+      timeoutError.code = 'ETIMEDOUT';
+      throw timeoutError;
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 // Retry logic for API calls
 async function fetchWithRetry(url, params, maxRetries = 3, delay = 1000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`API attempt ${attempt}/${maxRetries}...`);
-      const response = await axios.get(url, {
-        params,
-        timeout: ODDS_API_TIMEOUT_MS
-      });
-      return response;
+      return await fetchJson(url, params);
     } catch (error) {
       console.error(`Attempt ${attempt} failed:`, error.message);
       
@@ -878,9 +924,11 @@ if (require.main === module) {
 module.exports = {
   SPORTS,
   assertExpectedSportKey,
+  buildApiRequestUrl,
   buildSummarySport,
   countNflGamesByFeed,
   estimateCredits,
+  fetchJson,
   fetchNflOdds,
   isSportActive,
   isSportDue,

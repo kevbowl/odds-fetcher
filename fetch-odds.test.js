@@ -2,9 +2,11 @@ const assert = require('node:assert/strict');
 const {
   SPORTS,
   assertExpectedSportKey,
+  buildApiRequestUrl,
   buildSummarySport,
   countNflGamesByFeed,
   estimateCredits,
+  fetchJson,
   fetchNflOdds,
   isSportActive,
   isSportDue,
@@ -248,7 +250,61 @@ async function testNflPublication() {
   assert.equal(partialFailureWrites, 0);
 }
 
-testNflPublication()
+async function testNativeHttpClient() {
+  const requestUrl = buildApiRequestUrl('https://example.test/odds', {
+    markets: 'h2h,spreads',
+    regions: 'us',
+    omitted: null
+  });
+  assert.equal(requestUrl.searchParams.get('markets'), 'h2h,spreads');
+  assert.equal(requestUrl.searchParams.get('regions'), 'us');
+  assert.equal(requestUrl.searchParams.has('omitted'), false);
+
+  const response = await fetchJson('https://example.test/odds', { regions: 'us' }, {
+    fetchImpl: async url => {
+      assert.equal(url.searchParams.get('regions'), 'us');
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify([{ id: 'game-1' }]),
+        headers: { entries: () => [['x-requests-remaining', '42']] }
+      };
+    },
+    timeoutMs: 1000
+  });
+  assert.deepEqual(response.data, [{ id: 'game-1' }]);
+  assert.equal(response.headers['x-requests-remaining'], '42');
+
+  await assert.rejects(
+    fetchJson('https://example.test/odds', {}, {
+      fetchImpl: async () => ({
+        ok: false,
+        status: 503,
+        text: async () => JSON.stringify({ message: 'unavailable' }),
+        headers: { entries: () => [] }
+      }),
+      timeoutMs: 1000
+    }),
+    error => error.response?.status === 503
+      && error.response?.data?.message === 'unavailable'
+  );
+
+  await assert.rejects(
+    fetchJson('https://example.test/odds', {}, {
+      fetchImpl: async (_url, { signal }) => new Promise((_resolve, reject) => {
+        signal.addEventListener('abort', () => {
+          const error = new Error('aborted');
+          error.name = 'AbortError';
+          reject(error);
+        });
+      }),
+      timeoutMs: 10
+    }),
+    error => error.code === 'ETIMEDOUT'
+  );
+}
+
+Promise.all([testNflPublication(), testNativeHttpClient()])
   .then(() => console.log('odds-fetcher fetch and receipt tests passed'))
   .catch(error => {
     console.error(error);

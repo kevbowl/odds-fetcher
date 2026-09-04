@@ -115,17 +115,18 @@ League definitions live in the `SPORTS` array in `fetch-odds.js`. That array is 
 
 ### Local
 
+Requires Node.js 18 or newer.
+
 ```bash
 git clone https://github.com/kevbowl/odds-fetcher.git
 cd odds-fetcher
-npm install
 
 ODDS_API_KEY=your_key FORCE_FETCH=true npm start
 ```
 
 ### GitHub Actions
 
-Add `ODDS_API_KEY` under **Settings -> Secrets and variables -> Actions**. The workflow in `.github/workflows/fetch-odds-cron.yml` reads the secret, runs the fetcher, and commits changes under `odds/`.
+Add `ODDS_API_KEY` under **Settings -> Secrets and variables -> Actions**. The workflow in `.github/workflows/fetch-odds-cron.yml` reads the secret, runs the fetcher, and commits changes under `odds/`. It uses only Node.js built-ins, so scheduled runs do not depend on a package-registry installation step.
 
 The workflow can also be started manually from **Actions -> Fetch Odds Cron -> Run workflow**. Manual runs follow the same gating rules as external dispatches.
 
@@ -161,7 +162,7 @@ Use a fine-grained GitHub token with `actions:write` access to this repository. 
 | `.github/workflows/fetch-odds-cron.yml` | GitHub Actions runner and commit workflow |
 | `odds/<league>.json` | Latest raw odds array for one league |
 | `odds/summary.json` | Fetch timestamps, game counts, quota state, and baseball diagnostics |
-| `package.json` | Node.js runtime metadata and dependencies |
+| `package.json` | Node.js runtime metadata and commands |
 
 ## Data access
 
