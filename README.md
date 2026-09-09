@@ -48,7 +48,7 @@ Market profiles are defined once and shared by league configuration:
 - **Standard:** `h2h,spreads,totals` for both NFL feeds, NCAA Football, WNBA, MLB, and KBO.
 - **Soccer:** `h2h,totals` for the FIFA World Cup and Premier League. Soccer `h2h` is a three-way market that includes `Draw`. Premier League events are written only to `odds/epl.json`; every event `sport_key` must be `soccer_epl`.
 
-MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher combines event-ID odds with a direct windowed odds request, de-duplicates by event ID, and writes the same response shape used by the other leagues.
+MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher requests the free event list and then fetches odds by event ID. A direct windowed odds request runs only as a recovery fallback when the event list is empty or the event-ID response is incomplete. Results are de-duplicated by event ID and written in the same response shape used by the other leagues.
 
 The NFL output combines the regular-season and preseason feeds, de-duplicates
 by provider event ID, and sorts by `commence_time` and then event ID. Each game
@@ -80,20 +80,20 @@ Before any paid request, the fetcher calls the no-cost `/sports` endpoint and re
 | Soccer direct | FIFA World Cup, Premier League | 2 | 1 | 2 |
 | Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
 | NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
-| Windowed baseball | MLB, KBO | 3 | 2 | 6 |
+| Windowed baseball | MLB, KBO | 3 | 1 normally; 2 only during fallback | 6 |
 
-For MLB and KBO, `/events` is free. A typical non-empty fetch makes one batched event-ID odds request and one direct windowed odds request. Event IDs are batched in groups of 50, so unusually large slates can cost more; empty API responses can cost less.
+For MLB and KBO, `/events` is free. A typical non-empty slate needs one batched event-ID odds request. The direct windowed request is a recovery path, not a duplicate: it runs only when `/events` is empty or at least one listed event is absent from the event-ID odds response. Event IDs are batched in groups of 50, so unusually large slates can cost more. Quota selection reserves the two-call fallback maximum before starting a baseball fetch.
 
 The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-At the five-minute cadence, the August-active EPL, NFL, NCAAF, WNBA, MLB, and KBO
-profiles reserve at most 26 credits per run while NFL preseason is available,
-or about 224,640 credits in a 30-day month if every run reaches the typical
-two-call baseball maximum. This
-is roughly 1.50% of a 15,000,000-credit plan. Outside the preseason availability
-window, the maximum returns to 23 credits per run. Historical acquisition must
-still leave its separately reviewed live-odds reserve; this repository never
-spends historical credits or weakens the provider-reported quota gate.
+At the five-minute cadence, the September-active EPL, NFL, NCAAF, WNBA, MLB,
+and KBO profiles normally cost 17 credits per run after NFL preseason ends:
+about 4,896 credits per day or 146,880 in a 30-day month. A baseball recovery
+fallback can raise a run to 23 credits. A 100,000-credit plan therefore cannot
+sustain every active league every five minutes for a full month, even when no
+requests are wasted. Historical acquisition must still leave its separately
+reviewed live-odds reserve; this repository never spends historical credits or
+weakens the provider-reported quota gate.
 
 The source freshness objective is a successful per-league attempt no more than
 10 minutes old: one five-minute collection interval plus one interval of

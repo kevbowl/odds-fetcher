@@ -338,6 +338,22 @@ function addOddsGamesById(target, oddsData) {
   });
 }
 
+function needsBaseballDirectFallback(events, eventOddsData) {
+  const eventIds = new Set(
+    (Array.isArray(events) ? events : [])
+      .map(event => event?.id)
+      .filter(Boolean)
+  );
+  if (eventIds.size === 0) return true;
+
+  const oddsIds = new Set(
+    (Array.isArray(eventOddsData) ? eventOddsData : [])
+      .map(game => game?.id)
+      .filter(Boolean)
+  );
+  return [...eventIds].some(id => !oddsIds.has(id));
+}
+
 function isGameWithinWindow(game, window) {
   const commenceTime = Date.parse(game?.commence_time);
   return Number.isFinite(commenceTime)
@@ -574,19 +590,24 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
     .map(id => eventOddsById.get(id))
     .filter(Boolean);
 
-  console.log(`Fetching ${sport} direct odds for ${slateLabel}...`);
-  const directResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
-    apiKey: ODDS_API_KEY,
-    regions,
-    markets,
-    oddsFormat: 'american',
-    dateFormat: 'iso',
-    commenceTimeFrom: window.commenceTimeFrom,
-    commenceTimeTo: window.commenceTimeTo
-  });
-  latestQuota = parseQuotaHeaders(directResponse.headers) || latestQuota;
   const directOddsById = new Map();
-  addOddsGamesById(directOddsById, directResponse.data);
+  const directFallbackUsed = needsBaseballDirectFallback(events, eventOddsData);
+  if (directFallbackUsed) {
+    console.log(`Fetching ${sport} direct odds fallback for ${slateLabel}...`);
+    const directResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
+      apiKey: ODDS_API_KEY,
+      regions,
+      markets,
+      oddsFormat: 'american',
+      dateFormat: 'iso',
+      commenceTimeFrom: window.commenceTimeFrom,
+      commenceTimeTo: window.commenceTimeTo
+    });
+    latestQuota = parseQuotaHeaders(directResponse.headers) || latestQuota;
+    addOddsGamesById(directOddsById, directResponse.data);
+  } else {
+    console.log(`Skipping ${sport} direct odds fallback; event-ID odds were complete.`);
+  }
 
   const mergedOddsById = new Map();
   addOddsGamesById(mergedOddsById, eventOddsData);
@@ -613,7 +634,8 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   return {
     sport,
     gameCount: oddsData.length,
-    estimatedCredits: countCsvValues(markets) * countCsvValues(regions) * (batches.length + 1),
+    estimatedCredits: countCsvValues(markets) * countCsvValues(regions)
+      * (batches.length + (directFallbackUsed ? 1 : 0)),
     quota: latestQuota,
     debug: {
       [`${debugPrefix}WindowStart`]: window.commenceTimeFrom,
@@ -621,6 +643,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
       [`${debugPrefix}WindowTimeZone`]: window.timeZone,
       [`${debugPrefix}EventCount`]: events.length,
       [`${debugPrefix}EventOddsCount`]: eventOddsData.length,
+      [`${debugPrefix}DirectFallbackUsed`]: directFallbackUsed,
       [`${debugPrefix}DirectOddsCount`]: directOddsById.size,
       [`${debugPrefix}MergedOddsCount`]: oddsData.length,
       earliestCommenceTime: commenceRange.earliest,
@@ -934,6 +957,7 @@ module.exports = {
   isSportDue,
   isPreseasonActive,
   mergeOddsGames,
+  needsBaseballDirectFallback,
   parseAvailableSportKeys,
   RUN_EVERY_MIN
 };

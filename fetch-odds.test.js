@@ -12,6 +12,7 @@ const {
   isSportDue,
   isPreseasonActive,
   mergeOddsGames,
+  needsBaseballDirectFallback,
   parseAvailableSportKeys,
   RUN_EVERY_MIN
 } = require('./fetch-odds');
@@ -179,6 +180,28 @@ assert.deepEqual(countNflGamesByFeed(mergedNfl), {
   regularSeasonGameCount: 1,
   preseasonGameCount: 2
 });
+
+assert.equal(
+  needsBaseballDirectFallback(
+    [{ id: 'game-1' }, { id: 'game-2' }],
+    [{ id: 'game-1' }, { id: 'game-2' }]
+  ),
+  false,
+  'complete event-ID odds should not spend credits on the direct fallback'
+);
+assert.equal(
+  needsBaseballDirectFallback(
+    [{ id: 'game-1' }, { id: 'game-2' }],
+    [{ id: 'game-1' }]
+  ),
+  true,
+  'an incomplete event-ID response should use the direct fallback'
+);
+assert.equal(
+  needsBaseballDirectFallback([], []),
+  true,
+  'an empty events response should retain the direct fallback'
+);
 
 const nflSummary = buildSummarySport(nfl, {
   sport: 'NFL',
