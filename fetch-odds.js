@@ -4,6 +4,8 @@ const path = require('path');
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
 const DEFAULT_REGIONS = 'us';
+const POLYMARKET_BOOKMAKER_KEY = 'polymarket';
+const POLYMARKET_REGION = 'us_ex';
 const parsedOddsApiTimeoutMs = Number.parseInt(
   process.env.ODDS_API_TIMEOUT_MS || '15000',
   10
@@ -42,13 +44,16 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
-// request (World Cup h2h,totals x us = 2 credits).
+// request (World Cup h2h,totals x us = 2 credits). bookmakers=polymarket is a
+// second paid request that bills like another region, so the same World Cup
+// fetch is 4 credits when Polymarket is included.
 const RUN_EVERY_MIN = 5;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
 //   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
 //   cadence: fetchEveryMinutes (min minutes between fetches)
-//   markets/regions determine the estimated API credit cost
+//   markets/regions plus a mirrored bookmakers=polymarket request determine
+//   the estimated API credit cost
 const SPORTS = [
   {
     sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
@@ -118,12 +123,23 @@ function countCsvValues(value) {
     .length;
 }
 
-function estimateCredits(sport) {
+function estimateUsCredits(sport) {
   const paidRequests = (sport.estimatedPaidRequests || 1)
     + (sport.includePreseason ? 1 : 0);
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
     * paidRequests;
+}
+
+function estimatePolymarketCredits(sport) {
+  // bookmakers=polymarket bills like another region: 1 credit per market per
+  // paid request. Omit it only when this run cannot cover US + Polymarket.
+  if (sport.includePolymarket === false) return 0;
+  return estimateUsCredits(sport);
+}
+
+function estimateCredits(sport) {
+  return estimateUsCredits(sport) + estimatePolymarketCredits(sport);
 }
 
 function readNumberHeader(headers, name) {
@@ -304,6 +320,162 @@ function mergeOddsGames(...feeds) {
     });
   });
   return Array.from(gamesById.values()).sort(compareOddsGames);
+}
+
+function findBookmaker(bookmakers, key) {
+  return (Array.isArray(bookmakers) ? bookmakers : [])
+    .find(book => book?.key === key) || null;
+}
+
+function upsertBookmaker(bookmakers, book) {
+  const next = Array.isArray(bookmakers) ? [...bookmakers] : [];
+  const index = next.findIndex(existing => existing?.key === book.key);
+  if (index >= 0) next[index] = book;
+  else next.push(book);
+  return next;
+}
+
+// Union Polymarket onto this run's US-region games. Unlike mergeOddsGames,
+// matching event ids keep the US skeleton (commence_time, teams, sport_key,
+// existing books) and only upsert bookmaker key "polymarket".
+function mergePolymarketBookmakers(usGames, ...polymarketFeeds) {
+  const polymarketById = new Map();
+  polymarketFeeds.forEach(feed => {
+    (Array.isArray(feed) ? feed : []).forEach(game => {
+      if (!game?.id) return;
+      const book = findBookmaker(game.bookmakers, POLYMARKET_BOOKMAKER_KEY);
+      if (book) polymarketById.set(game.id, book);
+    });
+  });
+
+  return (Array.isArray(usGames) ? usGames : []).map(game => {
+    const existingBooks = Array.isArray(game?.bookmakers) ? game.bookmakers : [];
+    const polymarketBook = game?.id ? polymarketById.get(game.id) : null;
+
+    if (polymarketBook) {
+      return {
+        ...game,
+        bookmakers: upsertBookmaker(existingBooks, polymarketBook)
+      };
+    }
+
+    const withoutPolymarket = existingBooks.filter(
+      book => book?.key !== POLYMARKET_BOOKMAKER_KEY
+    );
+    if (withoutPolymarket.length === existingBooks.length) return game;
+    return { ...game, bookmakers: withoutPolymarket };
+  });
+}
+
+function shouldFetchPolymarket(config) {
+  return config.includePolymarket !== false;
+}
+
+function buildUsOddsParams({
+  markets,
+  regions = DEFAULT_REGIONS,
+  eventIds,
+  commenceTimeFrom,
+  commenceTimeTo
+}) {
+  const params = {
+    apiKey: ODDS_API_KEY,
+    regions,
+    markets,
+    oddsFormat: 'american',
+    dateFormat: 'iso'
+  };
+  if (eventIds != null) params.eventIds = eventIds;
+  if (commenceTimeFrom != null) params.commenceTimeFrom = commenceTimeFrom;
+  if (commenceTimeTo != null) params.commenceTimeTo = commenceTimeTo;
+  return params;
+}
+
+function buildPolymarketOddsParams(usParams, {
+  includeSidsAndBetLimits = true,
+  includeRegion = true
+} = {}) {
+  const params = {
+    apiKey: usParams.apiKey,
+    bookmakers: POLYMARKET_BOOKMAKER_KEY,
+    markets: usParams.markets,
+    oddsFormat: usParams.oddsFormat || 'american',
+    dateFormat: usParams.dateFormat || 'iso'
+  };
+  // bookmakers=polymarket is the filter. regions=us_ex only satisfies docs/schemas
+  // that still mark regions required. bookmakers takes priority, so this stays one
+  // region of credits and does not pull Kalshi/Novig/ProphetX. Never us,us_ex.
+  if (includeRegion) params.regions = POLYMARKET_REGION;
+  if (usParams.eventIds != null) params.eventIds = usParams.eventIds;
+  if (usParams.commenceTimeFrom != null) params.commenceTimeFrom = usParams.commenceTimeFrom;
+  if (usParams.commenceTimeTo != null) params.commenceTimeTo = usParams.commenceTimeTo;
+  // includeSids is The Odds API source id on an outcome, not a Polymarket CLOB token.
+  if (includeSidsAndBetLimits) {
+    params.includeSids = true;
+    params.includeBetLimits = true;
+  }
+  return params;
+}
+
+function logPolymarketFailure(sport, error) {
+  const status = Number.isInteger(error?.response?.status)
+    ? error.response.status
+    : null;
+  const detail = status ? `${error.message} (HTTP ${status})` : String(error?.message || error);
+  console.warn(
+    `Polymarket odds unavailable for ${sport}; publishing US odds without it (${detail})`
+  );
+}
+
+function getOddsApiErrorCode(error) {
+  const data = error.response?.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  return data.error_code || null;
+}
+
+function shouldRetryPolymarketClientError(error) {
+  if (error.response?.status !== 400) return false;
+  return getOddsApiErrorCode(error) !== 'INVALID_BOOKMAKERS';
+}
+
+const POLYMARKET_REQUEST_ATTEMPTS = [
+  { includeSidsAndBetLimits: true, includeRegion: true },
+  { includeSidsAndBetLimits: false, includeRegion: true },
+  { includeSidsAndBetLimits: false, includeRegion: false }
+];
+
+async function fetchPolymarketOdds(sport, url, usParams, request) {
+  let lastError = null;
+  for (let index = 0; index < POLYMARKET_REQUEST_ATTEMPTS.length; index += 1) {
+    const attempt = POLYMARKET_REQUEST_ATTEMPTS[index];
+    try {
+      return await request(url, buildPolymarketOddsParams(usParams, attempt));
+    } catch (error) {
+      lastError = error;
+      const next = POLYMARKET_REQUEST_ATTEMPTS[index + 1];
+      if (!next || !shouldRetryPolymarketClientError(error)) {
+        logPolymarketFailure(sport, error);
+        return null;
+      }
+      const reason = attempt.includeSidsAndBetLimits && !next.includeSidsAndBetLimits
+        ? 'retrying without includeSids/includeBetLimits'
+        : 'retrying without regions';
+      console.warn(`Polymarket request rejected for ${sport}; ${reason} (${error.message})`);
+    }
+  }
+  logPolymarketFailure(sport, lastError);
+  return null;
+}
+
+function applyPolymarketMerge(sport, usGames, ...polymarketFeeds) {
+  try {
+    return mergePolymarketBookmakers(usGames, ...polymarketFeeds);
+  } catch (error) {
+    console.warn(
+      `Polymarket merge failed for ${sport}; publishing US odds without it (${error.message})`
+    );
+    return usGames;
+  }
 }
 
 function assertExpectedSportKey(oddsData, sportKey) {
@@ -524,27 +696,41 @@ async function fetchProviderStatus() {
 
 function selectSportsWithinQuota(sports, quota) {
   if (!quota || quota.remaining === null) {
-    return { selected: sports, skipped: [] };
+    return {
+      selected: sports.map(sport => ({ ...sport, includePolymarket: true })),
+      skipped: []
+    };
   }
 
   let spendable = quota.remaining - QUOTA_RESERVE_CREDITS;
   const selected = [];
   const skipped = [];
 
+  // Keep every US fetch that fits. Never skip a US request to pay for Polymarket.
   sports.forEach(sport => {
-    const estimatedCredits = estimateCredits(sport);
-    if (spendable >= estimatedCredits) {
-      selected.push(sport);
-      spendable -= estimatedCredits;
+    const usCredits = estimateUsCredits(sport);
+    if (spendable >= usCredits) {
+      selected.push({ ...sport, includePolymarket: false });
+      spendable -= usCredits;
     } else {
-      skipped.push({ sport, estimatedCredits });
+      skipped.push({ sport, estimatedCredits: usCredits });
+    }
+  });
+
+  selected.forEach((sport, index) => {
+    const polymarketCredits = estimateUsCredits(sport);
+    if (spendable >= polymarketCredits) {
+      selected[index] = { ...sport, includePolymarket: true };
+      spendable -= polymarketCredits;
     }
   });
 
   return { selected, skipped };
 }
 
-async function fetchBaseballOddsByEventWindow(config, windowConfig) {
+async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies = {}) {
+  const request = dependencies.fetchRequest || fetchWithRetry;
+  const writeFile = dependencies.writeFile || fs.writeFileSync;
   const {
     sport,
     sportKey,
@@ -558,7 +744,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
     `Fetching ${sport} events from ${window.commenceTimeFrom} to ${window.commenceTimeTo} (${window.timeZone})...`
   );
 
-  const eventsResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/events`, {
+  const eventsResponse = await request(`https://api.the-odds-api.com/v4/sports/${sportKey}/events`, {
     apiKey: ODDS_API_KEY,
     dateFormat: 'iso',
     commenceTimeFrom: window.commenceTimeFrom,
@@ -571,17 +757,16 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   const eventOddsById = new Map();
   let latestQuota = parseQuotaHeaders(eventsResponse.headers);
   const batches = chunkArray(eventIds, BASEBALL_EVENT_ID_BATCH_SIZE);
+  const oddsUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`;
 
   for (const batch of batches) {
     console.log(`Fetching ${sport} odds for ${batch.length} event ids...`);
-    const response = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
-      apiKey: ODDS_API_KEY,
-      regions,
+    const usParams = buildUsOddsParams({
       markets,
-      oddsFormat: 'american',
-      dateFormat: 'iso',
+      regions,
       eventIds: batch.join(',')
     });
+    const response = await request(oddsUrl, usParams);
     latestQuota = parseQuotaHeaders(response.headers) || latestQuota;
     addOddsGamesById(eventOddsById, response.data);
   }
@@ -592,17 +777,15 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
 
   const directOddsById = new Map();
   const directFallbackUsed = needsBaseballDirectFallback(events, eventOddsData);
+  const fallbackUsParams = buildUsOddsParams({
+    markets,
+    regions,
+    commenceTimeFrom: window.commenceTimeFrom,
+    commenceTimeTo: window.commenceTimeTo
+  });
   if (directFallbackUsed) {
     console.log(`Fetching ${sport} direct odds fallback for ${slateLabel}...`);
-    const directResponse = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
-      apiKey: ODDS_API_KEY,
-      regions,
-      markets,
-      oddsFormat: 'american',
-      dateFormat: 'iso',
-      commenceTimeFrom: window.commenceTimeFrom,
-      commenceTimeTo: window.commenceTimeTo
-    });
+    const directResponse = await request(oddsUrl, fallbackUsParams);
     latestQuota = parseQuotaHeaders(directResponse.headers) || latestQuota;
     addOddsGamesById(directOddsById, directResponse.data);
   } else {
@@ -613,29 +796,74 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
   addOddsGamesById(mergedOddsById, eventOddsData);
   addOddsGamesById(mergedOddsById, Array.from(directOddsById.values()));
 
-  const oddsData = Array.from(mergedOddsById.values())
+  let oddsData = Array.from(mergedOddsById.values())
     .filter(game => isGameWithinWindow(game, window));
   const missingOddsEventIds = eventIds.filter(id => !mergedOddsById.has(id));
   const warning = events.length > 0 && missingOddsEventIds.length > 0
     ? `${missingOddsEventIds.length} ${sport} event(s) returned by /events had no odds after event-id and direct /odds fetches`
     : null;
   const commenceRange = getCommenceTimeRange(oddsData);
+  let polymarketPaidRequests = 0;
+  let polymarketGameCount = 0;
+
+  if (shouldFetchPolymarket(config)) {
+    const polymarketFeeds = [];
+    for (const batch of batches) {
+      polymarketPaidRequests += 1;
+      const polyResponse = await fetchPolymarketOdds(
+        sport,
+        oddsUrl,
+        buildUsOddsParams({
+          markets,
+          regions,
+          eventIds: batch.join(',')
+        }),
+        request
+      );
+      if (!polyResponse) break;
+      latestQuota = parseQuotaHeaders(polyResponse.headers) || latestQuota;
+      polymarketFeeds.push(polyResponse.data);
+    }
+    if (directFallbackUsed) {
+      polymarketPaidRequests += 1;
+      const polyFallback = await fetchPolymarketOdds(
+        sport,
+        oddsUrl,
+        fallbackUsParams,
+        request
+      );
+      if (polyFallback) {
+        latestQuota = parseQuotaHeaders(polyFallback.headers) || latestQuota;
+        polymarketFeeds.push(polyFallback.data);
+      }
+    }
+    if (polymarketFeeds.length > 0) {
+      oddsData = applyPolymarketMerge(sport, oddsData, ...polymarketFeeds);
+      polymarketGameCount = oddsData.filter(
+        game => findBookmaker(game.bookmakers, POLYMARKET_BOOKMAKER_KEY)
+      ).length;
+      console.log(
+        `Merged Polymarket into ${polymarketGameCount}/${oddsData.length} ${sport} games`
+      );
+    }
+  }
 
   if (warning) {
     console.warn(`Warning: ${warning}`);
   }
 
   const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(oddsData, null, 2));
+  writeFile(filePath, JSON.stringify(oddsData, null, 2));
 
   console.log(`Fetched odds for ${oddsData.length} ${sport} events`);
   console.log(`${sport} odds saved to ${filePath}`);
 
+  const usPaidRequests = batches.length + (directFallbackUsed ? 1 : 0);
   return {
     sport,
     gameCount: oddsData.length,
-    estimatedCredits: countCsvValues(markets) * countCsvValues(regions)
-      * (batches.length + (directFallbackUsed ? 1 : 0)),
+    estimatedCredits: countCsvValues(markets)
+      * (countCsvValues(regions) * usPaidRequests + polymarketPaidRequests),
     quota: latestQuota,
     debug: {
       [`${debugPrefix}WindowStart`]: window.commenceTimeFrom,
@@ -646,6 +874,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig) {
       [`${debugPrefix}DirectFallbackUsed`]: directFallbackUsed,
       [`${debugPrefix}DirectOddsCount`]: directOddsById.size,
       [`${debugPrefix}MergedOddsCount`]: oddsData.length,
+      [`${debugPrefix}PolymarketGameCount`]: polymarketGameCount,
       earliestCommenceTime: commenceRange.earliest,
       latestCommenceTime: commenceRange.latest,
       warning,
@@ -667,24 +896,14 @@ async function fetchNflOdds(config, dependencies = {}) {
     regions = DEFAULT_REGIONS,
     includePreseason = false
   } = config;
-  const requestParams = {
-    apiKey: ODDS_API_KEY,
-    regions,
-    markets,
-    oddsFormat: 'american',
-    dateFormat: 'iso'
-  };
+  const requestParams = buildUsOddsParams({ markets, regions });
+  const regularUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`;
+  const preseasonUrl = `https://api.the-odds-api.com/v4/sports/${preseasonSportKey}/odds/`;
 
   console.log(`Fetching ${sport} regular-season odds...`);
-  const regularPromise = request(
-    `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`,
-    requestParams
-  );
+  const regularPromise = request(regularUrl, requestParams);
   const preseasonPromise = includePreseason
-    ? request(
-      `https://api.the-odds-api.com/v4/sports/${preseasonSportKey}/odds/`,
-      requestParams
-    )
+    ? request(preseasonUrl, requestParams)
     : Promise.resolve(null);
 
   // Wait for both required feeds before publishing. Promise.all rejects if
@@ -699,9 +918,29 @@ async function fetchNflOdds(config, dependencies = {}) {
   const preseasonOdds = Array.isArray(preseasonResponse?.data)
     ? preseasonResponse.data
     : [];
-  const oddsData = mergeOddsGames(regularSeasonOdds, preseasonOdds);
-  const filePath = path.join(ODDS_DIR, `${fileName}.json`);
+  let oddsData = mergeOddsGames(regularSeasonOdds, preseasonOdds);
+  let latestQuota = parseQuotaHeaders(preseasonResponse?.headers)
+    || parseQuotaHeaders(regularResponse.headers);
 
+  if (shouldFetchPolymarket(config)) {
+    const [regularPoly, preseasonPoly] = await Promise.all([
+      fetchPolymarketOdds(sport, regularUrl, requestParams, request),
+      includePreseason
+        ? fetchPolymarketOdds(sport, preseasonUrl, requestParams, request)
+        : Promise.resolve(null)
+    ]);
+    latestQuota = parseQuotaHeaders(preseasonPoly?.headers)
+      || parseQuotaHeaders(regularPoly?.headers)
+      || latestQuota;
+    const polymarketFeeds = [];
+    if (regularPoly) polymarketFeeds.push(regularPoly.data);
+    if (preseasonPoly) polymarketFeeds.push(preseasonPoly.data);
+    if (polymarketFeeds.length > 0) {
+      oddsData = applyPolymarketMerge(sport, oddsData, ...polymarketFeeds);
+    }
+  }
+
+  const filePath = path.join(ODDS_DIR, `${fileName}.json`);
   writeFile(filePath, JSON.stringify(oddsData, null, 2));
   console.log(
     `Fetched ${regularSeasonOdds.length} regular-season and ${preseasonOdds.length} preseason ${sport} games with odds`
@@ -714,13 +953,14 @@ async function fetchNflOdds(config, dependencies = {}) {
     regularSeasonGameCount: regularSeasonOdds.length,
     preseasonGameCount: preseasonOdds.length,
     estimatedCredits: estimateCredits(config),
-    quota: parseQuotaHeaders(preseasonResponse?.headers)
-      || parseQuotaHeaders(regularResponse.headers),
+    quota: latestQuota,
     games: summarizeGames(oddsData)
   };
 }
 
-async function fetchOdds(config) {
+async function fetchOdds(config, dependencies = {}) {
+  const request = dependencies.fetchRequest || fetchWithRetry;
+  const writeFile = dependencies.writeFile || fs.writeFileSync;
   const {
     sport,
     sportKey,
@@ -731,45 +971,51 @@ async function fetchOdds(config) {
 
   try {
     if (config.preseasonSportKey) {
-      return await fetchNflOdds(config);
+      return await fetchNflOdds(config, { fetchRequest: request, writeFile });
     }
 
     const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
     if (baseballWindowConfig) {
-      return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig);
+      return await fetchBaseballOddsByEventWindow(config, baseballWindowConfig, {
+        fetchRequest: request,
+        writeFile
+      });
     }
 
     console.log(`Fetching ${sport} odds (${estimateCredits(config)} estimated credits)...`);
-    
-    const response = await fetchWithRetry(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`, {
-      apiKey: ODDS_API_KEY,
-      regions,
-      markets,
-      oddsFormat: 'american',
-      dateFormat: 'iso'
-    });
+    const oddsUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`;
+    const usParams = buildUsOddsParams({ markets, regions });
+    const response = await request(oddsUrl, usParams);
 
-    const oddsData = Array.isArray(response.data) ? response.data : null;
+    let oddsData = Array.isArray(response.data) ? response.data : null;
     if (!oddsData) {
       throw new Error(`Unexpected ${sport} odds payload`);
     }
     assertExpectedSportKey(oddsData, sportKey);
     console.log(`Fetched ${oddsData.length} ${sport} games with odds`);
 
-    // Save to sport-specific JSON file
+    let latestQuota = parseQuotaHeaders(response.headers);
+    if (shouldFetchPolymarket(config)) {
+      const polyResponse = await fetchPolymarketOdds(sport, oddsUrl, usParams, request);
+      if (polyResponse) {
+        latestQuota = parseQuotaHeaders(polyResponse.headers) || latestQuota;
+        oddsData = applyPolymarketMerge(sport, oddsData, polyResponse.data);
+      }
+    }
+
     const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(oddsData, null, 2));
-    
+    writeFile(filePath, JSON.stringify(oddsData, null, 2));
+
     console.log(`${sport} odds saved to ${filePath}`);
-    
+
     return {
       sport,
       gameCount: oddsData.length,
       estimatedCredits: estimateCredits(config),
-      quota: parseQuotaHeaders(response.headers),
+      quota: latestQuota,
       games: summarizeGames(oddsData)
     };
-    
+
   } catch (error) {
     console.error(`Error fetching ${sport} odds:`, error.message);
     if (error.response) {
@@ -873,6 +1119,13 @@ async function fetchAllOdds() {
         `Skipping ${sport.sport}: needs ${estimatedCredits} credits and reserve is ${QUOTA_RESERVE_CREDITS}`
       );
     });
+    quotaAllowed.forEach(sport => {
+      if (sport.includePolymarket === false) {
+        console.log(
+          `Skipping Polymarket for ${sport.sport}: remaining quota cannot cover the extra request`
+        );
+      }
+    });
 
     if (quotaAllowed.length === 0) {
       console.log('No due sports fit within the remaining quota reserve. No paid API quota used.');
@@ -945,19 +1198,27 @@ if (require.main === module) {
 }
 
 module.exports = {
+  DEFAULT_REGIONS,
+  POLYMARKET_BOOKMAKER_KEY,
+  POLYMARKET_REGION,
   SPORTS,
   assertExpectedSportKey,
   buildApiRequestUrl,
+  buildPolymarketOddsParams,
   buildSummarySport,
+  buildUsOddsParams,
   countNflGamesByFeed,
   estimateCredits,
   fetchJson,
   fetchNflOdds,
+  fetchOdds,
   isSportActive,
   isSportDue,
   isPreseasonActive,
   mergeOddsGames,
+  mergePolymarketBookmakers,
   needsBaseballDirectFallback,
   parseAvailableSportKeys,
-  RUN_EVERY_MIN
+  RUN_EVERY_MIN,
+  selectSportsWithinQuota
 };
