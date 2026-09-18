@@ -3,20 +3,25 @@
 [![GitHub Actions](https://github.com/kevbowl/odds-fetcher/workflows/Fetch%20Odds%20Cron/badge.svg)](https://github.com/kevbowl/odds-fetcher/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Odds Fetcher collects current bookmaker lines from [The Odds API](https://the-odds-api.com/), stores one JSON file per league, and uses Git history as the snapshot archive for Prophet's steam-detection pipeline.
+Odds Fetcher collects US sportsbook lines from [The Odds API](https://the-odds-api.com/) and Polymarket prices from [Gamma](https://docs.polymarket.com/), stores one JSON file per league, and uses Git history as the snapshot archive for Prophet's steam-detection pipeline.
 
 ## How it works
 
 ```text
 +--------------------+    +--------------------+    +--------------------+
 | cron-job.org       | -> | GitHub Actions     | -> | The Odds API       |
-| every 5 min        |    | workflow dispatch  |    | events + odds      |
+| every 5 min        |    | workflow dispatch  |    | US sportsbooks     |
 +--------------------+    +--------------------+    +--------------------+
                                                               |
-                                                              v
+                                                              |  +--------------------+
+                                                              |  | Polymarket Gamma   |
+                                                              |  | (free, no key)     |
+                                                              |  +--------------------+
+                                                              |           |
+                                                              v           v
                                                     +--------------------+
                                                     | GitHub odds repo   |
-                                                    | latest + history   |
+                                                    | one file / league  |
                                                     +--------------------+
                                                               |
                                                               v
@@ -48,7 +53,7 @@ Market profiles are defined once and shared by league configuration:
 - **Standard:** `h2h,spreads,totals` for both NFL feeds, NCAA Football, WNBA, MLB, and KBO.
 - **Soccer:** `h2h,totals` for the FIFA World Cup and Premier League. Soccer `h2h` is a three-way market that includes `Draw`. Premier League events are written only to `odds/epl.json`; every event `sport_key` must be `soccer_epl`.
 
-Each league file remains a single Odds API v4 event array. Polymarket is requested in a second call with `bookmakers=polymarket` and `regions=us_ex`. `bookmakers` takes priority, so the response is only Polymarket and the cost is one extra region — not `regions=us,us_ex`, which would also pull Kalshi, Novig, ProphetX, and BetOpenly. It is not a second tape and is not written under `odds/polymarket/`. The US sportsbook request stays `regions=us` with no `bookmakers=` filter, so DraftKings, FanDuel, Pinnacle, and the rest of the US region are unchanged. Polymarket-only events that never appear in the US feed are ignored. If the Polymarket request fails, or remaining quota cannot cover that extra request, the run still publishes this snapshot's US games without a `polymarket` bookmaker. `includeSids` is The Odds API source id on an outcome, not a Polymarket CLOB token.
+Each league file remains a single Odds API v4 event array. Sportsbook lines come from The Odds API `regions=us` request with no `bookmakers=` filter, so DraftKings, FanDuel, Pinnacle, and the rest of the US region are unchanged. Polymarket is read from Polymarket Gamma (no API key, no Odds API credits) and upserted onto those same games as `"key": "polymarket"`. It is not a second tape and is not written under `odds/polymarket/`. Gamma events are matched to Odds API games by both teams and kickoff (within six hours); prop markets and Gamma-only games are ignored. If Gamma is down or a match is ambiguous, the run still publishes this snapshot's US games without a `polymarket` bookmaker. Outcome `sid` values on the Polymarket book are Polymarket CLOB token ids.
 
 MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher requests the free event list and then fetches odds by event ID. A direct windowed odds request runs only as a recovery fallback when the event list is empty or the event-ID response is incomplete. Results are de-duplicated by event ID and written in the same response shape used by the other leagues.
 
@@ -74,30 +79,29 @@ The external cron-job.org dispatcher and the repository's league fetch intervals
 
 ### Credit model
 
-The Odds API charges one credit per market, per region, per paid odds request. This project uses the `us` region for every league. Polymarket is a second paid request (`bookmakers=polymarket` plus `regions=us_ex`) that bills like another region: 1 credit per market per paid request. The fetcher does not set `regions=us,us_ex`, which would bill a full extra region and pull Kalshi, Novig, ProphetX, and BetOpenly.
+The Odds API charges one credit per market, per region, per paid odds request. This project uses the `us` region for every league. Polymarket is merged from Gamma and does not consume Odds API credits.
 
-Before any paid request, the fetcher calls the no-cost `/sports` endpoint and reads the quota headers. It reserves the following amount for each due league. Quota selection keeps every US fetch that fits, then spends leftover credits on Polymarket. If remaining quota covers the US request but not US + Polymarket, that league's US snapshot still runs and Polymarket is skipped for the run.
+Before any paid request, the fetcher calls the no-cost `/sports` endpoint and reads the quota headers. It reserves the following amount for each due league.
 
 | Fetch profile | Leagues | Markets | Estimated paid odds calls | Reserved credits per fetch |
 |---|---|---:|---:|---:|
-| Soccer direct | FIFA World Cup, Premier League | 2 | 2 (US + Polymarket) | 4 |
-| Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 2 | 6 |
-| NFL preseason add-on | NFL, only while available | 3 | 2 | 6 |
-| Windowed baseball | MLB, KBO | 3 | 2 normally (US event-ID batch + Polymarket batch); 4 during fallback | 12 |
+| Soccer direct | FIFA World Cup, Premier League | 2 | 1 | 2 |
+| Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
+| NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
+| Windowed baseball | MLB, KBO | 3 | 1 normally (US event-ID batch); 2 during fallback | 6 |
 
-For MLB and KBO, `/events` is free. A typical non-empty slate needs one batched event-ID odds request, plus a matching Polymarket batch. The direct windowed request is a recovery path, not a duplicate: it runs only when `/events` is empty or at least one listed event is absent from the event-ID odds response, and Polymarket mirrors that fallback when it runs. Event IDs are batched in groups of 50, so unusually large slates can cost more. Quota selection reserves the two-call fallback maximum for both the US and Polymarket requests before starting a baseball fetch.
+For MLB and KBO, `/events` is free. A typical non-empty slate needs one batched event-ID odds request. The direct windowed request is a recovery path, not a duplicate: it runs only when `/events` is empty or at least one listed event is absent from the event-ID odds response. Event IDs are batched in groups of 50, so unusually large slates can cost more. Quota selection reserves the two-call fallback maximum before starting a baseball fetch.
 
-The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, baseball batch counts, and whether Polymarket fits above the reserve. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
+The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
 At the five-minute cadence, the September-active EPL, NFL, NCAAF, WNBA, MLB,
-and KBO profiles normally cost 34 credits per run after NFL preseason ends
-(about double the previous US-only 17): about 9,792 credits per day or
-293,760 in a 30-day month. A baseball recovery fallback can raise a run to
-46 credits. A 100,000-credit plan therefore cannot sustain every active
-league every five minutes for a full month, even when no requests are wasted.
-Historical acquisition must still leave its separately reviewed live-odds
-reserve; this repository never spends historical credits or weakens the
-provider-reported quota gate.
+and KBO profiles normally cost 17 credits per run after NFL preseason ends:
+about 4,896 credits per day or 146,880 in a 30-day month. A baseball recovery
+fallback can raise a run to 23 credits. A 100,000-credit plan therefore cannot
+sustain every active league every five minutes for a full month, even when no
+requests are wasted. Historical acquisition must still leave its separately
+reviewed live-odds reserve; this repository never spends historical credits or
+weakens the provider-reported quota gate.
 
 The source freshness objective is a successful per-league attempt no more than
 10 minutes old: one five-minute collection interval plus one interval of
@@ -186,7 +190,7 @@ curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.js
 
 ## Data model
 
-League files are arrays of The Odds API game objects. Direct responses retain the API shape; windowed baseball responses are merged and de-duplicated without reshaping individual game objects. When Polymarket is available for the same event id, it is upserted into that game's `bookmakers` array as `"key": "polymarket"` and may include `sid` / bet-limit fields from `includeSids` and `includeBetLimits`:
+League files are arrays of The Odds API game objects. Direct responses retain the API shape; windowed baseball responses are merged and de-duplicated without reshaping individual game objects. When Gamma has a matching game, Polymarket is upserted into that game's `bookmakers` array as `"key": "polymarket"`. Outcome names use the Odds API home/away (and soccer `Draw`) labels. Outcome `sid` is the Polymarket CLOB token for that selection:
 
 ```json
 [

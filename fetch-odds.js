@@ -5,7 +5,11 @@ const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
 const DEFAULT_REGIONS = 'us';
 const POLYMARKET_BOOKMAKER_KEY = 'polymarket';
-const POLYMARKET_REGION = 'us_ex';
+const GAMMA_API_BASE = 'https://gamma-api.polymarket.com';
+const GAMMA_EVENTS_PAGE_SIZE = 100;
+const GAMMA_EVENTS_MAX_PAGES = 20;
+const GAMMA_MATCH_WINDOW_MS = 6 * 60 * 60 * 1000;
+const GAMMA_PRIMARY_SLUG = /^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-\d{4}-\d{2}-\d{2}$/;
 const parsedOddsApiTimeoutMs = Number.parseInt(
   process.env.ODDS_API_TIMEOUT_MS || '15000',
   10
@@ -41,19 +45,28 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
     slateLabel: 'Korea slate window'
   }
 };
+const GAMMA_SERIES_BY_SPORT_KEY = {
+  soccer_fifa_world_cup: '11433',
+  soccer_epl: '10188',
+  [NFL_REGULAR_SPORT_KEY]: '12185',
+  [NFL_PRESEASON_SPORT_KEY]: '12185',
+  americanfootball_ncaaf: '12756',
+  basketball_wnba: '10105',
+  [MLB_SPORT_KEY]: '3',
+  [KBO_SPORT_KEY]: '10370'
+};
 
 // The workflow cron wakes the script this often; fetchEveryMinutes values are
 // multiples of it. The Odds API bills 1 credit per market, per region, per
-// request (World Cup h2h,totals x us = 2 credits). bookmakers=polymarket is a
-// second paid request that bills like another region, so the same World Cup
-// fetch is 4 credits when Polymarket is included.
+// request (World Cup h2h,totals x us = 2 credits). Polymarket is read from
+// Gamma for free and does not add Odds API credits.
 const RUN_EVERY_MIN = 5;
 
 // Per-sport config. See README "Scheduling & quota" for the gating model.
 //   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
 //   cadence: fetchEveryMinutes (min minutes between fetches)
-//   markets/regions plus a mirrored bookmakers=polymarket request determine
-//   the estimated API credit cost
+//   markets/regions determine the estimated Odds API credit cost. Polymarket
+//   is merged from Gamma and is not part of that estimate.
 const SPORTS = [
   {
     sport: 'FIFA World Cup', sportKey: 'soccer_fifa_world_cup', fileName: 'worldcup',
@@ -123,23 +136,12 @@ function countCsvValues(value) {
     .length;
 }
 
-function estimateUsCredits(sport) {
+function estimateCredits(sport) {
   const paidRequests = (sport.estimatedPaidRequests || 1)
     + (sport.includePreseason ? 1 : 0);
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
     * paidRequests;
-}
-
-function estimatePolymarketCredits(sport) {
-  // bookmakers=polymarket bills like another region: 1 credit per market per
-  // paid request. Omit it only when this run cannot cover US + Polymarket.
-  if (sport.includePolymarket === false) return 0;
-  return estimateUsCredits(sport);
-}
-
-function estimateCredits(sport) {
-  return estimateUsCredits(sport) + estimatePolymarketCredits(sport);
 }
 
 function readNumberHeader(headers, name) {
@@ -335,9 +337,9 @@ function upsertBookmaker(bookmakers, book) {
   return next;
 }
 
-// Union Polymarket onto this run's US-region games. Unlike mergeOddsGames,
-// matching event ids keep the US skeleton (commence_time, teams, sport_key,
-// existing books) and only upsert bookmaker key "polymarket".
+// Union a Polymarket book onto this run's US-region games by Odds API event id.
+// Matching ids keep the US skeleton (commence_time, teams, sport_key, existing
+// books) and only upsert bookmaker key "polymarket".
 function mergePolymarketBookmakers(usGames, ...polymarketFeeds) {
   const polymarketById = new Map();
   polymarketFeeds.forEach(feed => {
@@ -367,8 +369,378 @@ function mergePolymarketBookmakers(usGames, ...polymarketFeeds) {
   });
 }
 
-function shouldFetchPolymarket(config) {
-  return config.includePolymarket !== false;
+function parseJsonField(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value !== 'string' || value.trim() === '') return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function requestedMarketSet(markets) {
+  return new Set(
+    String(markets || 'h2h')
+      .split(',')
+      .map(value => value.trim())
+      .filter(Boolean)
+  );
+}
+
+function parseTimestampMs(value) {
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function isoTimestamp(value = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return formatOddsApiIso(new Date());
+  return formatOddsApiIso(date);
+}
+
+function normalizeName(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[.'’]/g, '')
+    .replace(/[()]/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function gammaTeamLabels(team) {
+  const name = String(team?.name || '').trim();
+  const alias = String(team?.alias || '').trim();
+  const abbreviation = String(team?.abbreviation || '').trim();
+  const labels = [name, alias, abbreviation];
+  if (alias && name && normalizeName(alias) !== normalizeName(name)) {
+    labels.push(`${alias} ${name}`);
+    const aliasWithoutParen = alias.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+    if (aliasWithoutParen && aliasWithoutParen !== alias) {
+      labels.push(`${aliasWithoutParen} ${name}`);
+    }
+  }
+  return labels.filter(Boolean);
+}
+
+function teamMatches(oddsName, gammaTeam) {
+  const odds = normalizeName(oddsName);
+  if (!odds) return false;
+  return gammaTeamLabels(gammaTeam).some(label => {
+    const normalized = normalizeName(label);
+    if (!normalized) return false;
+    if (odds === normalized) return true;
+    if (normalized.split(' ').length >= 2 && odds.startsWith(`${normalized} `)) return true;
+    return odds.split(' ').length >= 2 && normalized.startsWith(`${odds} `);
+  });
+}
+
+function pairGammaTeams(game, gammaTeams) {
+  const teams = Array.isArray(gammaTeams) ? gammaTeams.filter(Boolean) : [];
+  if (teams.length !== 2) return null;
+  const homeMatches = teams.filter(team => teamMatches(game.home_team, team));
+  const awayMatches = teams.filter(team => teamMatches(game.away_team, team));
+  if (homeMatches.length !== 1 || awayMatches.length !== 1) return null;
+  if (homeMatches[0] === awayMatches[0]) return null;
+  return { home: homeMatches[0], away: awayMatches[0] };
+}
+
+function isPrimaryGammaGameEvent(event) {
+  const slug = String(event?.slug || '');
+  const teams = Array.isArray(event?.teams) ? event.teams : [];
+  return GAMMA_PRIMARY_SLUG.test(slug) && teams.length === 2;
+}
+
+function probabilityToAmerican(probability) {
+  const value = Number(probability);
+  if (!(value > 0) || !(value < 1)) return null;
+  const clamped = Math.min(0.999, Math.max(0.001, value));
+  if (clamped >= 0.5) return Math.round((-clamped / (1 - clamped)) * 100);
+  return Math.round(((1 - clamped) / clamped) * 100);
+}
+
+function yesNoProbability(market) {
+  if (Number.isFinite(market?.bestBid) && Number.isFinite(market?.bestAsk)) {
+    return (Number(market.bestBid) + Number(market.bestAsk)) / 2;
+  }
+  const outcomes = parseJsonField(market?.outcomes).map(value => String(value));
+  const prices = parseJsonField(market?.outcomePrices).map(Number);
+  const yesIndex = outcomes.findIndex(name => name.toLowerCase() === 'yes');
+  const index = yesIndex >= 0 ? yesIndex : 0;
+  return prices[index];
+}
+
+function yesNoToken(market) {
+  const outcomes = parseJsonField(market?.outcomes).map(value => String(value));
+  const tokens = parseJsonField(market?.clobTokenIds).map(value => String(value));
+  const yesIndex = outcomes.findIndex(name => name.toLowerCase() === 'yes');
+  const index = yesIndex >= 0 ? yesIndex : 0;
+  return tokens[index] || null;
+}
+
+function isYesNoOutcomes(outcomes) {
+  const names = outcomes.map(value => String(value).toLowerCase());
+  return names.length === 2 && names.includes('yes') && names.includes('no');
+}
+
+function isDrawMarket(market) {
+  const title = String(market?.groupItemTitle || '');
+  const question = String(market?.question || '');
+  return /\bdraw\b/i.test(title) || /\bdraw\b/i.test(question);
+}
+
+function mapOutcomeNameToUs(outcomeName, pairing, game) {
+  const name = String(outcomeName || '');
+  if (/^over$/i.test(name)) return 'Over';
+  if (/^under$/i.test(name)) return 'Under';
+  if (teamMatches(name, pairing.home) || normalizeName(name) === normalizeName(game.home_team)) {
+    return game.home_team;
+  }
+  if (teamMatches(name, pairing.away) || normalizeName(name) === normalizeName(game.away_team)) {
+    return game.away_team;
+  }
+  return null;
+}
+
+function buildPricedOutcome(name, probability, sid, point) {
+  const price = probabilityToAmerican(probability);
+  if (price == null || !name) return null;
+  const outcome = { name, price };
+  if (sid) outcome.sid = sid;
+  if (point != null && Number.isFinite(Number(point))) outcome.point = Number(point);
+  return outcome;
+}
+
+function twoWayOutcomes(market, pairing, game, { swapPoints = false } = {}) {
+  const names = parseJsonField(market?.outcomes);
+  const prices = parseJsonField(market?.outcomePrices).map(Number);
+  const tokens = parseJsonField(market?.clobTokenIds).map(value => String(value));
+  const line = Number(market?.line);
+  const hasLine = Number.isFinite(line);
+  const outcomes = [];
+  for (let index = 0; index < names.length; index += 1) {
+    const usName = mapOutcomeNameToUs(names[index], pairing, game);
+    if (!usName) return null;
+    let point;
+    if (hasLine && swapPoints) {
+      point = index === 0 ? line : -line;
+    }
+    const outcome = buildPricedOutcome(usName, prices[index], tokens[index], point);
+    if (!outcome) continue;
+    outcomes.push(outcome);
+  }
+  return outcomes;
+}
+
+function pickBalancedMarket(markets, type) {
+  const candidates = (Array.isArray(markets) ? markets : [])
+    .filter(market => market?.sportsMarketType === type && market?.closed !== true)
+    .map(market => {
+      const prices = parseJsonField(market.outcomePrices).map(Number);
+      const probability = prices.find(value => Number.isFinite(value) && value > 0 && value < 1);
+      return { market, probability };
+    })
+    .filter(item => Number.isFinite(item.probability));
+  if (candidates.length === 0) return null;
+  candidates.sort((left, right) => (
+    Math.abs(left.probability - 0.5) - Math.abs(right.probability - 0.5)
+  ));
+  return candidates[0].market;
+}
+
+function buildGammaH2hMarket(event, pairing, game) {
+  const markets = Array.isArray(event?.markets) ? event.markets : [];
+  const moneylines = markets.filter(market => (
+    market?.sportsMarketType === 'moneyline' && market?.closed !== true
+  ));
+  const yesNoMarkets = moneylines.filter(market => isYesNoOutcomes(parseJsonField(market.outcomes)));
+  const twoWayMarkets = moneylines.filter(market => !isYesNoOutcomes(parseJsonField(market.outcomes)));
+
+  if (yesNoMarkets.length >= 2) {
+    const outcomes = [];
+    yesNoMarkets.forEach(market => {
+      if (isDrawMarket(market)) {
+        const outcome = buildPricedOutcome('Draw', yesNoProbability(market), yesNoToken(market));
+        if (outcome) outcomes.push(outcome);
+        return;
+      }
+      const title = market.groupItemTitle || market.question || '';
+      const usName = mapOutcomeNameToUs(title, pairing, game)
+        || (teamMatches(title, pairing.home) ? game.home_team : null)
+        || (teamMatches(title, pairing.away) ? game.away_team : null);
+      const outcome = buildPricedOutcome(usName, yesNoProbability(market), yesNoToken(market));
+      if (outcome) outcomes.push(outcome);
+    });
+    const unique = [];
+    const seen = new Set();
+    outcomes.forEach(outcome => {
+      if (seen.has(outcome.name)) return;
+      seen.add(outcome.name);
+      unique.push(outcome);
+    });
+    if (unique.length < 2) return null;
+    return { key: 'h2h', last_update: isoTimestamp(), outcomes: unique };
+  }
+
+  const twoWay = twoWayMarkets[0];
+  if (!twoWay) return null;
+  const outcomes = twoWayOutcomes(twoWay, pairing, game);
+  if (!outcomes || outcomes.length < 2) return null;
+  return { key: 'h2h', last_update: isoTimestamp(), outcomes };
+}
+
+function buildGammaSideMarket(event, pairing, game, type) {
+  const market = pickBalancedMarket(event?.markets, type);
+  if (!market) return null;
+  const outcomes = type === 'totals'
+    ? twoWayOutcomes(market, pairing, game)
+    : twoWayOutcomes(market, pairing, game, { swapPoints: true });
+  if (!outcomes || outcomes.length < 2) return null;
+  if (type === 'totals') {
+    const line = Number(market.line);
+    if (!Number.isFinite(line)) return null;
+    if (!outcomes.every(outcome => outcome.name === 'Over' || outcome.name === 'Under')) {
+      return null;
+    }
+    return {
+      key: type,
+      last_update: isoTimestamp(),
+      outcomes: outcomes.map(outcome => ({ ...outcome, point: line }))
+    };
+  }
+  if (!outcomes.every(outcome => Number.isFinite(outcome.point))) return null;
+  return { key: type, last_update: isoTimestamp(), outcomes };
+}
+
+function gammaEventToPolymarketBook(event, game, markets) {
+  const pairing = pairGammaTeams(game, event?.teams);
+  if (!pairing) return null;
+  const wanted = requestedMarketSet(markets);
+  const bookMarkets = [];
+  if (wanted.has('h2h')) {
+    const h2h = buildGammaH2hMarket(event, pairing, game);
+    if (h2h) bookMarkets.push(h2h);
+  }
+  if (wanted.has('spreads')) {
+    const spreads = buildGammaSideMarket(event, pairing, game, 'spreads');
+    if (spreads) bookMarkets.push(spreads);
+  }
+  if (wanted.has('totals')) {
+    const totals = buildGammaSideMarket(event, pairing, game, 'totals');
+    if (totals) bookMarkets.push(totals);
+  }
+  if (bookMarkets.length === 0) return null;
+  const book = {
+    key: POLYMARKET_BOOKMAKER_KEY,
+    title: 'Polymarket',
+    last_update: isoTimestamp(),
+    markets: bookMarkets
+  };
+  if (event?.id != null) book.sid = String(event.id);
+  return book;
+}
+
+function findMatchingGammaEvent(game, events) {
+  const commenceMs = parseTimestampMs(game?.commence_time);
+  if (commenceMs == null) return null;
+  const matches = [];
+  (Array.isArray(events) ? events : []).forEach(event => {
+    if (!isPrimaryGammaGameEvent(event)) return;
+    if (!pairGammaTeams(game, event.teams)) return;
+    const startMs = parseTimestampMs(event.startTime);
+    if (startMs == null) return;
+    const delta = Math.abs(startMs - commenceMs);
+    if (delta > GAMMA_MATCH_WINDOW_MS) return;
+    matches.push({ event, delta });
+  });
+  if (matches.length === 0) return null;
+  matches.sort((left, right) => left.delta - right.delta);
+  if (matches.length > 1 && matches[1].delta === matches[0].delta) return null;
+  return matches[0].event;
+}
+
+function mergeGammaPolymarketBookmakers(usGames, gammaEvents, markets) {
+  const primaryEvents = (Array.isArray(gammaEvents) ? gammaEvents : [])
+    .filter(isPrimaryGammaGameEvent);
+  const synthetic = (Array.isArray(usGames) ? usGames : [])
+    .map(game => {
+      try {
+        const event = findMatchingGammaEvent(game, primaryEvents);
+        if (!event) return null;
+        const book = gammaEventToPolymarketBook(event, game, markets);
+        if (!book) return null;
+        return { id: game.id, bookmakers: [book] };
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+  return mergePolymarketBookmakers(usGames, synthetic);
+}
+
+function logPolymarketFailure(sport, error) {
+  const status = Number.isInteger(error?.response?.status)
+    ? error.response.status
+    : null;
+  const detail = status ? `${error.message} (HTTP ${status})` : String(error?.message || error);
+  console.warn(
+    `Polymarket odds unavailable for ${sport}; publishing US odds without it (${detail})`
+  );
+}
+
+async function fetchGammaEvents(sportKey, request, commenceRange = {}) {
+  const seriesId = GAMMA_SERIES_BY_SPORT_KEY[sportKey];
+  if (!seriesId) return [];
+
+  const events = [];
+  for (let page = 0; page < GAMMA_EVENTS_MAX_PAGES; page += 1) {
+    const params = {
+      series_id: seriesId,
+      closed: false,
+      active: true,
+      limit: GAMMA_EVENTS_PAGE_SIZE,
+      offset: page * GAMMA_EVENTS_PAGE_SIZE
+    };
+    if (commenceRange.earliest) {
+      const fromMs = parseTimestampMs(commenceRange.earliest);
+      if (fromMs != null) {
+        params.start_time_min = isoTimestamp(new Date(fromMs - GAMMA_MATCH_WINDOW_MS));
+      }
+    }
+    if (commenceRange.latest) {
+      const toMs = parseTimestampMs(commenceRange.latest);
+      if (toMs != null) {
+        params.start_time_max = isoTimestamp(new Date(toMs + GAMMA_MATCH_WINDOW_MS));
+      }
+    }
+    const response = await request(`${GAMMA_API_BASE}/events`, params);
+    const pageEvents = Array.isArray(response?.data) ? response.data : [];
+    events.push(...pageEvents);
+    if (pageEvents.length < GAMMA_EVENTS_PAGE_SIZE) break;
+  }
+  return events;
+}
+
+async function attachGammaPolymarket(sport, sportKey, usGames, markets, request) {
+  const games = Array.isArray(usGames) ? usGames : [];
+  if (games.length === 0 || !GAMMA_SERIES_BY_SPORT_KEY[sportKey]) {
+    return { games, polymarketGameCount: 0 };
+  }
+  try {
+    const gammaEvents = await fetchGammaEvents(sportKey, request, getCommenceTimeRange(games));
+    const merged = mergeGammaPolymarketBookmakers(games, gammaEvents, markets);
+    const polymarketGameCount = merged.filter(
+      game => findBookmaker(game.bookmakers, POLYMARKET_BOOKMAKER_KEY)
+    ).length;
+    console.log(`Merged Polymarket into ${polymarketGameCount}/${merged.length} ${sport} games`);
+    return { games: merged, polymarketGameCount };
+  } catch (error) {
+    logPolymarketFailure(sport, error);
+    return { games, polymarketGameCount: 0 };
+  }
 }
 
 function buildUsOddsParams({
@@ -389,93 +761,6 @@ function buildUsOddsParams({
   if (commenceTimeFrom != null) params.commenceTimeFrom = commenceTimeFrom;
   if (commenceTimeTo != null) params.commenceTimeTo = commenceTimeTo;
   return params;
-}
-
-function buildPolymarketOddsParams(usParams, {
-  includeSidsAndBetLimits = true,
-  includeRegion = true
-} = {}) {
-  const params = {
-    apiKey: usParams.apiKey,
-    bookmakers: POLYMARKET_BOOKMAKER_KEY,
-    markets: usParams.markets,
-    oddsFormat: usParams.oddsFormat || 'american',
-    dateFormat: usParams.dateFormat || 'iso'
-  };
-  // bookmakers=polymarket is the filter. regions=us_ex only satisfies docs/schemas
-  // that still mark regions required. bookmakers takes priority, so this stays one
-  // region of credits and does not pull Kalshi/Novig/ProphetX. Never us,us_ex.
-  if (includeRegion) params.regions = POLYMARKET_REGION;
-  if (usParams.eventIds != null) params.eventIds = usParams.eventIds;
-  if (usParams.commenceTimeFrom != null) params.commenceTimeFrom = usParams.commenceTimeFrom;
-  if (usParams.commenceTimeTo != null) params.commenceTimeTo = usParams.commenceTimeTo;
-  // includeSids is The Odds API source id on an outcome, not a Polymarket CLOB token.
-  if (includeSidsAndBetLimits) {
-    params.includeSids = true;
-    params.includeBetLimits = true;
-  }
-  return params;
-}
-
-function logPolymarketFailure(sport, error) {
-  const status = Number.isInteger(error?.response?.status)
-    ? error.response.status
-    : null;
-  const detail = status ? `${error.message} (HTTP ${status})` : String(error?.message || error);
-  console.warn(
-    `Polymarket odds unavailable for ${sport}; publishing US odds without it (${detail})`
-  );
-}
-
-function getOddsApiErrorCode(error) {
-  const data = error.response?.data;
-  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
-  return data.error_code || null;
-}
-
-function shouldRetryPolymarketClientError(error) {
-  if (error.response?.status !== 400) return false;
-  return getOddsApiErrorCode(error) !== 'INVALID_BOOKMAKERS';
-}
-
-const POLYMARKET_REQUEST_ATTEMPTS = [
-  { includeSidsAndBetLimits: true, includeRegion: true },
-  { includeSidsAndBetLimits: false, includeRegion: true },
-  { includeSidsAndBetLimits: false, includeRegion: false }
-];
-
-async function fetchPolymarketOdds(sport, url, usParams, request) {
-  let lastError = null;
-  for (let index = 0; index < POLYMARKET_REQUEST_ATTEMPTS.length; index += 1) {
-    const attempt = POLYMARKET_REQUEST_ATTEMPTS[index];
-    try {
-      return await request(url, buildPolymarketOddsParams(usParams, attempt));
-    } catch (error) {
-      lastError = error;
-      const next = POLYMARKET_REQUEST_ATTEMPTS[index + 1];
-      if (!next || !shouldRetryPolymarketClientError(error)) {
-        logPolymarketFailure(sport, error);
-        return null;
-      }
-      const reason = attempt.includeSidsAndBetLimits && !next.includeSidsAndBetLimits
-        ? 'retrying without includeSids/includeBetLimits'
-        : 'retrying without regions';
-      console.warn(`Polymarket request rejected for ${sport}; ${reason} (${error.message})`);
-    }
-  }
-  logPolymarketFailure(sport, lastError);
-  return null;
-}
-
-function applyPolymarketMerge(sport, usGames, ...polymarketFeeds) {
-  try {
-    return mergePolymarketBookmakers(usGames, ...polymarketFeeds);
-  } catch (error) {
-    console.warn(
-      `Polymarket merge failed for ${sport}; publishing US odds without it (${error.message})`
-    );
-    return usGames;
-  }
 }
 
 function assertExpectedSportKey(oddsData, sportKey) {
@@ -618,7 +903,10 @@ async function fetchJson(url, params, options = {}) {
 
   try {
     const response = await fetchImpl(buildApiRequestUrl(url, params), {
-      headers: { accept: 'application/json' },
+      headers: {
+        accept: 'application/json',
+        'user-agent': 'odds-fetcher'
+      },
       signal: controller.signal
     });
     const rawBody = await response.text();
@@ -696,32 +984,20 @@ async function fetchProviderStatus() {
 
 function selectSportsWithinQuota(sports, quota) {
   if (!quota || quota.remaining === null) {
-    return {
-      selected: sports.map(sport => ({ ...sport, includePolymarket: true })),
-      skipped: []
-    };
+    return { selected: sports, skipped: [] };
   }
 
   let spendable = quota.remaining - QUOTA_RESERVE_CREDITS;
   const selected = [];
   const skipped = [];
 
-  // Keep every US fetch that fits. Never skip a US request to pay for Polymarket.
   sports.forEach(sport => {
-    const usCredits = estimateUsCredits(sport);
-    if (spendable >= usCredits) {
-      selected.push({ ...sport, includePolymarket: false });
-      spendable -= usCredits;
+    const estimatedCredits = estimateCredits(sport);
+    if (spendable >= estimatedCredits) {
+      selected.push(sport);
+      spendable -= estimatedCredits;
     } else {
-      skipped.push({ sport, estimatedCredits: usCredits });
-    }
-  });
-
-  selected.forEach((sport, index) => {
-    const polymarketCredits = estimateUsCredits(sport);
-    if (spendable >= polymarketCredits) {
-      selected[index] = { ...sport, includePolymarket: true };
-      spendable -= polymarketCredits;
+      skipped.push({ sport, estimatedCredits });
     }
   });
 
@@ -803,50 +1079,15 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
     ? `${missingOddsEventIds.length} ${sport} event(s) returned by /events had no odds after event-id and direct /odds fetches`
     : null;
   const commenceRange = getCommenceTimeRange(oddsData);
-  let polymarketPaidRequests = 0;
-  let polymarketGameCount = 0;
-
-  if (shouldFetchPolymarket(config)) {
-    const polymarketFeeds = [];
-    for (const batch of batches) {
-      polymarketPaidRequests += 1;
-      const polyResponse = await fetchPolymarketOdds(
-        sport,
-        oddsUrl,
-        buildUsOddsParams({
-          markets,
-          regions,
-          eventIds: batch.join(',')
-        }),
-        request
-      );
-      if (!polyResponse) break;
-      latestQuota = parseQuotaHeaders(polyResponse.headers) || latestQuota;
-      polymarketFeeds.push(polyResponse.data);
-    }
-    if (directFallbackUsed) {
-      polymarketPaidRequests += 1;
-      const polyFallback = await fetchPolymarketOdds(
-        sport,
-        oddsUrl,
-        fallbackUsParams,
-        request
-      );
-      if (polyFallback) {
-        latestQuota = parseQuotaHeaders(polyFallback.headers) || latestQuota;
-        polymarketFeeds.push(polyFallback.data);
-      }
-    }
-    if (polymarketFeeds.length > 0) {
-      oddsData = applyPolymarketMerge(sport, oddsData, ...polymarketFeeds);
-      polymarketGameCount = oddsData.filter(
-        game => findBookmaker(game.bookmakers, POLYMARKET_BOOKMAKER_KEY)
-      ).length;
-      console.log(
-        `Merged Polymarket into ${polymarketGameCount}/${oddsData.length} ${sport} games`
-      );
-    }
-  }
+  const gammaMerge = await attachGammaPolymarket(
+    sport,
+    sportKey,
+    oddsData,
+    markets,
+    request
+  );
+  oddsData = gammaMerge.games;
+  const polymarketGameCount = gammaMerge.polymarketGameCount;
 
   if (warning) {
     console.warn(`Warning: ${warning}`);
@@ -862,8 +1103,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
   return {
     sport,
     gameCount: oddsData.length,
-    estimatedCredits: countCsvValues(markets)
-      * (countCsvValues(regions) * usPaidRequests + polymarketPaidRequests),
+    estimatedCredits: countCsvValues(markets) * countCsvValues(regions) * usPaidRequests,
     quota: latestQuota,
     debug: {
       [`${debugPrefix}WindowStart`]: window.commenceTimeFrom,
@@ -922,23 +1162,14 @@ async function fetchNflOdds(config, dependencies = {}) {
   let latestQuota = parseQuotaHeaders(preseasonResponse?.headers)
     || parseQuotaHeaders(regularResponse.headers);
 
-  if (shouldFetchPolymarket(config)) {
-    const [regularPoly, preseasonPoly] = await Promise.all([
-      fetchPolymarketOdds(sport, regularUrl, requestParams, request),
-      includePreseason
-        ? fetchPolymarketOdds(sport, preseasonUrl, requestParams, request)
-        : Promise.resolve(null)
-    ]);
-    latestQuota = parseQuotaHeaders(preseasonPoly?.headers)
-      || parseQuotaHeaders(regularPoly?.headers)
-      || latestQuota;
-    const polymarketFeeds = [];
-    if (regularPoly) polymarketFeeds.push(regularPoly.data);
-    if (preseasonPoly) polymarketFeeds.push(preseasonPoly.data);
-    if (polymarketFeeds.length > 0) {
-      oddsData = applyPolymarketMerge(sport, oddsData, ...polymarketFeeds);
-    }
-  }
+  const gammaMerge = await attachGammaPolymarket(
+    sport,
+    sportKey,
+    oddsData,
+    markets,
+    request
+  );
+  oddsData = gammaMerge.games;
 
   const filePath = path.join(ODDS_DIR, `${fileName}.json`);
   writeFile(filePath, JSON.stringify(oddsData, null, 2));
@@ -995,13 +1226,14 @@ async function fetchOdds(config, dependencies = {}) {
     console.log(`Fetched ${oddsData.length} ${sport} games with odds`);
 
     let latestQuota = parseQuotaHeaders(response.headers);
-    if (shouldFetchPolymarket(config)) {
-      const polyResponse = await fetchPolymarketOdds(sport, oddsUrl, usParams, request);
-      if (polyResponse) {
-        latestQuota = parseQuotaHeaders(polyResponse.headers) || latestQuota;
-        oddsData = applyPolymarketMerge(sport, oddsData, polyResponse.data);
-      }
-    }
+    const gammaMerge = await attachGammaPolymarket(
+      sport,
+      sportKey,
+      oddsData,
+      markets,
+      request
+    );
+    oddsData = gammaMerge.games;
 
     const filePath = path.join(ODDS_DIR, `${fileName}.json`);
     writeFile(filePath, JSON.stringify(oddsData, null, 2));
@@ -1119,13 +1351,6 @@ async function fetchAllOdds() {
         `Skipping ${sport.sport}: needs ${estimatedCredits} credits and reserve is ${QUOTA_RESERVE_CREDITS}`
       );
     });
-    quotaAllowed.forEach(sport => {
-      if (sport.includePolymarket === false) {
-        console.log(
-          `Skipping Polymarket for ${sport.sport}: remaining quota cannot cover the extra request`
-        );
-      }
-    });
 
     if (quotaAllowed.length === 0) {
       console.log('No due sports fit within the remaining quota reserve. No paid API quota used.');
@@ -1199,12 +1424,11 @@ if (require.main === module) {
 
 module.exports = {
   DEFAULT_REGIONS,
+  GAMMA_SERIES_BY_SPORT_KEY,
   POLYMARKET_BOOKMAKER_KEY,
-  POLYMARKET_REGION,
   SPORTS,
   assertExpectedSportKey,
   buildApiRequestUrl,
-  buildPolymarketOddsParams,
   buildSummarySport,
   buildUsOddsParams,
   countNflGamesByFeed,
@@ -1212,13 +1436,17 @@ module.exports = {
   fetchJson,
   fetchNflOdds,
   fetchOdds,
+  isPrimaryGammaGameEvent,
   isSportActive,
   isSportDue,
   isPreseasonActive,
+  mergeGammaPolymarketBookmakers,
   mergeOddsGames,
   mergePolymarketBookmakers,
   needsBaseballDirectFallback,
   parseAvailableSportKeys,
+  probabilityToAmerican,
   RUN_EVERY_MIN,
-  selectSportsWithinQuota
+  selectSportsWithinQuota,
+  teamMatches
 };
