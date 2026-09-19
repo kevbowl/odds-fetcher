@@ -20,6 +20,130 @@ curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary
 
 Each league file is an [Odds API v4](https://the-odds-api.com/liveapi/guides/v4/) event array. Timestamps are ISO 8601 UTC. A successful per-league fetch is attempted every five minutes in season; treat `lastFetched` in `odds/summary.json` as the source of truth, not the Git commit time. Files are rewritten only when contents change.
 
+## Example payloads
+
+Live files include every US-region sportsbook. The excerpts below keep one US book plus Polymarket so the join is obvious. Prices move; copy structure, not these numbers.
+
+**NFL** (`h2h`, spreads, totals). Polymarket outcome `sid` is the CLOB token; book `sid` is the Gamma event id.
+
+```json
+{
+  "id": "0283a29e1b38ef78b29b904fd56a16dd",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-20T17:00:00Z",
+  "home_team": "Chicago Bears",
+  "away_team": "Minnesota Vikings",
+  "bookmakers": [
+    {
+      "key": "draftkings",
+      "title": "DraftKings",
+      "last_update": "2026-09-19T09:52:59Z",
+      "markets": [
+        {
+          "key": "h2h",
+          "outcomes": [
+            {"name": "Chicago Bears", "price": -205},
+            {"name": "Minnesota Vikings", "price": 170}
+          ]
+        },
+        {
+          "key": "spreads",
+          "outcomes": [
+            {"name": "Chicago Bears", "price": -110, "point": -4.5},
+            {"name": "Minnesota Vikings", "price": -110, "point": 4.5}
+          ]
+        },
+        {
+          "key": "totals",
+          "outcomes": [
+            {"name": "Over", "price": -110, "point": 48.5},
+            {"name": "Under", "price": -110, "point": 48.5}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "polymarket",
+      "title": "Polymarket",
+      "last_update": "2026-09-19T09:55:24Z",
+      "sid": "827181",
+      "markets": [
+        {
+          "key": "h2h",
+          "outcomes": [
+            {"name": "Minnesota Vikings", "price": 199, "sid": "14179870506260397153360889305482131481742900211448738393022157488041699646758"},
+            {"name": "Chicago Bears", "price": -199, "sid": "87419678683693163900726344026250582268274683976262936197752440741634418461512"}
+          ]
+        },
+        {
+          "key": "spreads",
+          "outcomes": [
+            {"name": "Chicago Bears", "price": 102, "sid": "5336290554606110173497389487867652338741637743197066362266388025938735836464", "point": -4.5},
+            {"name": "Minnesota Vikings", "price": -102, "sid": "64681445124749753063425190177509719812527301014672174782673511576640338135021", "point": 4.5}
+          ]
+        },
+        {
+          "key": "totals",
+          "outcomes": [
+            {"name": "Over", "price": -106, "sid": "76363249597109605412887381146535562542163672373714852310023988938354295936970", "point": 47.5},
+            {"name": "Under", "price": 106, "sid": "42795583281594762287054165249968120202790415790036742373415970962917593606241", "point": 47.5}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Premier League** (three-way `h2h` with `Draw`). Soccer files do not include spreads.
+
+```json
+{
+  "id": "d02ff636f652d5b5bb65f6b24330c4fe",
+  "sport_key": "soccer_epl",
+  "sport_title": "EPL",
+  "commence_time": "2026-09-19T11:30:00Z",
+  "home_team": "Tottenham Hotspur",
+  "away_team": "Aston Villa",
+  "bookmakers": [
+    {
+      "key": "fanduel",
+      "title": "FanDuel",
+      "last_update": "2026-09-19T09:55:03Z",
+      "markets": [
+        {
+          "key": "h2h",
+          "outcomes": [
+            {"name": "Aston Villa", "price": 300},
+            {"name": "Tottenham Hotspur", "price": -110},
+            {"name": "Draw", "price": 260}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "polymarket",
+      "title": "Polymarket",
+      "last_update": "2026-09-19T09:55:24Z",
+      "sid": "973629",
+      "markets": [
+        {
+          "key": "h2h",
+          "outcomes": [
+            {"name": "Tottenham Hotspur", "price": -102, "sid": "110224733210041131679014459885672088479785652252594597634309518568227972935874"},
+            {"name": "Draw", "price": 277, "sid": "112472234277593329441809935457825874883960516422397922796962048352846886451118"},
+            {"name": "Aston Villa", "price": 308, "sid": "27524852841755679662782494694835026990013491277928016488550923195502712855061"}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+A game with no Gamma match has US books only: no `"key": "polymarket"` entry.
+
 ## How a snapshot is built
 
 ```text
@@ -142,50 +266,7 @@ The gate uses the reserved column, not typical spend. Selecting every September 
 
 ## Data model
 
-US sportsbooks keep the Odds API shape. Polymarket, when matched, is one extra bookmaker on that game:
-
-```json
-{
-  "id": "game_id",
-  "sport_key": "americanfootball_nfl",
-  "sport_title": "NFL",
-  "commence_time": "2026-09-15T20:00:00Z",
-  "home_team": "Home Team",
-  "away_team": "Away Team",
-  "bookmakers": [
-    {
-      "key": "draftkings",
-      "title": "DraftKings",
-      "last_update": "2026-09-15T18:00:00Z",
-      "markets": [
-        {
-          "key": "h2h",
-          "outcomes": [
-            {"name": "Home Team", "price": -110},
-            {"name": "Away Team", "price": -110}
-          ]
-        }
-      ]
-    },
-    {
-      "key": "polymarket",
-      "title": "Polymarket",
-      "last_update": "2026-09-15T18:00:00Z",
-      "sid": "gamma_event_id",
-      "markets": [
-        {
-          "key": "h2h",
-          "last_update": "2026-09-15T18:00:00Z",
-          "outcomes": [
-            {"name": "Home Team", "price": -150, "sid": "clob_token_id"},
-            {"name": "Away Team", "price": 130, "sid": "clob_token_id"}
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+League files are Odds API v4 event arrays. US books keep that shape. When Gamma matches, `"key": "polymarket"` is one more bookmaker on the same game (see [Example payloads](#example-payloads)). Outcome names on that book use the Odds API home/away labels (and soccer `Draw`). Outcome `sid` is the Polymarket CLOB token; book `sid` is the Gamma event id.
 
 `odds/summary.json` is the freshness record:
 
