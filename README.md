@@ -8,28 +8,56 @@ Odds Fetcher collects US sportsbook lines from [The Odds API](https://the-odds-a
 ## How it works
 
 ```text
-+--------------------+    +--------------------+    +--------------------+
-| cron-job.org       | -> | GitHub Actions     | -> | The Odds API       |
-| every 5 min        |    | workflow dispatch  |    | US sportsbooks     |
-+--------------------+    +--------------------+    +--------------------+
-                                                              |
-                                                              |  +--------------------+
-                                                              |  | Polymarket Gamma   |
-                                                              |  | (free, no key)     |
-                                                              |  +--------------------+
-                                                              |           |
-                                                              v           v
-                                                    +--------------------+
-                                                    | GitHub odds repo   |
-                                                    | one file / league  |
-                                                    +--------------------+
-                                                              |
-                                                              v
-                                                    +--------------------+
-                                                    | Prophet            |
-                                                    | live odds +        |
-                                                    | odds snapshots     |
-                                                    +--------------------+
+                          +------------------+
+                          | cron-job.org     |
+                          | POST every 5 min |
+                          +--------+---------+
+                                   |
+                                   v
+                          +------------------+
+                          | GitHub Actions   |
+                          | checkout main    |
+                          +--------+---------+
+                                   |
+                                   v
+                          +------------------+
+                          | fetch-odds.js    |
+                          | /sports quota    |
+                          +--------+---------+
+                                   |
+                    +-----yes------+------no------+
+                    |                             |
+                    v                             v
+           +------------------+          +------------------+
+           | Odds API /odds   |          | Leave last       |
+           | regions=us paid  |          | snapshot         |
+           +--------+---------+          +--------+---------+
+                    |                             |
+                    v                             |
+           +------------------+                   |
+           | Gamma /events    |                   |
+           | free, no key     |                   |
+           +--------+---------+                   |
+                    |                             |
+                    v                             |
+           +------------------+                   |
+           | Match + upsert   |                   |
+           | key: polymarket  |                   |
+           +--------+---------+                   |
+                    |                             |
+                    v                             |
+           +------------------+                   |
+           | odds/*.json      |                   |
+           | commit on change |                   |
+           +--------+---------+                   |
+                    |                             |
+                    +--------------+--------------+
+                                   |
+                                   v
+                          +------------------+
+                          | Prophet          |
+                          | live + snapshots |
+                          +------------------+
 ```
 
 cron-job.org dispatches the GitHub Actions workflow. On each run, the fetcher decides which leagues are active, due, and within the available API quota. Successful results are written to `odds/` and committed only when the generated files change.
