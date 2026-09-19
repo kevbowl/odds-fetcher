@@ -3,9 +3,24 @@
 [![GitHub Actions](https://github.com/kevbowl/odds-fetcher/workflows/Fetch%20Odds%20Cron/badge.svg)](https://github.com/kevbowl/odds-fetcher/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Odds Fetcher collects US sportsbook lines from [The Odds API](https://the-odds-api.com/) and Polymarket prices from [Gamma](https://docs.polymarket.com/), stores one JSON file per league, and uses Git history as the snapshot archive for Prophet's steam-detection pipeline.
+Current US sportsbook lines from [The Odds API](https://the-odds-api.com/) with Polymarket prices from [Gamma](https://docs.polymarket.com/) merged onto the same games. One public JSON file per league; Git history is the snapshot archive.
 
-## How it works
+## Get the data
+
+```text
+https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
+```
+
+`file` is `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `mlb`, `kbo`, or `summary`.
+
+```bash
+curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
+curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.json
+```
+
+Each league file is an [Odds API v4](https://the-odds-api.com/liveapi/guides/v4/) event array. Timestamps are ISO 8601 UTC. A successful per-league fetch is attempted every five minutes in season; treat `lastFetched` in `odds/summary.json` as the source of truth, not the Git commit time. Files are rewritten only when contents change.
+
+## How a snapshot is built
 
 ```text
                           +------------------+
@@ -55,205 +70,128 @@ Odds Fetcher collects US sportsbook lines from [The Odds API](https://the-odds-a
                                    |
                                    v
                           +------------------+
-                          | Prophet          |
-                          | live + snapshots |
+                          | GitHub           |
+                          | JSON + history   |
                           +------------------+
 ```
 
-cron-job.org dispatches the GitHub Actions workflow. On each run, the fetcher decides which leagues are active, due, and within the available API quota. Successful results are written to `odds/` and committed only when the generated files change.
+The Odds API US response is the skeleton: event ids, teams, kickoff, and sportsbook books. Gamma is read afterward and merged onto those games. A skipped or unchanged run leaves the last committed files in place.
 
 ## Coverage
 
-All timestamps returned by the API remain in ISO 8601 UTC format.
-
-| League | API sport key | Active window | Collection scope | Output |
+| League | Sport key | Active window (UTC) | Collection | Output |
 |---|---|---|---|---|
-| FIFA World Cup | `soccer_fifa_world_cup` | Jun 7-Jul 20, 2026 | All available events | `odds/worldcup.json` |
-| Premier League | `soccer_epl` | Aug-May | All available events | `odds/epl.json` |
-| NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug-Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
-| NCAA Football | `americanfootball_ncaaf` | Aug-Jan | All available events | `odds/ncaaf.json` |
-| WNBA | `basketball_wnba` | May-Oct | All available events | `odds/wnba.json` |
-| MLB | `baseball_mlb` | Mar-Oct | Current and next New York-local slate | `odds/mlb.json` |
-| KBO | `baseball_kbo` | Mar-Nov | Current and next Korea-local slate | `odds/kbo.json` |
+| FIFA World Cup | `soccer_fifa_world_cup` | 7 Jun 2026 00:00 until 20 Jul 2026 00:00 | All available events | `odds/worldcup.json` |
+| Premier League | `soccer_epl` | Aug–May | All available events | `odds/epl.json` |
+| NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug–Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
+| NCAA Football | `americanfootball_ncaaf` | Aug–Jan | All available events | `odds/ncaaf.json` |
+| WNBA | `basketball_wnba` | May–Oct | All available events | `odds/wnba.json` |
+| MLB | `baseball_mlb` | Mar–Oct | Current and next New York–local slate | `odds/mlb.json` |
+| KBO | `baseball_kbo` | Mar–Nov | Current and next Korea–local slate | `odds/kbo.json` |
 
-Market profiles are defined once and shared by league configuration:
+Season months are UTC. World Cup uses a closed-open UTC window.
 
-- **Standard:** `h2h,spreads,totals` for both NFL feeds, NCAA Football, WNBA, MLB, and KBO.
-- **Soccer:** `h2h,totals` for the FIFA World Cup and Premier League. Soccer `h2h` is a three-way market that includes `Draw`. Premier League events are written only to `odds/epl.json`; every event `sport_key` must be `soccer_epl`.
+**Markets**
 
-Each league file remains a single Odds API v4 event array. Sportsbook lines come from The Odds API `regions=us` request with no `bookmakers=` filter, so DraftKings, FanDuel, Pinnacle, and the rest of the US region are unchanged. Polymarket is read from Polymarket Gamma (no API key, no Odds API credits) and upserted onto those same games as `"key": "polymarket"`. It is not a second tape and is not written under `odds/polymarket/`. Gamma events are matched to Odds API games by both teams and kickoff (within six hours); prop markets and Gamma-only games are ignored. If Gamma is down or a match is ambiguous, the run still publishes this snapshot's US games without a `polymarket` bookmaker. Outcome `sid` values on the Polymarket book are Polymarket CLOB token ids.
+- **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, WNBA, MLB, KBO.
+- **Soccer** (`h2h,totals`): World Cup and Premier League. Soccer `h2h` is three-way and includes `Draw`. Premier League is written only to `odds/epl.json`; every event `sport_key` is `soccer_epl`.
 
-MLB and KBO use league-local windows (`America/New_York` and `Asia/Seoul`). The fetcher requests the free event list and then fetches odds by event ID. A direct windowed odds request runs only as a recovery fallback when the event list is empty or the event-ID response is incomplete. Results are de-duplicated by event ID and written in the same response shape used by the other leagues.
+**NFL.** Regular-season and preseason feeds are combined, de-duplicated by event id, and sorted by `commence_time` then id. Each game keeps its provider `sport_key`. The free `/sports` response decides whether preseason is polled; if that check fails, polling is limited to 1 Aug through 9 Sep UTC. Both required US requests must succeed before `odds/nfl.json` is replaced. Polymarket is merged after that publish gate and cannot block it.
 
-The NFL output combines the regular-season and preseason feeds, de-duplicates
-by provider event ID, and sorts by `commence_time` and then event ID. Each game
-keeps its provider `sport_key`. The no-cost `/sports` response controls whether
-the preseason endpoint is polled. If that availability check fails, polling is
-bounded to August 1 through September 9 UTC. Both required NFL US requests must
-succeed before the existing `odds/nfl.json` snapshot is replaced. Polymarket is
-merged afterward and cannot block that publish.
+**MLB and KBO.** Windows are league-local (`America/New_York`, `Asia/Seoul`). The fetcher uses the free `/events` list, then odds by event id. A direct windowed `/odds` call runs only when `/events` is empty or at least one listed event is missing from the event-id response. Results are de-duplicated by event id and keep the same object shape as the other leagues.
+
+## Polymarket
+
+Polymarket is not a second tape and is not stored under `odds/polymarket/`. It is the `"key": "polymarket"` book on the same Odds API game objects.
+
+After the US sportsbook request succeeds, the fetcher pages Gamma `/events` for that league (no API key, no Odds API credits). A Gamma event is attached only when all of the following hold:
+
+1. It is a primary game market (props are ignored).
+2. Both Gamma teams match the Odds API home and away names.
+3. Gamma start time is within six hours of `commence_time`.
+4. Exactly one Gamma event wins that match.
+
+On a hit, Polymarket is upserted onto that game. Outcome names use the Odds API home/away labels (and soccer `Draw`). Gamma probabilities are converted to American odds. Outcome `sid` is the Polymarket CLOB token for that selection; book `sid` is the Gamma event id.
+
+On a miss, an ambiguous match, or a Gamma failure, the US books still publish and any previous `polymarket` book on that game is removed so the snapshot does not carry stale prediction-market prices. Gamma-only events never appear.
 
 ## Scheduling and quota
 
-### Fetch gating
+A league is fetched on a dispatch only when it is in season, at least five minutes have passed since its successful `lastFetched`, and the estimated Odds API cost fits above the reserve. `FORCE_FETCH=true` skips the elapsed-time check. It does not skip season or quota checks.
 
-The external cron-job.org dispatcher and the repository's league fetch intervals use the production cadence shown above. On each dispatch, a league is fetched only when all three conditions are true:
+### Credits
 
-1. The league is inside its configured active window.
-2. At least its configured interval has elapsed since `lastFetched` in `odds/summary.json`.
-3. The estimated request cost fits above the configured quota reserve.
+The Odds API bills **1 credit per market, per region, per paid `/odds` request**. This project uses `regions=us` and does not set `bookmakers=`. `/sports` and baseball `/events` are free. Gamma does not use Odds API credits. This job never calls the historical Odds API.
 
-`FORCE_FETCH=true` bypasses the elapsed-time check for active leagues. It does not bypass season or quota checks.
+Before any paid request, the fetcher reads quota headers from `/sports` and reserves the following for each due league:
 
-### Credit model
-
-The Odds API charges one credit per market, per region, per paid odds request. This project uses the `us` region for every league. Polymarket is merged from Gamma and does not consume Odds API credits.
-
-Before any paid request, the fetcher calls the no-cost `/sports` endpoint and reads the quota headers. It reserves the following amount for each due league.
-
-| Fetch profile | Leagues | Markets | Estimated paid odds calls | Reserved credits per fetch |
+| Fetch profile | Leagues | Markets | Paid `/odds` calls | Reserved credits |
 |---|---|---:|---:|---:|
-| Soccer direct | FIFA World Cup, Premier League | 2 | 1 | 2 |
-| Standard direct | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
+| Soccer | World Cup, Premier League | 2 | 1 | 2 |
+| Standard | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
 | NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
-| Windowed baseball | MLB, KBO | 3 | 1 normally (US event-ID batch); 2 during fallback | 6 |
+| Windowed baseball | MLB, KBO | 3 | 1 typical (event-id batch); 2 in fallback | 6 |
 
-For MLB and KBO, `/events` is free. A typical non-empty slate needs one batched event-ID odds request. The direct windowed request is a recovery path, not a duplicate: it runs only when `/events` is empty or at least one listed event is absent from the event-ID odds response. Event IDs are batched in groups of 50, so unusually large slates can cost more. Quota selection reserves the two-call fallback maximum before starting a baseball fetch.
+Baseball event ids are batched 50 per request, so a very large slate can cost more than one paid call. The quota gate always reserves the two-call baseball maximum (6 credits) before starting that league.
 
-The default reserve is 20 credits. Set `ODDS_API_QUOTA_RESERVE_CREDITS` to change it. Monthly usage is not fixed: it depends on season overlap, successful dispatches, empty responses, and baseball batch counts. Current usage is recorded in `odds/summary.json` and in The Odds API dashboard.
+Default reserve is 20 credits (`ODDS_API_QUOTA_RESERVE_CREDITS`). Usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-At the five-minute cadence, the September-active EPL, NFL, NCAAF, WNBA, MLB,
-and KBO profiles normally cost 17 credits per run after NFL preseason ends:
-about 4,896 credits per day or 146,880 in a 30-day month. A baseball recovery
-fallback can raise a run to 23 credits. A 100,000-credit plan therefore cannot
-sustain every active league every five minutes for a full month, even when no
-requests are wasted. Historical acquisition must still leave its separately
-reviewed live-odds reserve; this repository never spends historical credits or
-weakens the provider-reported quota gate.
+Worked example, September after NFL preseason: EPL 2 + NFL 3 + NCAAF 3 + WNBA 3 + MLB 3 + KBO 3 = **17 credits** on a clean run (about 4,896/day, 146,880/30 days at a five-minute cadence). Both baseball fallbacks raise that run to 23. A 100,000-credit month cannot hold every active league every five minutes.
 
-The source freshness objective is a successful per-league attempt no more than
-10 minutes old: one five-minute collection interval plus one interval of
-dispatch/provider jitter. `lastAttemptStatus=failed`, a missing receipt, or an
-older successful `lastFetched` is degraded evidence, not a quiet market.
-
-## Configuration
-
-League definitions live in the `SPORTS` array in `fetch-odds.js`. That array is the source of truth for sport keys, active windows, markets, regions, and fetch intervals.
-
-| Environment variable | Default | Purpose |
-|---|---:|---|
-| `ODDS_API_KEY` | Required | The Odds API credential |
-| `ODDS_API_TIMEOUT_MS` | `15000` | Per-request timeout; minimum 1,000 ms |
-| `ODDS_API_QUOTA_RESERVE_CREDITS` | `20` | Credits kept in reserve |
-| `FORCE_FETCH` | `false` | Fetch every active league immediately when set to `true` |
-
-## Setup
-
-### Local
-
-Requires Node.js 18 or newer.
-
-```bash
-git clone https://github.com/kevbowl/odds-fetcher.git
-cd odds-fetcher
-
-ODDS_API_KEY=your_key FORCE_FETCH=true npm start
-```
-
-### GitHub Actions
-
-Add `ODDS_API_KEY` under **Settings -> Secrets and variables -> Actions**. The workflow in `.github/workflows/fetch-odds-cron.yml` reads the secret, runs the fetcher, and commits changes under `odds/`. It uses only Node.js built-ins, so scheduled runs do not depend on a package-registry installation step.
-
-The workflow can also be started manually from **Actions -> Fetch Odds Cron -> Run workflow**. Manual runs follow the same gating rules as external dispatches.
-
-### cron-job.org trigger
-
-Production uses an external `workflow_dispatch`; there is no GitHub `schedule` trigger.
-
-| Setting | Value |
-|---|---|
-| Method | `POST` |
-| URL | `https://api.github.com/repos/kevbowl/odds-fetcher/actions/workflows/fetch-odds-cron.yml/dispatches` |
-| Schedule | `*/5 * * * *` |
-| Time zone | `Asia/Singapore` |
-| Body | `{"ref":"main"}` |
-| Expected response | `204 No Content` |
-
-Required headers:
-
-```text
-Accept: application/vnd.github+json
-Authorization: Bearer <github_token>
-Content-Type: application/json
-X-GitHub-Api-Version: 2022-11-28
-```
-
-Use a fine-grained GitHub token with `actions:write` access to this repository. Store it only in cron-job.org; never commit it. A `204` response confirms that GitHub accepted the dispatch, not that the fetch succeeded.
-
-## Repository map
-
-| Path | Role |
-|---|---|
-| `fetch-odds.js` | League gating, quota checks, API requests, merging, and file writes |
-| `.github/workflows/fetch-odds-cron.yml` | GitHub Actions runner and commit workflow |
-| `odds/<league>.json` | Latest raw odds array for one league |
-| `odds/summary.json` | Fetch timestamps, game counts, quota state, and baseball diagnostics |
-| `package.json` | Node.js runtime metadata and commands |
-
-## Data access
-
-Files are publicly available from:
-
-```text
-https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
-```
-
-Valid data files are `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `mlb`, `kbo`, and `summary`. For example:
-
-```bash
-curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/epl.json
-curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/kbo.json
-curl https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/summary.json
-```
+The gate uses the reserved column, not typical spend. Selecting every September league therefore needs 23 spendable credits (remaining ≥ 43 with the default reserve), even when the run later spends 17.
 
 ## Data model
 
-League files are arrays of The Odds API game objects. Direct responses retain the API shape; windowed baseball responses are merged and de-duplicated without reshaping individual game objects. When Gamma has a matching game, Polymarket is upserted into that game's `bookmakers` array as `"key": "polymarket"`. Outcome names use the Odds API home/away (and soccer `Draw`) labels. Outcome `sid` is the Polymarket CLOB token for that selection:
-
-```json
-[
-  {
-    "id": "game_id",
-    "sport_key": "americanfootball_nfl",
-    "sport_title": "NFL",
-    "commence_time": "2026-09-15T20:00:00Z",
-    "home_team": "Home Team",
-    "away_team": "Away Team",
-    "bookmakers": [
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-15T18:00:00Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "outcomes": [
-              {"name": "Home Team", "price": -110},
-              {"name": "Away Team", "price": -110}
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]
-```
-
-`odds/summary.json` is the operational freshness record:
+US sportsbooks keep the Odds API shape. Polymarket, when matched, is one extra bookmaker on that game:
 
 ```json
 {
-  "lastUpdated": "2026-07-15T15:15:00.000Z",
+  "id": "game_id",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-15T20:00:00Z",
+  "home_team": "Home Team",
+  "away_team": "Away Team",
+  "bookmakers": [
+    {
+      "key": "draftkings",
+      "title": "DraftKings",
+      "last_update": "2026-09-15T18:00:00Z",
+      "markets": [
+        {
+          "key": "h2h",
+          "outcomes": [
+            {"name": "Home Team", "price": -110},
+            {"name": "Away Team", "price": -110}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "polymarket",
+      "title": "Polymarket",
+      "last_update": "2026-09-15T18:00:00Z",
+      "sid": "gamma_event_id",
+      "markets": [
+        {
+          "key": "h2h",
+          "last_update": "2026-09-15T18:00:00Z",
+          "outcomes": [
+            {"name": "Home Team", "price": -150, "sid": "clob_token_id"},
+            {"name": "Away Team", "price": 130, "sid": "clob_token_id"}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+`odds/summary.json` is the freshness record:
+
+```json
+{
+  "lastUpdated": "2026-09-19T09:35:21.767Z",
   "quota": {
     "remaining": 1234,
     "used": 567,
@@ -264,12 +202,12 @@ League files are arrays of The Odds API game objects. Direct responses retain th
   "sports": [
     {
       "sport": "NFL",
-      "gameCount": 285,
-      "regularSeasonGameCount": 272,
-      "preseasonGameCount": 13,
+      "gameCount": 29,
+      "regularSeasonGameCount": 29,
+      "preseasonGameCount": 0,
       "fileName": "nfl.json",
-      "lastFetched": "2026-07-15T15:15:00.000Z",
-      "lastAttemptAt": "2026-07-15T15:15:00.000Z",
+      "lastFetched": "2026-09-19T09:35:21.767Z",
+      "lastAttemptAt": "2026-09-19T09:35:21.767Z",
       "lastAttemptStatus": "success",
       "lastError": null
     }
@@ -277,9 +215,11 @@ League files are arrays of The Odds API game objects. Direct responses retain th
 }
 ```
 
-## Historical snapshots
+`status` is `degraded` when a selected league attempt fails or a due league is skipped by the quota reserve. A failed attempt keeps the last successful `lastFetched` and game count.
 
-Git stores each changed output as a repository snapshot. Use commits that touched a league file rather than assuming a fixed number of commits per hour:
+## Snapshots
+
+Git stores each changed league file. Do not assume a commit every five minutes:
 
 ```bash
 git log --oneline -- odds/nfl.json
@@ -287,22 +227,72 @@ git show <commit>:odds/nfl.json
 git diff <older-commit> <newer-commit> -- odds/nfl.json
 ```
 
-A league file's Git timestamp advances only when its contents change. Use `lastFetched` in `odds/summary.json` to determine whether the API was queried recently.
+## Configuration
+
+`SPORTS` in `fetch-odds.js` is the source of truth for sport keys, windows, markets, regions, and intervals. Gamma needs no credential.
+
+| Environment variable | Default | Purpose |
+|---|---|---|
+| `ODDS_API_KEY` | Required | The Odds API credential |
+| `ODDS_API_TIMEOUT_MS` | `15000` | Per-request timeout; minimum 1,000 ms |
+| `ODDS_API_QUOTA_RESERVE_CREDITS` | `20` | Credits kept in reserve |
+| `FORCE_FETCH` | `false` | Fetch every active league immediately when `true` |
+
+## Setup
+
+Node.js 18+.
+
+```bash
+git clone https://github.com/kevbowl/odds-fetcher.git
+cd odds-fetcher
+ODDS_API_KEY=your_key FORCE_FETCH=true npm start
+```
+
+### GitHub Actions
+
+Store `ODDS_API_KEY` under **Settings → Secrets and variables → Actions**. [`.github/workflows/fetch-odds-cron.yml`](.github/workflows/fetch-odds-cron.yml) checks out `main`, runs tests, fetches, and commits `odds/` when files change. It uses only Node.js built-ins.
+
+Manual runs: **Actions → Fetch Odds Cron → Run workflow**. They follow the same gating as external dispatches. There is no GitHub `schedule` trigger.
+
+### cron-job.org
+
+| Setting | Value |
+|---|---|
+| Method | `POST` |
+| URL | `https://api.github.com/repos/kevbowl/odds-fetcher/actions/workflows/fetch-odds-cron.yml/dispatches` |
+| Schedule | `*/5 * * * *` |
+| Time zone | `Asia/Singapore` |
+| Body | `{"ref":"main"}` |
+| Expected response | `204 No Content` |
+
+```text
+Accept: application/vnd.github+json
+Authorization: Bearer <github_token>
+Content-Type: application/json
+X-GitHub-Api-Version: 2022-11-28
+```
+
+Use a fine-grained token with `actions:write` on this repository. Store it only in cron-job.org. `204` means GitHub accepted the dispatch, not that the fetch succeeded.
+
+## Repository map
+
+| Path | Role |
+|---|---|
+| `fetch-odds.js` | Gating, quota, Odds API, Gamma merge, writes |
+| `fetch-odds.test.js` | Contract tests run on every workflow job |
+| `.github/workflows/fetch-odds-cron.yml` | Checkout, fetch, commit |
+| `odds/<league>.json` | Latest event array for one league |
+| `odds/summary.json` | Freshness, quota, and per-league attempt health |
 
 ## Operations
 
-- **Workflow status:** [GitHub Actions](https://github.com/kevbowl/odds-fetcher/actions)
-- **Fetch freshness:** inspect `lastFetched` and `gameCount` in `odds/summary.json`.
-- **Per-league attempt health:** inspect `lastAttemptAt`,
-  `lastAttemptStatus`, and `lastError`. A failed attempt preserves the last
-  successful `lastFetched` and game count; workflow completion alone is not
-  per-league freshness evidence. The top-level `status` becomes `degraded`
-  when any selected league attempt fails or a due league is skipped by the
-  quota reserve.
-- **Baseball diagnostics:** inspect the MLB/KBO window, event count, direct odds count, and warning fields in `odds/summary.json`.
-- **NFL feed counts:** inspect `regularSeasonGameCount` and `preseasonGameCount`; `gameCount` is the de-duplicated combined total.
-- **Quota:** inspect the summary quota object and The Odds API account dashboard.
-- **Empty league file:** a recent `lastFetched` with `gameCount: 0` means the API returned no games; an old or missing `lastFetched` indicates the league was inactive, not due, quota-skipped, or failed.
+- **Workflow:** [GitHub Actions](https://github.com/kevbowl/odds-fetcher/actions)
+- **Freshness:** `lastFetched` and `gameCount` in `odds/summary.json`
+- **Attempt health:** `lastAttemptAt`, `lastAttemptStatus`, `lastError`. A green workflow is not per-league proof.
+- **NFL:** `regularSeasonGameCount` and `preseasonGameCount`; `gameCount` is the de-duplicated total
+- **Baseball:** window, event count, fallback, and warning fields on the MLB/KBO summary entries
+- **Quota:** summary quota object and The Odds API dashboard
+- **Empty file:** recent `lastFetched` with `gameCount: 0` means the provider returned no games; a missing or old `lastFetched` means inactive, not due, quota-skipped, or failed
 
 ## License
 

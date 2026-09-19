@@ -62,7 +62,7 @@ const GAMMA_SERIES_BY_SPORT_KEY = {
 // Gamma for free and does not add Odds API credits.
 const RUN_EVERY_MIN = 5;
 
-// Per-sport config. See README "Scheduling & quota" for the gating model.
+// Per-sport config. See README "Scheduling and quota" for the gating model.
 //   season: seasonMonths (recurring, 1-12, wraps year-end) or window {start,end}
 //   cadence: fetchEveryMinutes (min minutes between fetches)
 //   markets/regions determine the estimated Odds API credit cost. Polymarket
@@ -77,7 +77,7 @@ const SPORTS = [
   },
   {
     // Same soccer profile as World Cup: three-way h2h (home/away/Draw) + totals.
-    // Dedicated epl.json so Prophet never mixes this feed with worldcup.json.
+    // Dedicated epl.json so this feed is never mixed with worldcup.json.
     sport: 'epl', sportKey: 'soccer_epl', fileName: 'epl',
     markets: 'h2h,totals',
     regions: DEFAULT_REGIONS,
