@@ -93,29 +93,6 @@
         ]
       },
       {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-24T02:08:10Z",
-        "markets": [
-          {
-            "key": "spreads",
-            "last_update": "2026-09-24T02:08:10Z",
-            "outcomes": [
-              {
-                "name": "Atlanta Dream",
-                "price": -115,
-                "point": -12
-              },
-              {
-                "name": "New York Liberty",
-                "price": -115,
-                "point": 12
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "williamhill_us",
         "title": "Caesars",
         "last_update": "2026-09-24T02:13:57Z",
@@ -288,11 +265,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-24T02:20:28Z",
+        "last_update": "2026-09-24T02:25:25Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Atlanta Dream",
@@ -308,7 +285,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Atlanta Dream",
@@ -326,7 +303,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -358,50 +335,50 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-24T02:20:19Z",
+        "last_update": "2026-09-24T02:25:23Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -560
+                "price": -770
               },
               {
                 "name": "Seattle Storm",
-                "price": 370
+                "price": 470
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -132,
-                "point": -9.5
+                "price": -114,
+                "point": -11.5
               },
               {
                 "name": "Seattle Storm",
-                "price": 100,
-                "point": 9.5
+                "price": -114,
+                "point": 11.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -112,
+                "price": -106,
                 "point": 175.5
               },
               {
                 "name": "Under",
-                "price": -118,
+                "price": -125,
                 "point": 175.5
               }
             ]
@@ -411,11 +388,64 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-24T02:20:04Z",
+        "last_update": "2026-09-24T02:25:06Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:04Z",
+            "last_update": "2026-09-24T02:25:06Z",
+            "outcomes": [
+              {
+                "name": "Dallas Wings",
+                "price": -700
+              },
+              {
+                "name": "Seattle Storm",
+                "price": 440
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-24T02:25:06Z",
+            "outcomes": [
+              {
+                "name": "Dallas Wings",
+                "price": -120,
+                "point": -10.5
+              },
+              {
+                "name": "Seattle Storm",
+                "price": -110,
+                "point": 10.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-24T02:25:06Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -110,
+                "point": 174.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
+                "point": 174.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-24T02:24:49Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
@@ -429,86 +459,33 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:04Z",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -115,
+                "price": -120,
                 "point": -10.5
               },
               {
                 "name": "Seattle Storm",
-                "price": -115,
+                "price": -110,
                 "point": 10.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:04Z",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -110,
-                "point": 175.5
-              },
-              {
-                "name": "Under",
                 "price": -120,
-                "point": 175.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-24T02:18:54Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-24T02:18:54Z",
-            "outcomes": [
-              {
-                "name": "Dallas Wings",
-                "price": -410
-              },
-              {
-                "name": "Seattle Storm",
-                "price": 290
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-24T02:18:54Z",
-            "outcomes": [
-              {
-                "name": "Dallas Wings",
-                "price": -105,
-                "point": -9.5
-              },
-              {
-                "name": "Seattle Storm",
-                "price": -125,
-                "point": 9.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-24T02:18:54Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -115,
-                "point": 173.5
+                "point": 174.5
               },
               {
                 "name": "Under",
-                "price": -115,
-                "point": 173.5
+                "price": -110,
+                "point": 174.5
               }
             ]
           }
@@ -517,51 +494,51 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-24T02:19:17Z",
+        "last_update": "2026-09-24T02:23:46Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:19:17Z",
+            "last_update": "2026-09-24T02:23:46Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -475
+                "price": -625
               },
               {
                 "name": "Seattle Storm",
-                "price": 320
+                "price": 385
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:19:17Z",
+            "last_update": "2026-09-24T02:23:46Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -115,
-                "point": -9.5
+                "price": -120,
+                "point": -10
               },
               {
                 "name": "Seattle Storm",
-                "price": -115,
-                "point": 9.5
+                "price": -110,
+                "point": 10
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:19:17Z",
+            "last_update": "2026-09-24T02:23:46Z",
             "outcomes": [
               {
                 "name": "Over",
                 "price": -115,
-                "point": 174.5
+                "point": 175.5
               },
               {
                 "name": "Under",
                 "price": -115,
-                "point": 174.5
+                "point": 175.5
               }
             ]
           }
@@ -570,45 +547,45 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-24T02:17:45Z",
+        "last_update": "2026-09-24T02:21:26Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:17:45Z",
+            "last_update": "2026-09-24T02:21:26Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -320
+                "price": -625
               },
               {
                 "name": "Seattle Storm",
-                "price": 255
+                "price": 380
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:17:45Z",
+            "last_update": "2026-09-24T02:21:26Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -113,
-                "point": -7.5
+                "price": -108,
+                "point": -11.5
               },
               {
                 "name": "Seattle Storm",
-                "price": -106,
-                "point": 7.5
+                "price": -124,
+                "point": 11.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:17:45Z",
+            "last_update": "2026-09-24T02:21:26Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -110,
+                "price": -122,
                 "point": 173.5
               },
               {
@@ -623,51 +600,51 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-24T02:20:19Z",
+        "last_update": "2026-09-24T02:25:23Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -625
+                "price": -770
               },
               {
                 "name": "Seattle Storm",
-                "price": 350
+                "price": 410
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -110,
-                "point": -10.5
+                "price": -112,
+                "point": -11.5
               },
               {
                 "name": "Seattle Storm",
-                "price": -127,
-                "point": 10.5
+                "price": -125,
+                "point": 11.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:25:23Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -122,
-                "point": 175.5
+                "price": -124,
+                "point": 173.5
               },
               {
                 "name": "Under",
                 "price": -129,
-                "point": 175.5
+                "point": 173.5
               }
             ]
           }
@@ -676,50 +653,50 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-24T02:18:22Z",
+        "last_update": "2026-09-24T02:23:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:18:22Z",
+            "last_update": "2026-09-24T02:23:58Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -400
+                "price": -700
               },
               {
                 "name": "Seattle Storm",
-                "price": 280
+                "price": 425
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:18:22Z",
+            "last_update": "2026-09-24T02:23:58Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -115,
-                "point": -8.5
+                "price": -118,
+                "point": -10.5
               },
               {
                 "name": "Seattle Storm",
                 "price": -110,
-                "point": 8.5
+                "point": 10.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:18:22Z",
+            "last_update": "2026-09-24T02:23:58Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -118,
+                "price": -110,
                 "point": 173.5
               },
               {
                 "name": "Under",
-                "price": -110,
+                "price": -115,
                 "point": 173.5
               }
             ]
@@ -729,50 +706,50 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-24T02:18:57Z",
+        "last_update": "2026-09-24T02:23:24Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:18:57Z",
+            "last_update": "2026-09-24T02:23:24Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -333
+                "price": -455
               },
               {
                 "name": "Seattle Storm",
-                "price": 240
+                "price": 325
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:18:57Z",
+            "last_update": "2026-09-24T02:23:24Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
-                "price": -105,
-                "point": -7.5
+                "price": -118,
+                "point": -9.5
               },
               {
                 "name": "Seattle Storm",
-                "price": -118,
-                "point": 7.5
+                "price": -111,
+                "point": 9.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:18:57Z",
+            "last_update": "2026-09-24T02:23:24Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -111,
+                "price": -105,
                 "point": 173.5
               },
               {
                 "name": "Under",
-                "price": -111,
+                "price": -118,
                 "point": 173.5
               }
             ]
@@ -782,11 +759,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-24T02:20:28Z",
+        "last_update": "2026-09-24T02:25:25Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
@@ -802,7 +779,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Dallas Wings",
@@ -820,7 +797,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:28Z",
+            "last_update": "2026-09-24T02:25:25Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -852,11 +829,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-24T02:20:19Z",
+        "last_update": "2026-09-24T02:23:07Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:23:07Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -870,7 +847,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:23:07Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -886,7 +863,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:20:19Z",
+            "last_update": "2026-09-24T02:23:07Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -915,51 +892,104 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-24T02:18:54Z",
+        "last_update": "2026-09-24T02:24:49Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-24T02:18:54Z",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
-                "price": -205
+                "price": -270
               },
               {
                 "name": "New York Liberty",
-                "price": 170
+                "price": 220
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-24T02:18:54Z",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
-                "price": -110,
-                "point": -5.5
+                "price": -108,
+                "point": -6.5
               },
               {
                 "name": "New York Liberty",
-                "price": -110,
-                "point": 5.5
+                "price": -112,
+                "point": 6.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-24T02:18:54Z",
+            "last_update": "2026-09-24T02:24:49Z",
             "outcomes": [
               {
                 "name": "Over",
                 "price": -110,
-                "point": 174.5
+                "point": 173.5
               },
               {
                 "name": "Under",
                 "price": -110,
-                "point": 174.5
+                "point": 173.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-09-24T02:25:23Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-24T02:25:23Z",
+            "outcomes": [
+              {
+                "name": "Minnesota Lynx",
+                "price": -300
+              },
+              {
+                "name": "New York Liberty",
+                "price": 235
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-24T02:25:23Z",
+            "outcomes": [
+              {
+                "name": "Minnesota Lynx",
+                "price": -106,
+                "point": -7.5
+              },
+              {
+                "name": "New York Liberty",
+                "price": -114,
+                "point": 7.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-24T02:25:23Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -108,
+                "point": 173.5
+              },
+              {
+                "name": "Under",
+                "price": -112,
+                "point": 173.5
               }
             ]
           }
