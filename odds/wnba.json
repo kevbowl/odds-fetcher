@@ -203,29 +203,6 @@
         ]
       },
       {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-25T00:58:54Z",
-        "markets": [
-          {
-            "key": "totals",
-            "last_update": "2026-09-25T00:58:54Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 168
-              },
-              {
-                "name": "Under",
-                "price": -105,
-                "point": 168
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "betrivers",
         "title": "BetRivers",
         "last_update": "2026-09-25T01:06:10Z",
@@ -290,11 +267,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-25T01:10:27Z",
+        "last_update": "2026-09-25T01:15:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Toronto Tempo",
@@ -310,35 +287,35 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Connecticut Sun",
-                "price": -19900,
-                "sid": "20332997910815564035869176196143024020772579860310098111535265681096906104385",
-                "point": -2.5
+                "price": -99900,
+                "sid": "32427286036216682587322039454428685666802303503697531539564690060933888101374",
+                "point": -1.5
               },
               {
                 "name": "Toronto Tempo",
-                "price": 19900,
-                "sid": "49904256505797372636343444628217964914767359007078355121482881733444735658003",
-                "point": 2.5
+                "price": 99900,
+                "sid": "102105039646628733295146424395561212228895721267405532095285783378552084636017",
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -19900,
+                "price": -99900,
                 "sid": "109105768686823939492495472638684057718839190749428643497509315562944367074753",
                 "point": 168.5
               },
               {
                 "name": "Under",
-                "price": 19900,
+                "price": 99900,
                 "sid": "79667630072765013741506703712242761729591250197636913648536443710444010852452",
                 "point": 168.5
               }
@@ -360,37 +337,37 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-25T01:10:16Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": -136,
-                "point": 15.5
+                "price": -122,
+                "point": 13.5
               },
               {
                 "name": "Washington Mystics",
-                "price": 102,
-                "point": -15.5
+                "price": -108,
+                "point": -13.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -118,
-                "point": 183.5
+                "price": 100,
+                "point": 184.5
               },
               {
                 "name": "Under",
-                "price": -112,
-                "point": 183.5
+                "price": -132,
+                "point": 184.5
               }
             ]
           }
@@ -399,27 +376,66 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": 130,
+                "price": -130,
                 "point": 13.5
               },
               {
                 "name": "Washington Mystics",
-                "price": -175,
+                "price": 100,
                 "point": -13.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": 100,
+                "point": 184.5
+              },
+              {
+                "name": "Under",
+                "price": -130,
+                "point": 184.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-25T01:15:00Z",
+        "markets": [
+          {
+            "key": "spreads",
+            "last_update": "2026-09-25T01:15:00Z",
+            "outcomes": [
+              {
+                "name": "Chicago Sky",
+                "price": -125,
+                "point": 13.5
+              },
+              {
+                "name": "Washington Mystics",
+                "price": -105,
+                "point": -13.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -436,92 +452,39 @@
         ]
       },
       {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-25T01:09:42Z",
-        "markets": [
-          {
-            "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
-            "outcomes": [
-              {
-                "name": "Chicago Sky",
-                "price": -105,
-                "point": 13.5
-              },
-              {
-                "name": "Washington Mystics",
-                "price": -125,
-                "point": -13.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -130,
-                "point": 183.5
-              },
-              {
-                "name": "Under",
-                "price": 100,
-                "point": 183.5
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-25T01:08:40Z",
+        "last_update": "2026-09-25T01:12:38Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-09-25T01:08:40Z",
-            "outcomes": [
-              {
-                "name": "Chicago Sky",
-                "price": 1200
-              },
-              {
-                "name": "Washington Mystics",
-                "price": -10000
-              }
-            ]
-          },
-          {
             "key": "spreads",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": -120,
-                "point": 13.5
+                "price": -127,
+                "point": 14.5
               },
               {
                 "name": "Washington Mystics",
-                "price": -112,
-                "point": -13.5
+                "price": -106,
+                "point": -14.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -124,
-                "point": 184.5
+                "price": -122,
+                "point": 185.5
               },
               {
                 "name": "Under",
-                "price": -108,
-                "point": 184.5
+                "price": -109,
+                "point": 185.5
               }
             ]
           }
@@ -530,11 +493,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
@@ -548,33 +511,33 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": 100,
-                "point": 14.5
+                "price": -140,
+                "point": 13.5
               },
               {
                 "name": "Washington Mystics",
-                "price": -130,
-                "point": -14.5
+                "price": 110,
+                "point": -13.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 105,
-                "point": 183.5
+                "price": -115,
+                "point": 184.5
               },
               {
                 "name": "Under",
-                "price": -135,
-                "point": 183.5
+                "price": -110,
+                "point": 184.5
               }
             ]
           }
@@ -636,37 +599,37 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": -132,
-                "point": 14.5
+                "price": -121,
+                "point": 13.5
               },
               {
                 "name": "Washington Mystics",
-                "price": -107,
-                "point": -14.5
+                "price": -115,
+                "point": -13.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -143,
-                "point": 186.5
+                "price": -122,
+                "point": 187.5
               },
               {
                 "name": "Under",
-                "price": -108,
-                "point": 186.5
+                "price": -129,
+                "point": 187.5
               }
             ]
           }
@@ -675,37 +638,37 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-25T01:09:06Z",
+        "last_update": "2026-09-25T01:15:16Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": -105,
+                "price": -118,
                 "point": 14.5
               },
               {
                 "name": "Washington Mystics",
-                "price": -118,
+                "price": -111,
                 "point": -14.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -118,
-                "point": 187.5
+                "price": -125,
+                "point": 185.5
               },
               {
                 "name": "Under",
                 "price": -105,
-                "point": 187.5
+                "point": 185.5
               }
             ]
           }
@@ -714,37 +677,37 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-25T01:10:27Z",
+        "last_update": "2026-09-25T01:15:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Chicago Sky",
-                "price": 9900,
+                "price": 22122,
                 "sid": "109173324590767654347313186739454430443540079722746018847146314706005946549948"
               },
               {
                 "name": "Washington Mystics",
-                "price": -9900,
+                "price": -22122,
                 "sid": "16837312678554030940915806477347559546519004850253758188814431042702935329645"
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Washington Mystics",
-                "price": -102,
+                "price": -113,
                 "sid": "55971382896720308101824956502039768357148306160977856612580418980471716617125",
                 "point": -13.5
               },
               {
                 "name": "Chicago Sky",
-                "price": 102,
+                "price": 113,
                 "sid": "32155801328668205454824661751160862533290718689608434252686552112163220084010",
                 "point": 13.5
               }
@@ -752,7 +715,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -784,37 +747,37 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -125,
+                "price": -115,
                 "point": 22.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -105,
+                "price": -115,
                 "point": -22.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -110,
-                "point": 182.5
+                "price": -120,
+                "point": 176.5
               },
               {
                 "name": "Under",
-                "price": -120,
-                "point": 182.5
+                "price": -110,
+                "point": 176.5
               }
             ]
           }
@@ -823,51 +786,37 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-25T01:10:16Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-09-25T01:10:16Z",
-            "outcomes": [
-              {
-                "name": "Indiana Fever",
-                "price": 2200
-              },
-              {
-                "name": "Minnesota Lynx",
-                "price": -20000
-              }
-            ]
-          },
-          {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -118,
-                "point": 22.5
+                "price": 102,
+                "point": 24.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -112,
-                "point": -22.5
+                "price": -136,
+                "point": -24.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -130,
-                "point": 181.5
+                "price": -102,
+                "point": 176.5
               },
               {
                 "name": "Under",
-                "price": -102,
-                "point": 181.5
+                "price": -130,
+                "point": 176.5
               }
             ]
           }
@@ -876,51 +825,37 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
-            "outcomes": [
-              {
-                "name": "Indiana Fever",
-                "price": 3500
-              },
-              {
-                "name": "Minnesota Lynx",
-                "price": -50000
-              }
-            ]
-          },
-          {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -110,
-                "point": 21.5
+                "price": -120,
+                "point": 22.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -120,
-                "point": -21.5
+                "price": -110,
+                "point": -22.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -115,
-                "point": 181.5
+                "price": -110,
+                "point": 176.5
               },
               {
                 "name": "Under",
-                "price": -115,
-                "point": 181.5
+                "price": -120,
+                "point": 176.5
               }
             ]
           }
@@ -929,11 +864,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-25T01:08:40Z",
+        "last_update": "2026-09-25T01:12:38Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
@@ -947,33 +882,33 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -114,
+                "price": -110,
                 "point": 21.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -117,
+                "price": -122,
                 "point": -21.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -124,
-                "point": 181.5
+                "price": -107,
+                "point": 182.5
               },
               {
                 "name": "Under",
-                "price": -108,
-                "point": 181.5
+                "price": -125,
+                "point": 182.5
               }
             ]
           }
@@ -982,15 +917,15 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": 2800
+                "price": 3300
               },
               {
                 "name": "Minnesota Lynx",
@@ -1000,33 +935,33 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -110,
-                "point": 21.5
+                "price": -105,
+                "point": 22.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -118,
-                "point": -21.5
+                "price": -120,
+                "point": -22.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -120,
-                "point": 181.5
+                "price": -115,
+                "point": 174.5
               },
               {
                 "name": "Under",
-                "price": -105,
-                "point": 181.5
+                "price": -110,
+                "point": 174.5
               }
             ]
           }
@@ -1035,37 +970,37 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-25T01:10:22Z",
+        "last_update": "2026-09-25T01:15:05Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:22Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
                 "price": -115,
-                "point": 22.5
+                "point": 24
               },
               {
                 "name": "Minnesota Lynx",
                 "price": -115,
-                "point": -22.5
+                "point": -24
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:22Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Over",
                 "price": -115,
-                "point": 182
+                "point": 176
               },
               {
                 "name": "Under",
                 "price": -115,
-                "point": 182
+                "point": 176
               }
             ]
           }
@@ -1074,37 +1009,37 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": -120,
-                "point": 21.5
+                "price": -129,
+                "point": 24.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -117,
-                "point": -21.5
+                "price": -109,
+                "point": -24.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -117,
-                "point": 181.5
+                "price": -132,
+                "point": 175.5
               },
               {
                 "name": "Under",
-                "price": -134,
-                "point": 181.5
+                "price": -118,
+                "point": 175.5
               }
             ]
           }
@@ -1113,11 +1048,11 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-25T01:09:06Z",
+        "last_update": "2026-09-25T01:15:16Z",
         "markets": [
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
@@ -1133,7 +1068,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1152,55 +1087,55 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-25T01:10:27Z",
+        "last_update": "2026-09-25T01:15:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": 5456,
+                "price": 7900,
                 "sid": "89811104295758447855881727020355498522550522019667555363780683485654250908111"
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -5456,
+                "price": -7900,
                 "sid": "63903648043400279281219375820156349875077542023551915576209102918704692828363"
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Indiana Fever",
-                "price": 1553,
-                "sid": "68720972100246081997196876989362692912373361186827670462475226695878488652410",
-                "point": -3.5
+                "price": 1083,
+                "sid": "19785690467720647969447356493328822347416210298888688259306271168156818686717",
+                "point": -2.5
               },
               {
                 "name": "Minnesota Lynx",
-                "price": -1553,
-                "sid": "17950879553279002379181760986011804973808263386061376375723683291475222288700",
-                "point": 3.5
+                "price": -1083,
+                "sid": "102070943195224688994597456766203389457852008063991575492844593068897201717255",
+                "point": 2.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 117,
+                "price": 170,
                 "sid": "107635033124578747267777619150001307243867703089340188282077150655162888283544",
                 "point": 183.5
               },
               {
                 "name": "Under",
-                "price": -117,
+                "price": -170,
                 "sid": "51869975066389656707046563343553920205743712698628048032854394725280878021587",
                 "point": 183.5
               }
@@ -1222,11 +1157,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1240,7 +1175,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1256,7 +1191,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1275,11 +1210,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-25T01:10:16Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1293,7 +1228,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1309,7 +1244,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1328,11 +1263,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1346,7 +1281,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1362,7 +1297,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1381,11 +1316,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-25T01:08:40Z",
+        "last_update": "2026-09-25T01:12:38Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1399,7 +1334,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1415,7 +1350,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1434,11 +1369,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1452,7 +1387,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1468,7 +1403,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1487,11 +1422,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-25T01:10:22Z",
+        "last_update": "2026-09-25T01:15:05Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:22Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1505,7 +1440,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:22Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1521,7 +1456,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:22Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1540,11 +1475,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1558,7 +1493,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1574,7 +1509,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1593,11 +1528,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-25T01:10:17Z",
+        "last_update": "2026-09-25T01:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1611,7 +1546,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1627,7 +1562,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1646,11 +1581,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-25T01:10:01Z",
+        "last_update": "2026-09-25T01:14:44Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1664,7 +1599,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1680,7 +1615,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1699,11 +1634,11 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-25T01:09:06Z",
+        "last_update": "2026-09-25T01:15:16Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1717,7 +1652,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1733,7 +1668,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1752,11 +1687,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1770,7 +1705,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1786,7 +1721,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1805,11 +1740,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-25T01:10:27Z",
+        "last_update": "2026-09-25T01:15:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1825,7 +1760,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Golden State Valkyries",
@@ -1843,7 +1778,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1875,11 +1810,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-25T01:10:16Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -1893,7 +1828,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -1909,7 +1844,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1928,11 +1863,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -1946,7 +1881,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -1962,7 +1897,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1981,11 +1916,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -1999,7 +1934,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2015,7 +1950,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2034,11 +1969,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-25T01:08:40Z",
+        "last_update": "2026-09-25T01:12:38Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2052,7 +1987,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2068,7 +2003,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:08:40Z",
+            "last_update": "2026-09-25T01:12:38Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2087,11 +2022,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2105,7 +2040,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2121,7 +2056,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2140,11 +2075,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-25T01:05:39Z",
+        "last_update": "2026-09-25T01:15:05Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:05:39Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2158,7 +2093,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:05:39Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2174,7 +2109,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:05:39Z",
+            "last_update": "2026-09-25T01:15:05Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2193,11 +2128,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2211,7 +2146,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2227,7 +2162,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2246,11 +2181,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-25T01:10:17Z",
+        "last_update": "2026-09-25T01:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2264,7 +2199,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2280,7 +2215,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:17Z",
+            "last_update": "2026-09-25T01:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2299,11 +2234,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-25T01:10:01Z",
+        "last_update": "2026-09-25T01:14:44Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2317,7 +2252,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2333,7 +2268,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:01Z",
+            "last_update": "2026-09-25T01:14:44Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2352,11 +2287,11 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-25T01:09:06Z",
+        "last_update": "2026-09-25T01:15:16Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2370,7 +2305,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2386,7 +2321,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:06Z",
+            "last_update": "2026-09-25T01:15:16Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2405,11 +2340,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2423,7 +2358,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2439,7 +2374,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2458,11 +2393,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-25T01:10:27Z",
+        "last_update": "2026-09-25T01:15:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2478,7 +2413,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Las Vegas Aces",
@@ -2496,7 +2431,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:27Z",
+            "last_update": "2026-09-25T01:15:28Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2528,11 +2463,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2546,7 +2481,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2562,7 +2497,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2581,11 +2516,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-25T01:10:16Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2599,7 +2534,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2615,7 +2550,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:10:16Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2634,11 +2569,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2652,7 +2587,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2668,7 +2603,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2687,11 +2622,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2705,7 +2640,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2721,7 +2656,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2740,11 +2675,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-25T01:09:42Z",
+        "last_update": "2026-09-25T01:15:00Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2758,7 +2693,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Minnesota Lynx",
@@ -2774,7 +2709,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-25T01:09:42Z",
+            "last_update": "2026-09-25T01:15:00Z",
             "outcomes": [
               {
                 "name": "Over",
