@@ -1,59 +1,2079 @@
 [
   {
-    "id": "9b021baa78813593dee73b9213bdcc49",
+    "id": "2dbd5db6e48c0e12d805990bd4d73137",
     "sport_key": "baseball_kbo",
     "sport_title": "KBO",
-    "commence_time": "2026-09-30T09:30:00Z",
-    "home_team": "Doosan Bears",
-    "away_team": "NC Dinos",
+    "commence_time": "2026-09-30T09:30:24Z",
+    "home_team": "Samsung Lions",
+    "away_team": "Hanwha Eagles",
     "bookmakers": [
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-30T09:40:17Z",
+        "last_update": "2026-09-30T09:44:15Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:15Z",
             "outcomes": [
               {
-                "name": "Doosan Bears",
-                "price": -120
+                "name": "Hanwha Eagles",
+                "price": 155
               },
               {
-                "name": "NC Dinos",
-                "price": -120
+                "name": "Samsung Lions",
+                "price": -225
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:15Z",
             "outcomes": [
               {
-                "name": "Doosan Bears",
-                "price": -225,
+                "name": "Hanwha Eagles",
+                "price": -120,
                 "point": 1.5
               },
               {
-                "name": "NC Dinos",
-                "price": 155,
+                "name": "Samsung Lions",
+                "price": -120,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:15Z",
             "outcomes": [
               {
                 "name": "Over",
+                "price": 100,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
                 "price": -140,
-                "point": 6.5
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 176
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -230
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -122,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -106,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": 100,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -130,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "williamhill_us",
+        "title": "Caesars",
+        "last_update": "2026-09-30T09:43:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 150
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -200
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -135,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": 105,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -130,
+                "point": 8.5
               },
               {
                 "name": "Under",
                 "price": 100,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-09-30T09:45:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 155
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -222
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -133,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -105,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 9
+              },
+              {
+                "name": "Under",
+                "price": -111,
+                "point": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betonlineag",
+        "title": "BetOnline.ag",
+        "last_update": "2026-09-30T09:30:38Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 167
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -192
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -115,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -105,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 10
+              },
+              {
+                "name": "Under",
+                "price": -115,
+                "point": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 260
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -370
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -130,
+                "point": 2.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": 100,
+                "point": -2.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-09-30T09:43:20Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:19Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 170
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -230
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:19Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -115,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -115,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:19Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 9
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betrivers",
+        "title": "BetRivers",
+        "last_update": "2026-09-30T09:44:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 138
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -230
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -157,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -103,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -115,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -137,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 225
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -325
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": -145,
+                "point": 2.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": 110,
+                "point": -2.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-09-30T09:45:28Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:28Z",
+            "outcomes": [
+              {
+                "name": "Hanwha Eagles",
+                "price": 212,
+                "sid": "30983743537122177069271680870351173538865200917483118011708130728029688296164"
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -213,
+                "sid": "115132748079931104001445602075469724854151789538607425045554116341285659445645"
+              }
+            ]
+          }
+        ],
+        "sid": "781224"
+      }
+    ]
+  },
+  {
+    "id": "0dc1068a9838c6714a093ac5eaa54494",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-09-30T09:30:33Z",
+    "home_team": "SSG Landers",
+    "away_team": "LG Twins",
+    "bookmakers": [
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-09-30T09:44:15Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:15Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -140
+              },
+              {
+                "name": "SSG Landers",
+                "price": 100
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:15Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 110,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -160,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:15Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -130
+              },
+              {
+                "name": "SSG Landers",
+                "price": 102
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 122,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -160,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -122,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -106,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "williamhill_us",
+        "title": "Caesars",
+        "last_update": "2026-09-30T09:43:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -115
+              },
+              {
+                "name": "SSG Landers",
+                "price": -115
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 130,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -170,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -115,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -115,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-09-30T09:45:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -133
+              },
+              {
+                "name": "SSG Landers",
+                "price": -105
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 115,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -154,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -111,
+                "point": 11
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 11
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betonlineag",
+        "title": "BetOnline.ag",
+        "last_update": "2026-09-30T09:30:38Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -150
+              },
+              {
+                "name": "SSG Landers",
+                "price": 130
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -105,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -115,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -126,
+                "point": 11
+              },
+              {
+                "name": "Under",
+                "price": 106,
+                "point": 11
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -140
+              },
+              {
+                "name": "SSG Landers",
+                "price": 105
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 110,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -145,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-09-30T09:43:20Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -125
+              },
+              {
+                "name": "SSG Landers",
+                "price": -105
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 115,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -155,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -145
+              },
+              {
+                "name": "SSG Landers",
+                "price": 105
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": 115,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -150,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betrivers",
+        "title": "BetRivers",
+        "last_update": "2026-09-30T09:45:12Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -152
+              },
+              {
+                "name": "SSG Landers",
+                "price": -105
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -143,
+                "point": -0.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -110,
+                "point": 0.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -139,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -113,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-09-30T09:45:28Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:28Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -100,
+                "sid": "16034832563802581885576364829951787018828036012570665617054195757182510685481"
+              },
+              {
+                "name": "SSG Landers",
+                "price": -100,
+                "sid": "57697938169358645489159748201079275978272874154071170764437139022472662408309"
+              }
+            ]
+          }
+        ],
+        "sid": "772348"
+      }
+    ]
+  },
+  {
+    "id": "800926754920a9ca95494abb4a8b2533",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-09-30T09:30:36Z",
+    "home_team": "Lotte Giants",
+    "away_team": "Kiwoom Heroes",
+    "bookmakers": [
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 340
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -600
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -120,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -120,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-09-30T09:44:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 430
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -670
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -110,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -118,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": 100,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -130,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "williamhill_us",
+        "title": "Caesars",
+        "last_update": "2026-09-30T09:43:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 320
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -500
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -125,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -105,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-09-30T09:45:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 320
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -556
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -133,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -105,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -111,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betonlineag",
+        "title": "BetOnline.ag",
+        "last_update": "2026-09-30T09:30:38Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 263
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -325
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 154,
+                "point": 1.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -176,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 10
+              },
+              {
+                "name": "Under",
+                "price": 105,
+                "point": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 390
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -650
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -125,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -110,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -130,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": 100,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-09-30T09:43:20Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 325
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -525
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -110,
+                "point": 3
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -120,
+                "point": -3
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -115,
+                "point": 10
+              },
+              {
+                "name": "Under",
+                "price": -115,
+                "point": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 325
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -550
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -135,
+                "point": 3.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": 105,
+                "point": -3.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -110,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -115,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betrivers",
+        "title": "BetRivers",
+        "last_update": "2026-09-30T09:45:12Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 295
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -625
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": -113,
+                "point": 2.5
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -139,
+                "point": -2.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -129,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -124,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-09-30T09:45:28Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:28Z",
+            "outcomes": [
+              {
+                "name": "Kiwoom Heroes",
+                "price": 376,
+                "sid": "68545599373195233105591295494425823129784992618251494375290742633992506806697"
+              },
+              {
+                "name": "Lotte Giants",
+                "price": -376,
+                "sid": "25409743089859892895235833301111643547550327827410242785984858643248677424299"
+              }
+            ]
+          }
+        ],
+        "sid": "781225"
+      }
+    ]
+  },
+  {
+    "id": "100fbcad5bab18c23ace19d2d5434bab",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-09-30T09:31:23Z",
+    "home_team": "Kia Tigers",
+    "away_team": "KT Wiz",
+    "bookmakers": [
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 100
+              },
+              {
+                "name": "KT Wiz",
+                "price": -140
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -160,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 110,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 112
+              },
+              {
+                "name": "KT Wiz",
+                "price": -142
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -156,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 120,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -128,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": -102,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "williamhill_us",
+        "title": "Caesars",
+        "last_update": "2026-09-30T09:43:30Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 100
+              },
+              {
+                "name": "KT Wiz",
+                "price": -130
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -170,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 130,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:30Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-09-30T09:45:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 120
+              },
+              {
+                "name": "KT Wiz",
+                "price": -167
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -133,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": -105,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:11Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -111,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betonlineag",
+        "title": "BetOnline.ag",
+        "last_update": "2026-09-30T09:30:38Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 142
+              },
+              {
+                "name": "KT Wiz",
+                "price": -162
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -120,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 100,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:30:38Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -115,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 110
+              },
+              {
+                "name": "KT Wiz",
+                "price": -150
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -150,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 110,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -135,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": 100,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-09-30T09:43:20Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 100
+              },
+              {
+                "name": "KT Wiz",
+                "price": -135
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -160,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 120,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:43:20Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -105,
+                "point": 9
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-09-30T09:44:59Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 105
+              },
+              {
+                "name": "KT Wiz",
+                "price": -145
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -155,
+                "point": 1.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": 118,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:59Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -130,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": 100,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betrivers",
+        "title": "BetRivers",
+        "last_update": "2026-09-30T09:45:12Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 106
+              },
+              {
+                "name": "KT Wiz",
+                "price": -167
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -103,
+                "point": 0.5
+              },
+              {
+                "name": "KT Wiz",
+                "price": -157,
+                "point": -0.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:45:12Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -124,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "9b021baa78813593dee73b9213bdcc49",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-09-30T09:33:05Z",
+    "home_team": "Doosan Bears",
+    "away_team": "NC Dinos",
+    "bookmakers": [
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-09-30T09:44:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Doosan Bears",
+                "price": -140
+              },
+              {
+                "name": "NC Dinos",
+                "price": 100
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Doosan Bears",
+                "price": 155,
+                "point": -1.5
+              },
+              {
+                "name": "NC Dinos",
+                "price": -225,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T09:44:58Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -120,
+                "point": 6.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
                 "point": 6.5
               }
             ]
@@ -63,50 +2083,50 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-30T09:40:17Z",
+        "last_update": "2026-09-30T09:44:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -106
+                "price": -142
               },
               {
                 "name": "NC Dinos",
-                "price": -120
+                "price": 112
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -210,
-                "point": 1.5
+                "price": 165,
+                "point": -1.5
               },
               {
                 "name": "NC Dinos",
-                "price": 158,
-                "point": -1.5
+                "price": -220,
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -130,
+                "price": -114,
                 "point": 6.5
               },
               {
                 "name": "Under",
-                "price": 100,
+                "price": -114,
                 "point": 6.5
               }
             ]
@@ -116,51 +2136,51 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-30T09:38:01Z",
+        "last_update": "2026-09-30T09:43:30Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:38:01Z",
+            "last_update": "2026-09-30T09:43:30Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -105
+                "price": -145
               },
               {
                 "name": "NC Dinos",
-                "price": -125
+                "price": 115
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:38:01Z",
+            "last_update": "2026-09-30T09:43:30Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -180,
-                "point": 1.5
+                "price": 150,
+                "point": -1.5
               },
               {
                 "name": "NC Dinos",
-                "price": 135,
-                "point": -1.5
+                "price": -200,
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:38:01Z",
+            "last_update": "2026-09-30T09:43:30Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -105,
-                "point": 7.5
+                "price": -125,
+                "point": 6.5
               },
               {
                 "name": "Under",
-                "price": -125,
-                "point": 7.5
+                "price": -105,
+                "point": 6.5
               }
             ]
           }
@@ -220,59 +2240,6 @@
         ]
       },
       {
-        "key": "lowvig",
-        "title": "LowVig.ag",
-        "last_update": "2026-09-30T09:29:32Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Doosan Bears",
-                "price": -112
-              },
-              {
-                "name": "NC Dinos",
-                "price": -108
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Doosan Bears",
-                "price": -193,
-                "point": 1.5
-              },
-              {
-                "name": "NC Dinos",
-                "price": 168,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 105,
-                "point": 7
-              },
-              {
-                "name": "Under",
-                "price": -125,
-                "point": 7
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "betonlineag",
         "title": "BetOnline.ag",
         "last_update": "2026-09-30T09:30:38Z",
@@ -328,50 +2295,50 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-30T09:40:18Z",
+        "last_update": "2026-09-30T09:44:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:40:18Z",
+            "last_update": "2026-09-30T09:44:58Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -125
+                "price": -155
               },
               {
                 "name": "NC Dinos",
-                "price": -105
+                "price": 115
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:40:18Z",
+            "last_update": "2026-09-30T09:44:58Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -230,
-                "point": 1.5
+                "price": 155,
+                "point": -1.5
               },
               {
                 "name": "NC Dinos",
-                "price": 170,
-                "point": -1.5
+                "price": -205,
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:40:18Z",
+            "last_update": "2026-09-30T09:44:58Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -125,
+                "price": -120,
                 "point": 6.5
               },
               {
                 "name": "Under",
-                "price": -105,
+                "price": -110,
                 "point": 6.5
               }
             ]
@@ -381,51 +2348,51 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-30T09:36:20Z",
+        "last_update": "2026-09-30T09:43:20Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:36:20Z",
+            "last_update": "2026-09-30T09:43:20Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -115
+                "price": -155
               },
               {
                 "name": "NC Dinos",
-                "price": -115
+                "price": 115
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:36:20Z",
+            "last_update": "2026-09-30T09:43:20Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -205,
-                "point": 1.5
+                "price": 165,
+                "point": -1.5
               },
               {
                 "name": "NC Dinos",
-                "price": 155,
-                "point": -1.5
+                "price": -220,
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:36:20Z",
+            "last_update": "2026-09-30T09:43:20Z",
             "outcomes": [
               {
                 "name": "Over",
                 "price": -105,
-                "point": 7
+                "point": 6.5
               },
               {
                 "name": "Under",
                 "price": -125,
-                "point": 7
+                "point": 6.5
               }
             ]
           }
@@ -434,50 +2401,50 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-30T09:39:47Z",
+        "last_update": "2026-09-30T09:45:12Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
+            "last_update": "2026-09-30T09:45:12Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -141
+                "price": -150
               },
               {
                 "name": "NC Dinos",
-                "price": -113
+                "price": -107
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
+            "last_update": "2026-09-30T09:45:12Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -127,
+                "price": -134,
                 "point": -0.5
               },
               {
                 "name": "NC Dinos",
-                "price": -124,
+                "price": -117,
                 "point": 0.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
+            "last_update": "2026-09-30T09:45:12Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -139,
+                "price": -110,
                 "point": 6.5
               },
               {
                 "name": "Under",
-                "price": -114,
+                "price": -143,
                 "point": 6.5
               }
             ]
@@ -487,51 +2454,51 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-30T09:38:44Z",
+        "last_update": "2026-09-30T09:44:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:38:43Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": 100
+                "price": -160
               },
               {
                 "name": "NC Dinos",
-                "price": -140
+                "price": 115
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T09:38:43Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Doosan Bears",
-                "price": -185,
-                "point": 1.5
+                "price": 160,
+                "point": -1.5
               },
               {
                 "name": "NC Dinos",
-                "price": 140,
-                "point": -1.5
+                "price": -210,
+                "point": 1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T09:38:43Z",
+            "last_update": "2026-09-30T09:44:59Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 115,
-                "point": 7.5
+                "price": -105,
+                "point": 6.5
               },
               {
                 "name": "Under",
-                "price": -150,
-                "point": 7.5
+                "price": -120,
+                "point": 6.5
               }
             ]
           }
@@ -540,2226 +2507,26 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-30T09:40:26Z",
+        "last_update": "2026-09-30T09:45:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T09:40:26Z",
+            "last_update": "2026-09-30T09:45:28Z",
             "outcomes": [
               {
                 "name": "NC Dinos",
-                "price": -111,
+                "price": 115,
                 "sid": "38260380833146262496129237864929649868829630178127800117041593577904826495257"
               },
               {
                 "name": "Doosan Bears",
-                "price": 111,
+                "price": -115,
                 "sid": "65809905134476348404132877946414209415297084121523390238708609099346596834789"
               }
             ]
           }
         ],
         "sid": "1074049"
-      }
-    ]
-  },
-  {
-    "id": "2dbd5db6e48c0e12d805990bd4d73137",
-    "sport_key": "baseball_kbo",
-    "sport_title": "KBO",
-    "commence_time": "2026-09-30T09:30:00Z",
-    "home_team": "Samsung Lions",
-    "away_team": "Hanwha Eagles",
-    "bookmakers": [
-      {
-        "key": "fanatics",
-        "title": "Fanatics",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 150
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -220
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -140,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -140,
-                "point": 8.5
-              },
-              {
-                "name": "Under",
-                "price": 100,
-                "point": 8.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 172
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -225
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -125,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -104,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 102,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -132,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-09-30T09:38:01Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 165
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -220
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -120,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -110,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -125,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "mybookieag",
-        "title": "MyBookie.ag",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 130
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -182
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -143,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": 105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -111,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -125,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "lowvig",
-        "title": "LowVig.ag",
-        "last_update": "2026-09-30T09:29:32Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 167
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -192
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -115,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 10
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 10
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betonlineag",
-        "title": "BetOnline.ag",
-        "last_update": "2026-09-30T09:30:38Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 167
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -192
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -115,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 10
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 10
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-30T09:40:18Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 160
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -215
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -135,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -135,
-                "point": 8.5
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 8.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-30T09:38:46Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 160
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -215
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -120,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -110,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -120,
-                "point": 9
-              },
-              {
-                "name": "Under",
-                "price": -110,
-                "point": 9
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betrivers",
-        "title": "BetRivers",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 140
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -230
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -152,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -114,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -139,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 165
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -235
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": -125,
-                "point": 1.5
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -102,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -145,
-                "point": 8.5
-              },
-              {
-                "name": "Under",
-                "price": 110,
-                "point": 8.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "polymarket",
-        "title": "Polymarket",
-        "last_update": "2026-09-30T09:40:26Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:26Z",
-            "outcomes": [
-              {
-                "name": "Hanwha Eagles",
-                "price": 190,
-                "sid": "30983743537122177069271680870351173538865200917483118011708130728029688296164"
-              },
-              {
-                "name": "Samsung Lions",
-                "price": -190,
-                "sid": "115132748079931104001445602075469724854151789538607425045554116341285659445645"
-              }
-            ]
-          }
-        ],
-        "sid": "781224"
-      }
-    ]
-  },
-  {
-    "id": "100fbcad5bab18c23ace19d2d5434bab",
-    "sport_key": "baseball_kbo",
-    "sport_title": "KBO",
-    "commence_time": "2026-09-30T09:30:00Z",
-    "home_team": "Kia Tigers",
-    "away_team": "KT Wiz",
-    "bookmakers": [
-      {
-        "key": "fanatics",
-        "title": "Fanatics",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 110
-              },
-              {
-                "name": "KT Wiz",
-                "price": -160
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 130
-              },
-              {
-                "name": "KT Wiz",
-                "price": -166
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -130,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -108,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-09-30T09:38:01Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 115
-              },
-              {
-                "name": "KT Wiz",
-                "price": -145
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -135,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -135,
-                "point": 8.5
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 8.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "mybookieag",
-        "title": "MyBookie.ag",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 105
-              },
-              {
-                "name": "KT Wiz",
-                "price": -154
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -154,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 110,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 9
-              },
-              {
-                "name": "Under",
-                "price": -105,
-                "point": 9
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "lowvig",
-        "title": "LowVig.ag",
-        "last_update": "2026-09-30T09:29:32Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 142
-              },
-              {
-                "name": "KT Wiz",
-                "price": -162
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -120,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betonlineag",
-        "title": "BetOnline.ag",
-        "last_update": "2026-09-30T09:30:38Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 142
-              },
-              {
-                "name": "KT Wiz",
-                "price": -162
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -120,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-30T09:40:18Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 125
-              },
-              {
-                "name": "KT Wiz",
-                "price": -170
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -135,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 100,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -140,
-                "point": 8.5
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 8.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-30T09:38:46Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 115
-              },
-              {
-                "name": "KT Wiz",
-                "price": -155
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -140,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -110,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 118
-              },
-              {
-                "name": "KT Wiz",
-                "price": -160
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -135,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": 105,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betrivers",
-        "title": "BetRivers",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": 112
-              },
-              {
-                "name": "KT Wiz",
-                "price": -182
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kia Tigers",
-                "price": -148,
-                "point": 1.5
-              },
-              {
-                "name": "KT Wiz",
-                "price": -107,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -108,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -143,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "800926754920a9ca95494abb4a8b2533",
-    "sport_key": "baseball_kbo",
-    "sport_title": "KBO",
-    "commence_time": "2026-09-30T09:30:00Z",
-    "home_team": "Lotte Giants",
-    "away_team": "Kiwoom Heroes",
-    "bookmakers": [
-      {
-        "key": "fanatics",
-        "title": "Fanatics",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 290
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -500
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -140,
-                "point": 3.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": 100,
-                "point": -3.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -120,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 350
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -520
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -132,
-                "point": 3.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": 102,
-                "point": -3.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -120,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -108,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-09-30T09:38:01Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 260
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -380
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -110,
-                "point": 2.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -120,
-                "point": -2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -115,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "mybookieag",
-        "title": "MyBookie.ag",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 245
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -400
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -118,
-                "point": 2.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -118,
-                "point": -2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 10
-              },
-              {
-                "name": "Under",
-                "price": -111,
-                "point": 10
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "lowvig",
-        "title": "LowVig.ag",
-        "last_update": "2026-09-30T09:29:32Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 263
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -325
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 154,
-                "point": 1.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -176,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 10
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 10
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betonlineag",
-        "title": "BetOnline.ag",
-        "last_update": "2026-09-30T09:30:38Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 263
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -325
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 154,
-                "point": 1.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -176,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 10
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 10
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-30T09:40:18Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 330
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -525
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 105,
-                "point": 2.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -135,
-                "point": -2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -115,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -115,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-30T09:38:46Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 300
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -475
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -120,
-                "point": 3
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -110,
-                "point": -3
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:46Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -120,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -110,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 320
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -525
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 110,
-                "point": 2.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -140,
-                "point": -2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:43Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betrivers",
-        "title": "BetRivers",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 285
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -560
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": -120,
-                "point": 2.5
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -132,
-                "point": -2.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -121,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": -132,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "polymarket",
-        "title": "Polymarket",
-        "last_update": "2026-09-30T09:40:26Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:26Z",
-            "outcomes": [
-              {
-                "name": "Kiwoom Heroes",
-                "price": 376,
-                "sid": "68545599373195233105591295494425823129784992618251494375290742633992506806697"
-              },
-              {
-                "name": "Lotte Giants",
-                "price": -376,
-                "sid": "25409743089859892895235833301111643547550327827410242785984858643248677424299"
-              }
-            ]
-          }
-        ],
-        "sid": "781225"
-      }
-    ]
-  },
-  {
-    "id": "0dc1068a9838c6714a093ac5eaa54494",
-    "sport_key": "baseball_kbo",
-    "sport_title": "KBO",
-    "commence_time": "2026-09-30T09:30:00Z",
-    "home_team": "SSG Landers",
-    "away_team": "LG Twins",
-    "bookmakers": [
-      {
-        "key": "fanatics",
-        "title": "Fanatics",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -140
-              },
-              {
-                "name": "SSG Landers",
-                "price": 100
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 120,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -175,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 100,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -140,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-09-30T09:40:17Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -130
-              },
-              {
-                "name": "SSG Landers",
-                "price": 102
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 125,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -164,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 102,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -132,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-09-30T09:38:01Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -115
-              },
-              {
-                "name": "SSG Landers",
-                "price": -115
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 130,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -170,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:01Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -110,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -120,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "mybookieag",
-        "title": "MyBookie.ag",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -167
-              },
-              {
-                "name": "SSG Landers",
-                "price": 120
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -105,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -133,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -125,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -111,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "lowvig",
-        "title": "LowVig.ag",
-        "last_update": "2026-09-30T09:29:32Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -150
-              },
-              {
-                "name": "SSG Landers",
-                "price": 130
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -105,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -115,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:29:32Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -126,
-                "point": 11
-              },
-              {
-                "name": "Under",
-                "price": 106,
-                "point": 11
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betonlineag",
-        "title": "BetOnline.ag",
-        "last_update": "2026-09-30T09:30:38Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -150
-              },
-              {
-                "name": "SSG Landers",
-                "price": 130
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -105,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -115,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:30:38Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -126,
-                "point": 11
-              },
-              {
-                "name": "Under",
-                "price": 106,
-                "point": 11
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-30T09:40:18Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -135
-              },
-              {
-                "name": "SSG Landers",
-                "price": 105
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 115,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -155,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:40:18Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -125,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-09-30T09:36:20Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:36:20Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -135
-              },
-              {
-                "name": "SSG Landers",
-                "price": 100
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:36:20Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 110,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -150,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:36:20Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -105,
-                "point": 11
-              },
-              {
-                "name": "Under",
-                "price": -125,
-                "point": 11
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-09-30T09:38:44Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -135
-              },
-              {
-                "name": "SSG Landers",
-                "price": -105
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": 130,
-                "point": -1.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -165,
-                "point": 1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:38:44Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -135,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betrivers",
-        "title": "BetRivers",
-        "last_update": "2026-09-30T09:39:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -134
-              },
-              {
-                "name": "SSG Landers",
-                "price": -118
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -129,
-                "point": -0.5
-              },
-              {
-                "name": "SSG Landers",
-                "price": -124,
-                "point": 0.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T09:39:47Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -117,
-                "point": 10.5
-              },
-              {
-                "name": "Under",
-                "price": -136,
-                "point": 10.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "polymarket",
-        "title": "Polymarket",
-        "last_update": "2026-09-30T09:40:26Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T09:40:26Z",
-            "outcomes": [
-              {
-                "name": "LG Twins",
-                "price": -111,
-                "sid": "16034832563802581885576364829951787018828036012570665617054195757182510685481"
-              },
-              {
-                "name": "SSG Landers",
-                "price": 111,
-                "sid": "57697938169358645489159748201079275978272874154071170764437139022472662408309"
-              }
-            ]
-          }
-        ],
-        "sid": "772348"
       }
     ]
   }
