@@ -3,18 +3,18 @@
     "id": "9e23239e0075a017225697fa3bcd88b3",
     "sport_key": "baseball_mlb",
     "sport_title": "MLB",
-    "commence_time": "2026-09-30T18:08:00Z",
+    "commence_time": "2026-09-30T18:11:00Z",
     "home_team": "Atlanta Braves",
     "away_team": "Philadelphia Phillies",
     "bookmakers": [
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-30T18:05:17Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -28,32 +28,32 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -182,
+                "price": -178,
                 "point": 1.5
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": 150,
+                "price": 146,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 112,
+                "price": 110,
                 "point": 7.5
               },
               {
                 "name": "Under",
-                "price": -138,
+                "price": -134,
                 "point": 7.5
               }
             ]
@@ -63,11 +63,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:09:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -81,23 +81,113 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -180,
+                "price": -185,
                 "point": 1.5
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": 145,
+                "price": 150,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -115,
+                "point": 7
+              },
+              {
+                "name": "Under",
+                "price": -105,
+                "point": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-09-30T18:10:19Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T18:10:19Z",
+            "outcomes": [
+              {
+                "name": "Atlanta Braves",
+                "price": -103
+              },
+              {
+                "name": "Philadelphia Phillies",
+                "price": -117
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-09-30T18:10:19Z",
+            "outcomes": [
+              {
+                "name": "Atlanta Braves",
+                "price": -185,
+                "point": 1.5
+              },
+              {
+                "name": "Philadelphia Phillies",
+                "price": 152,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T18:10:19Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -118,
+                "point": 7
+              },
+              {
+                "name": "Under",
+                "price": -102,
+                "point": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-09-30T18:09:48Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-09-30T18:09:48Z",
+            "outcomes": [
+              {
+                "name": "Atlanta Braves",
+                "price": -102
+              },
+              {
+                "name": "Philadelphia Phillies",
+                "price": -118
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -114,103 +204,13 @@
         ]
       },
       {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-09-30T18:05:16Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T18:05:16Z",
-            "outcomes": [
-              {
-                "name": "Atlanta Braves",
-                "price": -103
-              },
-              {
-                "name": "Philadelphia Phillies",
-                "price": -117
-              }
-            ]
-          },
-          {
-            "key": "spreads",
-            "last_update": "2026-09-30T18:05:16Z",
-            "outcomes": [
-              {
-                "name": "Atlanta Braves",
-                "price": -185,
-                "point": 1.5
-              },
-              {
-                "name": "Philadelphia Phillies",
-                "price": 152,
-                "point": -1.5
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T18:05:16Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -119,
-                "point": 7
-              },
-              {
-                "name": "Under",
-                "price": -102,
-                "point": 7
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-09-30T18:04:43Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-09-30T18:04:43Z",
-            "outcomes": [
-              {
-                "name": "Atlanta Braves",
-                "price": -102
-              },
-              {
-                "name": "Philadelphia Phillies",
-                "price": -118
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-09-30T18:04:43Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -130,
-                "point": 7
-              },
-              {
-                "name": "Under",
-                "price": 105,
-                "point": 7
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-30T18:04:32Z",
+        "last_update": "2026-09-30T18:09:54Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -224,7 +224,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -240,7 +240,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -312,11 +312,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:02Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -330,7 +330,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -346,7 +346,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -365,11 +365,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-30T18:05:00Z",
+        "last_update": "2026-09-30T18:09:53Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -383,7 +383,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -399,7 +399,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -418,41 +418,41 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -103
+                "price": 108
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": -117
+                "price": -129
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -141,
+                "price": -125,
                 "point": 1
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": 115,
+                "price": 104,
                 "point": -1
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -471,11 +471,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-30T18:04:59Z",
+        "last_update": "2026-09-30T18:09:30Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -489,7 +489,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
@@ -505,7 +505,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -524,50 +524,50 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-30T18:05:03Z",
+        "last_update": "2026-09-30T18:09:50Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -102
+                "price": -104
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": -118
+                "price": -116
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Atlanta Braves",
-                "price": -175,
+                "price": -180,
                 "point": 1.5
               },
               {
                 "name": "Philadelphia Phillies",
-                "price": 150,
+                "price": 155,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -125,
+                "price": -120,
                 "point": 7
               },
               {
                 "name": "Under",
-                "price": 105,
+                "price": 100,
                 "point": 7
               }
             ]
@@ -577,11 +577,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-30T18:05:23Z",
+        "last_update": "2026-09-30T18:10:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Philadelphia Phillies",
@@ -597,7 +597,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Philadelphia Phillies",
@@ -615,17 +615,17 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 122,
+                "price": 125,
                 "sid": "64021511956582761784486142741678312038915866135433134818420651595589724927058",
                 "point": 7.5
               },
               {
                 "name": "Under",
-                "price": -122,
+                "price": -125,
                 "sid": "55078901368650494428142001082339364969306306291391386661632152290571181005927",
                 "point": 7.5
               }
@@ -647,11 +647,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-30T18:05:16Z",
+        "last_update": "2026-09-30T18:10:19Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -665,7 +665,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -681,7 +681,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -700,11 +700,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-30T18:05:17Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -718,7 +718,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -734,7 +734,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -753,11 +753,11 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-30T18:04:25Z",
+        "last_update": "2026-09-30T18:08:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -771,23 +771,23 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
-                "price": -156,
+                "price": -159,
                 "point": 1.5
               },
               {
                 "name": "Houston Astros",
-                "price": 135,
+                "price": 133,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -806,11 +806,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-30T18:04:32Z",
+        "last_update": "2026-09-30T18:09:54Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -824,7 +824,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -840,7 +840,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -859,11 +859,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-30T18:04:43Z",
+        "last_update": "2026-09-30T18:09:48Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -877,7 +877,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -893,7 +893,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -912,11 +912,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-30T18:05:00Z",
+        "last_update": "2026-09-30T18:09:53Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -930,7 +930,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -946,7 +946,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -965,11 +965,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:02Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -983,7 +983,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -999,7 +999,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1018,11 +1018,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1036,7 +1036,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1052,7 +1052,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1071,11 +1071,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-30T18:04:59Z",
+        "last_update": "2026-09-30T18:09:30Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1089,7 +1089,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1105,7 +1105,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1124,11 +1124,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-30T18:05:03Z",
+        "last_update": "2026-09-30T18:09:50Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1142,7 +1142,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1158,7 +1158,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1177,11 +1177,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:09:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1195,7 +1195,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1211,7 +1211,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1230,11 +1230,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-30T18:05:23Z",
+        "last_update": "2026-09-30T18:10:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Chicago White Sox",
@@ -1250,7 +1250,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Houston Astros",
@@ -1268,7 +1268,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1300,25 +1300,25 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-30T18:05:17Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": 116
+                "price": 118
               },
               {
                 "name": "New York Yankees",
-                "price": -134
+                "price": -138
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1334,7 +1334,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1353,11 +1353,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-30T18:05:03Z",
+        "last_update": "2026-09-30T18:09:50Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1371,23 +1371,23 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": -195,
+                "price": -185,
                 "point": 1.5
               },
               {
                 "name": "New York Yankees",
-                "price": 165,
+                "price": 160,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1406,11 +1406,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-30T18:04:43Z",
+        "last_update": "2026-09-30T18:09:48Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1424,7 +1424,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1440,7 +1440,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1459,11 +1459,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1477,7 +1477,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1493,7 +1493,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1512,41 +1512,41 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-30T18:05:16Z",
+        "last_update": "2026-09-30T18:10:19Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": 113
+                "price": 107
               },
               {
                 "name": "New York Yankees",
-                "price": -136
+                "price": -129
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": -198,
+                "price": -210,
                 "point": 1.5
               },
               {
                 "name": "New York Yankees",
-                "price": 162,
+                "price": 172,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1565,11 +1565,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:02Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1583,7 +1583,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1599,7 +1599,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1618,11 +1618,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-30T18:05:00Z",
+        "last_update": "2026-09-30T18:09:53Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1636,7 +1636,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1652,7 +1652,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1671,11 +1671,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-30T18:04:32Z",
+        "last_update": "2026-09-30T18:09:54Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1689,7 +1689,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1705,7 +1705,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1724,11 +1724,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-30T18:04:59Z",
+        "last_update": "2026-09-30T18:09:30Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1742,7 +1742,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1758,7 +1758,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1777,25 +1777,25 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:09:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": 110
+                "price": 115
               },
               {
                 "name": "New York Yankees",
-                "price": -130
+                "price": -140
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1811,7 +1811,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1830,11 +1830,11 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-30T18:04:25Z",
+        "last_update": "2026-09-30T18:08:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1848,23 +1848,23 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
-                "price": -198,
+                "price": -194,
                 "point": 1.5
               },
               {
                 "name": "New York Yankees",
-                "price": 165,
+                "price": 163,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1883,11 +1883,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-30T18:05:23Z",
+        "last_update": "2026-09-30T18:10:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Boston Red Sox",
@@ -1903,7 +1903,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "New York Yankees",
@@ -1921,7 +1921,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1953,11 +1953,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-09-30T18:05:17Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -1971,7 +1971,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -1987,7 +1987,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:17Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2006,11 +2006,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:09:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2024,7 +2024,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2040,7 +2040,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:09:13Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2059,11 +2059,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-09-30T18:05:03Z",
+        "last_update": "2026-09-30T18:09:50Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2077,7 +2077,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2093,7 +2093,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:03Z",
+            "last_update": "2026-09-30T18:09:50Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2112,11 +2112,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-09-30T18:05:16Z",
+        "last_update": "2026-09-30T18:10:19Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2130,7 +2130,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2146,7 +2146,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:16Z",
+            "last_update": "2026-09-30T18:10:19Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2165,11 +2165,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-09-30T18:04:32Z",
+        "last_update": "2026-09-30T18:09:54Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2183,7 +2183,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2199,7 +2199,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:32Z",
+            "last_update": "2026-09-30T18:09:54Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2218,11 +2218,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-09-30T18:04:43Z",
+        "last_update": "2026-09-30T18:09:48Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2236,7 +2236,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2252,7 +2252,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:43Z",
+            "last_update": "2026-09-30T18:09:48Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2271,11 +2271,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:03Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2289,7 +2289,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2305,7 +2305,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:03Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2324,11 +2324,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-09-30T18:05:00Z",
+        "last_update": "2026-09-30T18:09:53Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2342,7 +2342,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2358,7 +2358,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:00Z",
+            "last_update": "2026-09-30T18:09:53Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2377,11 +2377,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-09-30T18:05:15Z",
+        "last_update": "2026-09-30T18:10:02Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2395,7 +2395,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2411,7 +2411,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:15Z",
+            "last_update": "2026-09-30T18:10:02Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2430,11 +2430,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-09-30T18:04:59Z",
+        "last_update": "2026-09-30T18:09:30Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2448,7 +2448,7 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2464,7 +2464,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:59Z",
+            "last_update": "2026-09-30T18:09:30Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2483,41 +2483,41 @@
       {
         "key": "mybookieag",
         "title": "MyBookie.ag",
-        "last_update": "2026-09-30T18:04:25Z",
+        "last_update": "2026-09-30T18:08:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
-                "price": 123
+                "price": 124
               },
               {
                 "name": "San Diego Padres",
-                "price": -145
+                "price": -146
               }
             ]
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
-                "price": -177,
+                "price": -180,
                 "point": 1.5
               },
               {
                 "name": "San Diego Padres",
-                "price": 152,
+                "price": 154,
                 "point": -1.5
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:04:25Z",
+            "last_update": "2026-09-30T18:08:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2526,7 +2526,7 @@
               },
               {
                 "name": "Under",
-                "price": -123,
+                "price": -124,
                 "point": 7.5
               }
             ]
@@ -2536,11 +2536,11 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-09-30T18:05:23Z",
+        "last_update": "2026-09-30T18:10:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Chicago Cubs",
@@ -2556,17 +2556,17 @@
           },
           {
             "key": "spreads",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "San Diego Padres",
-                "price": 174,
+                "price": 167,
                 "sid": "108496533203528371890456387982642627641152990798481130282567773771300124732522",
                 "point": -1.5
               },
               {
                 "name": "Chicago Cubs",
-                "price": -174,
+                "price": -167,
                 "sid": "95523338690339480671227288323065778657463655677474274359126731376180460209598",
                 "point": 1.5
               }
@@ -2574,7 +2574,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-09-30T18:05:23Z",
+            "last_update": "2026-09-30T18:10:28Z",
             "outcomes": [
               {
                 "name": "Over",
