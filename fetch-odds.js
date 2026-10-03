@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { randomUUID } = require('crypto');
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
@@ -111,6 +112,22 @@ const SPORTS = [
     fetchEveryMinutes: 5,
   },
   {
+    sport: 'NHL', sportKey: 'icehockey_nhl', fileName: 'nhl',
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [9, 10, 11, 12, 1, 2, 3, 4, 5, 6],
+    fetchEveryMinutes: 5,
+  },
+  {
+    sport: 'NBA', sportKey: 'basketball_nba', fileName: 'nba',
+    preseasonSportKey: 'basketball_nba_preseason',
+    // Only provider-listed preseason is collected; there is no guessed window.
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [9, 10, 11, 12, 1, 2, 3, 4, 5, 6],
+    fetchEveryMinutes: 5,
+  },
+  {
     sport: 'MLB', sportKey: MLB_SPORT_KEY, fileName: 'mlb',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
@@ -136,8 +153,70 @@ function countCsvValues(value) {
     .length;
 }
 
+// Public tape stores core executable odds, not arbitrary provider payloads.
+// Keep provider identities and timestamps intact; unknown nested content is
+// deliberately excluded before any of the three publication paths writes.
+function serializeCoreOdds(games) {
+  if (!Array.isArray(games) || games.length > 4096) {
+    throw new Error('Invalid core odds event collection');
+  }
+  const fields = (value, names) => {
+    if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+      throw new Error('Invalid core odds object');
+    }
+    return Object.fromEntries(names
+    .filter(name => value?.[name] != null)
+    .map(name => {
+      const item = value[name];
+      if ((typeof item !== 'string' && typeof item !== 'number')
+          || (typeof item === 'number' && !Number.isFinite(item))
+          || (typeof item === 'string' && Buffer.byteLength(item, 'utf8') > 2048)) {
+        throw new Error(`Invalid core odds field: ${name}`);
+      }
+      return [name, item];
+    }));
+  };
+  const children = (value, name, project) => {
+    if (value?.[name] == null) return {};
+    const maximum = { bookmakers: 128, markets: 32, outcomes: 128 }[name];
+    if (!Array.isArray(value[name]) || value[name].length > maximum) {
+      throw new Error(`Invalid core odds collection: ${name}`);
+    }
+    return { [name]: value[name].map(project) };
+  };
+  const json = JSON.stringify(games.map(game => ({
+    ...fields(game, ['id', 'sport_key', 'sport_title', 'commence_time', 'home_team', 'away_team']),
+    ...children(game, 'bookmakers', book => ({
+      ...fields(book, ['key', 'title', 'last_update', 'sid']),
+      ...children(book, 'markets', market => ({
+        ...fields(market, ['key', 'last_update', 'sid']),
+        ...children(market, 'outcomes', outcome =>
+          fields(outcome, ['name', 'price', 'point', 'description', 'sid']))
+      }))
+    }))
+  })), null, 2);
+  if (Buffer.byteLength(json, 'utf8') > 8 * 1024 * 1024) {
+    throw new Error('Core odds publication exceeds 8 MiB');
+  }
+  return json;
+}
+
+// Publish only a complete validated document. A failed write or rename leaves
+// the previous file intact; temporary core documents are cleaned after errors.
+function writeFileAtomically(filePath, contents, fileSystem = fs) {
+  // Keep crash leftovers outside odds/: the collector workflow stages that directory.
+  const temporary = path.join(path.dirname(path.dirname(filePath)),
+    `.odds-publication-${process.pid}-${randomUUID()}.tmp`);
+  try {
+    fileSystem.writeFileSync(temporary, contents, { encoding: 'utf8', flag: 'wx' });
+    fileSystem.renameSync(temporary, filePath);
+  } finally {
+    if (fileSystem.existsSync(temporary)) fileSystem.unlinkSync(temporary);
+  }
+}
+
 function estimateCredits(sport) {
-  const paidRequests = (sport.estimatedPaidRequests || 1)
+  const paidRequests = (sport.includeRegularSeason === false ? 0 : (sport.estimatedPaidRequests || 1))
     + (sport.includePreseason ? 1 : 0);
   return countCsvValues(sport.markets || 'h2h')
     * countCsvValues(sport.regions || DEFAULT_REGIONS)
@@ -191,6 +270,17 @@ function isPreseasonActive(sport, availableSportKeys, now = new Date()) {
   });
   return current >= monthDayValue(fallback.start)
     && current < monthDayValue(fallback.end);
+}
+
+function resolveSeasonFeeds(sport, availableSportKeys, now = new Date()) {
+  const includePreseason = isPreseasonActive(sport, availableSportKeys, now);
+  // The catalog lists currently offered feeds. During a preseason-only window,
+  // an unlisted regular feed is not a required publication dependency. Do not
+  // assume an inactive /odds endpoint returns [] rather than 404.
+  const includeRegularSeason = !includePreseason
+    || !(availableSportKeys instanceof Set)
+    || availableSportKeys.has(sport.sportKey);
+  return { ...sport, includePreseason, includeRegularSeason };
 }
 
 function getZonedParts(date, timeZone) {
@@ -764,7 +854,10 @@ function buildUsOddsParams({
 }
 
 function assertExpectedSportKey(oddsData, sportKey) {
-  const games = Array.isArray(oddsData) ? oddsData : [];
+  if (!Array.isArray(oddsData)) {
+    throw new Error(`Unexpected ${sportKey} odds payload: expected an array`);
+  }
+  const games = oddsData;
   const unexpectedKeys = [...new Set(
     games
       .filter(game => game?.sport_key !== sportKey)
@@ -1006,7 +1099,7 @@ function selectSportsWithinQuota(sports, quota) {
 
 async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies = {}) {
   const request = dependencies.fetchRequest || fetchWithRetry;
-  const writeFile = dependencies.writeFile || fs.writeFileSync;
+  const writeFile = dependencies.writeFile || writeFileAtomically;
   const {
     sport,
     sportKey,
@@ -1026,7 +1119,8 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
     commenceTimeFrom: window.commenceTimeFrom,
     commenceTimeTo: window.commenceTimeTo
   });
-  const events = Array.isArray(eventsResponse.data) ? eventsResponse.data : [];
+  assertExpectedSportKey(eventsResponse.data, sportKey);
+  const events = eventsResponse.data;
   const eventIds = [...new Set(events.map(event => event.id).filter(Boolean))];
   console.log(`Fetched ${events.length} ${sport} events in ${slateLabel}`);
 
@@ -1044,6 +1138,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
     });
     const response = await request(oddsUrl, usParams);
     latestQuota = parseQuotaHeaders(response.headers) || latestQuota;
+    assertExpectedSportKey(response.data, sportKey);
     addOddsGamesById(eventOddsById, response.data);
   }
 
@@ -1063,6 +1158,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
     console.log(`Fetching ${sport} direct odds fallback for ${slateLabel}...`);
     const directResponse = await request(oddsUrl, fallbackUsParams);
     latestQuota = parseQuotaHeaders(directResponse.headers) || latestQuota;
+    assertExpectedSportKey(directResponse.data, sportKey);
     addOddsGamesById(directOddsById, directResponse.data);
   } else {
     console.log(`Skipping ${sport} direct odds fallback; event-ID odds were complete.`);
@@ -1094,7 +1190,7 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
   }
 
   const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-  writeFile(filePath, JSON.stringify(oddsData, null, 2));
+  writeFile(filePath, serializeCoreOdds(oddsData));
 
   console.log(`Fetched odds for ${oddsData.length} ${sport} events`);
   console.log(`${sport} odds saved to ${filePath}`);
@@ -1124,9 +1220,9 @@ async function fetchBaseballOddsByEventWindow(config, windowConfig, dependencies
   };
 }
 
-async function fetchNflOdds(config, dependencies = {}) {
+async function fetchSeasonOdds(config, dependencies = {}) {
   const request = dependencies.fetchRequest || fetchWithRetry;
-  const writeFile = dependencies.writeFile || fs.writeFileSync;
+  const writeFile = dependencies.writeFile || writeFileAtomically;
   const {
     sport,
     sportKey,
@@ -1134,33 +1230,34 @@ async function fetchNflOdds(config, dependencies = {}) {
     fileName,
     markets = 'h2h,spreads,totals',
     regions = DEFAULT_REGIONS,
-    includePreseason = false
+    includePreseason = false,
+    includeRegularSeason = true
   } = config;
   const requestParams = buildUsOddsParams({ markets, regions });
   const regularUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/`;
   const preseasonUrl = `https://api.the-odds-api.com/v4/sports/${preseasonSportKey}/odds/`;
 
-  console.log(`Fetching ${sport} regular-season odds...`);
-  const regularPromise = request(regularUrl, requestParams);
+  console.log(`Fetching ${sport} ${includeRegularSeason ? 'regular-season' : 'preseason-only'} odds...`);
+  const regularPromise = includeRegularSeason
+    ? request(regularUrl, requestParams)
+    : Promise.resolve(null);
   const preseasonPromise = includePreseason
     ? request(preseasonUrl, requestParams)
     : Promise.resolve(null);
 
   // Wait for both required feeds before publishing. Promise.all rejects if
-  // either request fails, leaving the last known-good nfl.json untouched.
+  // either request fails, leaving the last known-good league file untouched.
   const [regularResponse, preseasonResponse] = await Promise.all([
     regularPromise,
     preseasonPromise
   ]);
-  const regularSeasonOdds = Array.isArray(regularResponse.data)
-    ? regularResponse.data
-    : [];
-  const preseasonOdds = Array.isArray(preseasonResponse?.data)
-    ? preseasonResponse.data
-    : [];
+  if (includeRegularSeason) assertExpectedSportKey(regularResponse?.data, sportKey);
+  if (includePreseason) assertExpectedSportKey(preseasonResponse?.data, preseasonSportKey);
+  const regularSeasonOdds = includeRegularSeason ? regularResponse.data : [];
+  const preseasonOdds = includePreseason ? preseasonResponse.data : [];
   let oddsData = mergeOddsGames(regularSeasonOdds, preseasonOdds);
   let latestQuota = parseQuotaHeaders(preseasonResponse?.headers)
-    || parseQuotaHeaders(regularResponse.headers);
+    || parseQuotaHeaders(regularResponse?.headers);
 
   const gammaMerge = await attachGammaPolymarket(
     sport,
@@ -1172,7 +1269,7 @@ async function fetchNflOdds(config, dependencies = {}) {
   oddsData = gammaMerge.games;
 
   const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-  writeFile(filePath, JSON.stringify(oddsData, null, 2));
+  writeFile(filePath, serializeCoreOdds(oddsData));
   console.log(
     `Fetched ${regularSeasonOdds.length} regular-season and ${preseasonOdds.length} preseason ${sport} games with odds`
   );
@@ -1191,7 +1288,7 @@ async function fetchNflOdds(config, dependencies = {}) {
 
 async function fetchOdds(config, dependencies = {}) {
   const request = dependencies.fetchRequest || fetchWithRetry;
-  const writeFile = dependencies.writeFile || fs.writeFileSync;
+  const writeFile = dependencies.writeFile || writeFileAtomically;
   const {
     sport,
     sportKey,
@@ -1202,7 +1299,7 @@ async function fetchOdds(config, dependencies = {}) {
 
   try {
     if (config.preseasonSportKey) {
-      return await fetchNflOdds(config, { fetchRequest: request, writeFile });
+      return await fetchSeasonOdds(config, { fetchRequest: request, writeFile });
     }
 
     const baseballWindowConfig = BASEBALL_EVENT_WINDOW_SPORTS[sportKey];
@@ -1236,7 +1333,7 @@ async function fetchOdds(config, dependencies = {}) {
     oddsData = gammaMerge.games;
 
     const filePath = path.join(ODDS_DIR, `${fileName}.json`);
-    writeFile(filePath, JSON.stringify(oddsData, null, 2));
+    writeFile(filePath, serializeCoreOdds(oddsData));
 
     console.log(`${sport} odds saved to ${filePath}`);
 
@@ -1252,7 +1349,6 @@ async function fetchOdds(config, dependencies = {}) {
     console.error(`Error fetching ${sport} odds:`, error.message);
     if (error.response) {
       console.error('Response status:', error.response.status);
-      console.error('Response data:', error.response.data);
     }
     return {
       sport,
@@ -1331,15 +1427,11 @@ async function fetchAllOdds() {
     const providerStatus = await fetchProviderStatus();
     const dueWithAvailability = due.map(sport => {
       if (!sport.preseasonSportKey) return sport;
-      const includePreseason = isPreseasonActive(
-        sport,
-        providerStatus.availableSportKeys,
-        now
-      );
+      const planned = resolveSeasonFeeds(sport, providerStatus.availableSportKeys, now);
       console.log(
-        `NFL preseason feed ${includePreseason ? 'is available; including it' : 'is not active; skipping it'} this run.`
+        `${sport.sport} preseason feed ${planned.includePreseason ? 'is available; including it' : 'is not active; skipping it'} this run.`
       );
-      return { ...sport, includePreseason };
+      return planned;
     });
     const quotaBefore = providerStatus.quota;
     const { selected: quotaAllowed, skipped: quotaSkipped } = selectSportsWithinQuota(
@@ -1401,7 +1493,7 @@ async function fetchAllOdds() {
     
     // Save combined summary
     const summaryPath = path.join(ODDS_DIR, 'summary.json');
-    fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));
+    writeFileAtomically(summaryPath, JSON.stringify(summary, null, 2));
     
     console.log(`Summary saved to ${summaryPath}`);
     if (failedAttempts.length > 0) {
@@ -1434,12 +1526,16 @@ module.exports = {
   countNflGamesByFeed,
   estimateCredits,
   fetchJson,
-  fetchNflOdds,
+  fetchNflOdds: fetchSeasonOdds,
+  fetchSeasonOdds,
+  serializeCoreOdds,
+  writeFileAtomically,
   fetchOdds,
   isPrimaryGammaGameEvent,
   isSportActive,
   isSportDue,
   isPreseasonActive,
+  resolveSeasonFeeds,
   mergeGammaPolymarketBookmakers,
   mergeOddsGames,
   mergePolymarketBookmakers,
