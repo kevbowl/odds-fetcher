@@ -1,4 +1,7 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const {
   DEFAULT_REGIONS,
   GAMMA_SERIES_BY_SPORT_KEY,
@@ -12,11 +15,14 @@ const {
   estimateCredits,
   fetchJson,
   fetchNflOdds,
+  serializeCoreOdds,
+  writeFileAtomically,
   fetchOdds,
   isPrimaryGammaGameEvent,
   isSportActive,
   isSportDue,
   isPreseasonActive,
+  resolveSeasonFeeds,
   mergeGammaPolymarketBookmakers,
   mergeOddsGames,
   mergePolymarketBookmakers,
@@ -173,6 +179,34 @@ assert.equal(mlb.regions, 'us');
 assert.equal(estimateCredits(mlb), 6);
 const wnba = SPORTS.find(candidate => candidate.sportKey === 'basketball_wnba');
 assert.equal(estimateCredits(wnba), 3);
+
+const nba = SPORTS.find(candidate => candidate.sportKey === 'basketball_nba');
+const nhl = SPORTS.find(candidate => candidate.sportKey === 'icehockey_nhl');
+for (const league of [nba, nhl]) {
+  assert.ok(league);
+  assert.equal(league.markets, 'h2h,spreads,totals');
+  assert.equal(estimateCredits(league), 3);
+  assert.equal(isSportActive(league, new Date('2026-10-03T00:00:00Z')), true);
+  assert.equal(isSportActive(league, new Date('2027-01-15T00:00:00Z')), true);
+  assert.equal(isSportActive(league, new Date('2027-06-15T00:00:00Z')), true);
+  assert.equal(isSportActive(league, new Date('2027-07-15T00:00:00Z')), false);
+}
+assert.equal(isPreseasonActive(nba, new Set(['basketball_nba_preseason'])), true);
+assert.equal(isPreseasonActive(nba, null, new Date('2026-10-03T00:00:00Z')), false);
+assert.equal(estimateCredits({ ...nba, includePreseason: true }), 6);
+assert.equal(nhl.preseasonSportKey, undefined);
+const compactOdds = JSON.parse(serializeCoreOdds([{
+  id: 'event', sport_key: 'icehockey_nhl', privateProviderDump: { veryLarge: 'raw' },
+  bookmakers: [{ key: 'draftkings', last_update: nowIso, opaque: { raw: true },
+    markets: [{ key: 'spreads', last_update: nowIso, raw: 'discard',
+      outcomes: [{ name: 'Boston Bruins', point: -1.5, price: 130, sid: 'selection', raw: [1, 2, 3] }]
+    }]
+  }]
+}]));
+assert.equal(JSON.stringify(compactOdds).includes('raw'), false);
+assert.equal(compactOdds[0].bookmakers[0].markets[0].outcomes[0].point, -1.5);
+assert.equal(compactOdds[0].bookmakers[0].markets[0].outcomes[0].sid, 'selection');
+assert.throws(() => serializeCoreOdds([{ id: { raw: 'wrong type' } }]), /Invalid core odds field/);
 
 const regularGame = {
   id: 'regular-later',
@@ -700,7 +734,7 @@ async function testPolymarketFetchAndMerge() {
           return { data: [mlbGammaEvent], headers: {} };
         }
         if (url.includes('/events')) {
-          return { data: [{ id: 'mlb-1', commence_time: commenceTime }], headers: {} };
+          return { data: [{ id: 'mlb-1', sport_key: 'baseball_mlb', commence_time: commenceTime }], headers: {} };
         }
         return { data: [mlbUsGame], headers: {} };
       },
@@ -776,7 +810,148 @@ async function testNativeHttpClient() {
   );
 }
 
-Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge()])
+function testCompactCoreOddsAndAtomicWrite() {
+  const normalized = [{
+    id: 'nba-event', sport_key: 'basketball_nba_preseason', sport_title: 'NBA Preseason',
+    commence_time: '2026-10-03T23:00:00Z', home_team: 'Home', away_team: 'Away',
+    bookmakers: [{ key: 'sportsbook', title: 'Sportsbook', sid: 'book-id', last_update: nowIso,
+      markets: [{ key: 'totals', sid: 'market-id', last_update: nowIso,
+        outcomes: [{ name: 'Over', description: 'Full game', price: -110, point: 210.5, sid: 'selection-id' }]
+      }]
+    }]
+  }];
+  assert.deepEqual(JSON.parse(serializeCoreOdds(normalized)), normalized);
+  assert.throws(() => serializeCoreOdds([{ id: '🙂'.repeat(600) }]), /Invalid core odds field/);
+  assert.throws(() => serializeCoreOdds([{ bookmakers: Array(129).fill({}) }]), /Invalid core odds collection/);
+  assert.throws(() => serializeCoreOdds(Array(4097).fill({})), /event collection/);
+  assert.throws(() => serializeCoreOdds([{ bookmakers: [null] }]), /Invalid core odds object/);
+  assert.throws(() => serializeCoreOdds([{ bookmakers: [{ markets: [{ outcomes: ['bad'] }] }] }]), /Invalid core odds object/);
+  assert.throws(() => serializeCoreOdds([{ bookmakers: [{ markets: [{ outcomes: [{ price: NaN }] }] }] }]), /Invalid core odds field/);
+  assert.throws(() => assertExpectedSportKey({ message: 'maintenance' }, nba.sportKey), /expected an array/);
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'odds-atomic-test-'));
+  const output = path.join(directory, 'nba.json');
+  try {
+    fs.writeFileSync(output, 'last-good');
+    for (const failedOperation of ['writeFileSync', 'renameSync']) {
+      const temporaryPaths = [];
+      const trackedFileSystem = { ...fs, writeFileSync: (...args) => {
+        temporaryPaths.push(args[0]);
+        return fs.writeFileSync(...args);
+      } };
+      assert.throws(() => writeFileAtomically(output, 'replacement', {
+        ...trackedFileSystem,
+        [failedOperation]: (...args) => {
+          if (failedOperation === 'writeFileSync') trackedFileSystem.writeFileSync(args[0], 'partial');
+          throw new Error('synthetic disk failure');
+        }
+      }), /synthetic disk failure/);
+      assert.equal(fs.readFileSync(output, 'utf8'), 'last-good');
+      assert.deepEqual(fs.readdirSync(directory), ['nba.json']);
+      assert.equal(temporaryPaths.length, 1);
+      assert.equal(path.dirname(temporaryPaths[0]), path.dirname(directory));
+      assert.equal(fs.existsSync(temporaryPaths[0]), false, 'Parent-level temporary core document must be cleaned');
+    }
+    writeFileAtomically(output, 'replacement');
+    assert.equal(fs.readFileSync(output, 'utf8'), 'replacement');
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+}
+
+testCompactCoreOddsAndAtomicWrite();
+
+async function testPreseasonOnlyCatalog() {
+  for (const base of [nba, nfl]) {
+    const catalog = parseAvailableSportKeys([
+      { key: base.preseasonSportKey, active: true },
+      { key: base.sportKey, active: false }
+    ]);
+    const planned = resolveSeasonFeeds(base, catalog, new Date('2026-10-03T00:00:00Z'));
+    assert.equal(planned.includeRegularSeason, false);
+    assert.equal(planned.includePreseason, true);
+    assert.equal(estimateCredits(planned), 3);
+    const requests = [], writes = [];
+    const result = await fetchOdds(planned, {
+      fetchRequest: async url => {
+        requests.push(url);
+        if (!url.includes(base.preseasonSportKey)) throw new Error('Inactive regular feed must not be requested');
+        return { data: [{ id: 'preseason', sport_key: base.preseasonSportKey }], headers: {} };
+      },
+      writeFile: (...args) => writes.push(args)
+    });
+    assert.equal(result.error, undefined);
+    assert.equal(requests.filter(url => url.includes('/v4/sports/')).length, 1);
+    assert.equal(result.regularSeasonGameCount, 0);
+    assert.equal(result.preseasonGameCount, 1);
+    assert.equal(JSON.parse(writes[0][1])[0].sport_key, base.preseasonSportKey);
+    const both = resolveSeasonFeeds(base, new Set([base.sportKey, base.preseasonSportKey]));
+    assert.equal(both.includeRegularSeason, true);
+    assert.equal(estimateCredits(both), 6);
+  }
+  const unknown = resolveSeasonFeeds(nba, null, new Date('2026-10-03T00:00:00Z'));
+  assert.equal(unknown.includeRegularSeason, true);
+  assert.equal(unknown.includePreseason, false);
+}
+
+async function testSeasonFeedFailures() {
+  for (const config of [{ ...nba, includePreseason: true }, { ...nfl, includePreseason: true }]) {
+    for (const badFeed of ['regular', 'preseason']) {
+      for (const badData of [{ message: 'not an event array' }, [{ id: 'foreign', sport_key: 'icehockey_nhl' }]]) {
+        const writes = [];
+        const result = await fetchOdds(config, {
+          fetchRequest: async url => {
+            const preseason = url.includes(config.preseasonSportKey);
+            const bad = preseason === (badFeed === 'preseason');
+            return { data: bad ? badData : [{ id: 'valid',
+              sport_key: preseason ? config.preseasonSportKey : config.sportKey }], headers: {} };
+          },
+          writeFile: (...args) => writes.push(args)
+        });
+        assert.ok(result.error, `${config.sport} must fail closed on malformed ${badFeed}`);
+        assert.equal(writes.length, 0);
+        const summary = buildSummarySport(config, result, {
+          gameCount: 2, lastFetched: previous.lastFetched,
+          regularSeasonGameCount: 1, preseasonGameCount: 1
+        }, nowIso);
+        assert.equal(summary.lastFetched, previous.lastFetched);
+        assert.equal(summary.lastAttemptStatus, 'failed');
+        assert.equal(summary.preseasonGameCount, 1);
+      }
+    }
+  }
+}
+
+async function testNewLeaguePublication() {
+  for (const config of [nhl, { ...nba, includePreseason: true }]) {
+    const requests = [];
+    const writes = [];
+    const result = await fetchOdds(config, {
+      fetchRequest: async (url, params) => {
+        requests.push({ url, params });
+        const key = url.includes('nba_preseason') ? 'basketball_nba_preseason' : config.sportKey;
+        return { data: [{ id: key, sport_key: key, commence_time: '2026-10-10T00:00:00Z',
+          home_team: 'Home', away_team: 'Away', raw: { opaque: 'dump' }, bookmakers: [] }], headers: {} };
+      },
+      writeFile: (filePath, contents) => writes.push({ filePath, contents })
+    });
+    assert.equal(result.error, undefined);
+    assert.equal(writes.length, 1);
+    assert.equal(writes[0].filePath, `odds/${config.fileName}.json`);
+    assert.equal(writes[0].contents.includes('opaque'), false);
+    assert.equal(result.gameCount, config.includePreseason ? 2 : 1);
+    assert.equal(requests.every(item => item.params.regions === 'us'), true);
+    assert.equal(requests.some(item => item.url.includes('gamma')), false);
+    const failedWrites = [];
+    const failure = await fetchOdds(config, {
+      fetchRequest: async () => { throw new Error('unavailable'); },
+      writeFile: (...value) => failedWrites.push(value)
+    });
+    assert.equal(failedWrites.length, 0);
+    assert.equal(failure.error.message, 'unavailable');
+  }
+}
+
+Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge(), testNewLeaguePublication(), testSeasonFeedFailures(), testPreseasonOnlyCatalog()])
   .then(() => console.log('odds-fetcher fetch and receipt tests passed'))
   .catch(error => {
     console.error(error);

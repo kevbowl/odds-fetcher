@@ -11,7 +11,7 @@ Current US sportsbook lines from [The Odds API](https://the-odds-api.com/) with 
 https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
 ```
 
-`file` is `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `mlb`, `kbo`, or `summary`.
+`file` is `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `nhl`, `nba`, `mlb`, `kbo`, or `summary`.
 
 ```bash
 curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
@@ -210,6 +210,8 @@ The Odds API US response is the skeleton: event ids, teams, kickoff, and sportsb
 | NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug–Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug–Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May–Oct | All available events | `odds/wnba.json` |
+| NHL | `icehockey_nhl` | Sep–Jun | All available events | `odds/nhl.json` |
+| NBA | `basketball_nba` + `basketball_nba_preseason` | Sep–Jun | Regular season plus provider-listed preseason | `odds/nba.json` |
 | MLB | `baseball_mlb` | Mar–Oct | Current and next New York–local slate | `odds/mlb.json` |
 | KBO | `baseball_kbo` | Mar–Nov | Current and next Korea–local slate | `odds/kbo.json` |
 
@@ -217,10 +219,12 @@ Season months are UTC. World Cup uses a closed-open UTC window.
 
 **Markets**
 
-- **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, WNBA, MLB, KBO.
+- **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, WNBA, NHL, NBA, MLB, KBO.
 - **Soccer** (`h2h,totals`): World Cup and Premier League. Soccer `h2h` is three-way and includes `Draw`. Premier League is written only to `odds/epl.json`; every event `sport_key` is `soccer_epl`.
 
-**NFL.** Regular-season and preseason feeds are combined, de-duplicated by event id, and sorted by `commence_time` then id. Each game keeps its provider `sport_key`. The free `/sports` response decides whether preseason is polled; if that check fails, polling is limited to 1 Aug through 9 Sep UTC. Both required US requests must succeed before `odds/nfl.json` is replaced. Polymarket is merged after that publish gate and cannot block it.
+**NFL.** Regular-season and preseason feeds are combined, de-duplicated by event id, and sorted by `commence_time` then id. Each game keeps its provider `sport_key`. The free `/sports` response decides whether preseason is polled; if that check fails, polling is limited to 1 Aug through 9 Sep UTC. Every required US response must be an array with the exact requested `sport_key` before `odds/nfl.json` is replaced. Polymarket is merged after that publish gate and cannot block it.
+
+**NHL and NBA.** Separate league files span the northern winter and postseason. The [official NBA key dates](https://gleague.nba.com/key-dates) list 3–16 October 2026 preseason and a 20 October regular-season start (checked 3 October 2026); these dates do not prove provider market availability. NBA preseason uses the same atomic two-feed publication owner as NFL, but is requested only when the free provider catalog explicitly lists it. The [free `/sports` catalog](https://the-odds-api.com/liveapi/guides/v4/#get-sports) lists current offerings: when it explicitly lists preseason and omits regular season, only preseason is required and the estimate is 3 credits. When both are listed, both are required (6 credits). The collector does not assume an inactive regular `/odds` response will be empty rather than an error. Both feeds retain their original event `sport_key`; an unavailable or malformed required feed preserves the last good `nba.json`. Files are written through a temporary core document outside the staged `odds/` directory and atomic rename, so a disk-write failure also preserves the prior complete document. NHL does not guess a separate preseason key. NHL `h2h` must be interpreted by the consumer using sportsbook settlement rules: regulation three-way and full-game two-way prices are not interchangeable. No Polymarket series is assumed for either new league.
 
 **MLB and KBO.** Windows are league-local (`America/New_York`, `Asia/Seoul`). The fetcher uses the free `/events` list, then odds by event id. A direct windowed `/odds` call runs only when `/events` is empty or at least one listed event is missing from the event-id response. Results are de-duplicated by event id and keep the same object shape as the other leagues.
 
@@ -252,21 +256,23 @@ Before any paid request, the fetcher reads quota headers from `/sports` and rese
 | Fetch profile | Leagues | Markets | Paid `/odds` calls | Reserved credits |
 |---|---|---:|---:|---:|
 | Soccer | World Cup, Premier League | 2 | 1 | 2 |
-| Standard | NFL regular season, NCAA Football, WNBA | 3 | 1 | 3 |
-| NFL preseason add-on | NFL, only while available | 3 | 1 | 3 |
+| Standard | NFL regular season, NCAA Football, WNBA, NHL, NBA regular season | 3 | 1 | 3 |
+| Preseason add-on | NFL or NBA, only while available | 3 | 1 | 3 |
 | Windowed baseball | MLB, KBO | 3 | 1 typical (event-id batch); 2 in fallback | 6 |
 
 Baseball event ids are batched 50 per request, so a very large slate can cost more than one paid call. The quota gate always reserves the two-call baseball maximum (6 credits) before starting that league.
 
 Default reserve is 20 credits (`ODDS_API_QUOTA_RESERVE_CREDITS`). Usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-Worked example, September after NFL preseason: EPL 2 + NFL 3 + NCAAF 3 + WNBA 3 + MLB 3 + KBO 3 = **17 credits** on a clean run (about 4,896/day, 146,880/30 days at a five-minute cadence). Both baseball fallbacks raise that run to 23. A 100,000-credit month cannot hold every active league every five minutes.
+The two new leagues add up to 6 credits per run (1,728/day at five-minute cadence); a concurrently available NBA preseason feed adds another 3 per run (preseason-only remains 3 for NBA). These are planning estimates, not proof of adequate account quota. Activation must check provider account capacity and the existing reserve.
 
-The gate uses the reserved column, not typical spend. Selecting every September league therefore needs 23 spendable credits (remaining ≥ 43 with the default reserve), even when the run later spends 17.
+Previous seven-league example, September after NFL preseason: EPL 2 + NFL 3 + NCAAF 3 + WNBA 3 + MLB 3 + KBO 3 = **17 credits** on a clean run (about 4,896/day, 146,880/30 days at a five-minute cadence). Both baseball fallbacks raise that run to 23. A 100,000-credit month cannot hold every active league every five minutes.
+
+For the expanded September/October set, a clean run is 23 credits; reserving both baseball fallbacks requires 29 spendable credits (remaining ≥ 49 with the default reserve). When NBA regular season and preseason are both provider-listed, the second feed raises these to 26 typical and 32 reserved (remaining ≥ 52). At a five-minute cadence, 23 credits/run is 6,624/day or 198,720 per 30 days. These estimates follow [The Odds API’s market × region cost model](https://the-odds-api.com/liveapi/guides/v4/#usage-quota-costs-1); empty responses, batching, fallbacks, and retry outcomes can change actual charged usage. Quota checks and the provider account remain the authority for paid collection.
 
 ## Data model
 
-League files are Odds API v4 event arrays. US books keep that shape. When Gamma matches, `"key": "polymarket"` is one more bookmaker on the same game (see [Example payloads](#example-payloads)). Outcome names on that book use the Odds API home/away labels (and soccer `Draw`). Outcome `sid` is the Polymarket CLOB token; book `sid` is the Gamma event id.
+League files are compact core-odds arrays in the Odds API v4 shape. The shared publication serializer allowlists event identity, teams, start time, book/market identity, quote timestamps, selection, price, point and source token ids. Unknown provider fields and nested dumps are discarded; supported scalar fields are bounded to 2 KiB UTF-8, each published file to 8 MiB, and event/book/market/outcome collections to 4,096/128/32/128 entries. A bound violation fails that league publication and keeps its last good file. No historical or raw response archive is added. US books keep the core shape. When Gamma matches, `"key": "polymarket"` is one more bookmaker on the same game (see [Example payloads](#example-payloads)). Outcome names on that book use the Odds API home/away labels (and soccer `Draw`). Outcome `sid` is the Polymarket CLOB token; book `sid` is the Gamma event id.
 
 `odds/summary.json` is the freshness record:
 
