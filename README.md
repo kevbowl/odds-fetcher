@@ -264,11 +264,11 @@ Baseball event ids are batched 50 per request, so a very large slate can cost mo
 
 Default reserve is 20 credits (`ODDS_API_QUOTA_RESERVE_CREDITS`). Usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-The two new leagues add up to 6 credits per run (1,728/day at five-minute cadence); provider-listed NBA preseason adds another 3 per run. These are planning estimates, not proof of adequate account quota. Activation must check provider account capacity and the existing reserve.
+The two new leagues add up to 6 credits per run (1,728/day at five-minute cadence); a concurrently available NBA preseason feed adds another 3 per run (preseason-only remains 3 for NBA). These are planning estimates, not proof of adequate account quota. Activation must check provider account capacity and the existing reserve.
 
 Previous seven-league example, September after NFL preseason: EPL 2 + NFL 3 + NCAAF 3 + WNBA 3 + MLB 3 + KBO 3 = **17 credits** on a clean run (about 4,896/day, 146,880/30 days at a five-minute cadence). Both baseball fallbacks raise that run to 23. A 100,000-credit month cannot hold every active league every five minutes.
 
-For the expanded September/October set, a clean run is 23 credits; reserving both baseball fallbacks requires 29 spendable credits (remaining ≥ 49 with the default reserve). Provider-listed NBA preseason raises these to 26 typical and 32 reserved (remaining ≥ 52). At a five-minute cadence, 23 credits/run is 6,624/day or 198,720 per 30 days. These estimates follow [The Odds API’s market × region cost model](https://the-odds-api.com/liveapi/guides/v4/#usage-quota-costs-1); empty responses, batching, fallbacks, and retry outcomes can change actual charged usage. Quota checks and the provider account remain the authority for paid collection.
+For the expanded September/October set, a clean run is 23 credits; reserving both baseball fallbacks requires 29 spendable credits (remaining ≥ 49 with the default reserve). When NBA regular season and preseason are both provider-listed, the second feed raises these to 26 typical and 32 reserved (remaining ≥ 52). At a five-minute cadence, 23 credits/run is 6,624/day or 198,720 per 30 days. These estimates follow [The Odds API’s market × region cost model](https://the-odds-api.com/liveapi/guides/v4/#usage-quota-costs-1); empty responses, batching, fallbacks, and retry outcomes can change actual charged usage. Quota checks and the provider account remain the authority for paid collection.
 
 ## Data model
 
