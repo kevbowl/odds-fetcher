@@ -86,6 +86,15 @@ const SPORTS = [
     fetchEveryMinutes: 5,
   },
   {
+    // Spanish club soccer uses the same three-way h2h + totals contract as EPL.
+    // Keep its immutable source artifact separate from EPL and World Cup.
+    sport: 'laliga', sportKey: 'soccer_spain_la_liga', fileName: 'laliga',
+    markets: 'h2h,totals',
+    regions: DEFAULT_REGIONS,
+    seasonMonths: [8, 9, 10, 11, 12, 1, 2, 3, 4, 5], // Aug - May
+    fetchEveryMinutes: 5,
+  },
+  {
     sport: 'NFL', sportKey: NFL_REGULAR_SPORT_KEY, fileName: 'nfl',
     preseasonSportKey: NFL_PRESEASON_SPORT_KEY,
     preseasonFallbackWindow: {

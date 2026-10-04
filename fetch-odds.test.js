@@ -150,6 +150,38 @@ assert.equal(failedEplSummary.lastFetched, null);
 assert.equal(failedEplSummary.gameCount, 0);
 assert.equal(failedEplSummary.lastAttemptStatus, 'failed');
 assert.notEqual(failedEplSummary.lastAttemptStatus, 'success');
+const laLiga = SPORTS.find(candidate => candidate.sportKey === 'soccer_spain_la_liga');
+assert.ok(laLiga, 'La Liga configuration should exist');
+assert.equal(laLiga.sport, 'laliga');
+assert.equal(laLiga.fileName, 'laliga');
+assert.equal(laLiga.markets, 'h2h,totals');
+assert.equal(laLiga.regions, 'us');
+assert.equal(laLiga.fetchEveryMinutes, 5);
+assert.equal(estimateCredits(laLiga), 2);
+assert.equal(isSportActive(laLiga, new Date('2026-08-01T00:00:00Z')), true);
+assert.equal(isSportActive(laLiga, new Date('2026-05-31T23:59:59Z')), true);
+assert.equal(isSportActive(laLiga, new Date('2026-06-01T00:00:00Z')), false);
+assert.equal(isSportActive(laLiga, new Date('2026-07-31T23:59:59Z')), false);
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.soccer_spain_la_liga, undefined);
+assert.doesNotThrow(() => assertExpectedSportKey([
+  { id: 'laliga-1', sport_key: 'soccer_spain_la_liga' }
+], 'soccer_spain_la_liga'));
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'epl-1', sport_key: 'soccer_epl' }
+  ], 'soccer_spain_la_liga'),
+  /soccer_epl/
+);
+const laLigaSummary = buildSummarySport(laLiga, {
+  sport: 'laliga',
+  gameCount: 10
+}, undefined, nowIso);
+assert.equal(laLigaSummary.fileName, 'laliga.json');
+assert.equal(laLigaSummary.sport, 'laliga');
+assert.equal(laLigaSummary.gameCount, 10);
+assert.equal(laLigaSummary.lastFetched, nowIso);
+assert.notEqual(laLiga.fileName, epl.fileName);
+assert.notEqual(laLiga.sportKey, epl.sportKey);
 const nfl = SPORTS.find(candidate => candidate.sportKey === 'americanfootball_nfl');
 assert.ok(nfl, 'NFL configuration should exist');
 assert.equal(isSportActive(nfl, new Date('2026-08-01T00:00:00Z')), true);

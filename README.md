@@ -11,7 +11,7 @@ Current US sportsbook lines from [The Odds API](https://the-odds-api.com/) with 
 https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
 ```
 
-`file` is `worldcup`, `epl`, `nfl`, `ncaaf`, `wnba`, `nhl`, `nba`, `mlb`, `kbo`, or `summary`.
+`file` is `worldcup`, `epl`, `laliga`, `nfl`, `ncaaf`, `wnba`, `nhl`, `nba`, `mlb`, `kbo`, or `summary`.
 
 ```bash
 curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
@@ -144,6 +144,11 @@ Live files include every US-region sportsbook. The excerpts below keep one US bo
 
 A game with no Gamma match has US books only: no `"key": "polymarket"` entry.
 
+La Liga uses the same three-way `h2h` plus totals shape as EPL, with its own
+`soccer_spain_la_liga` source key and `laliga.json` artifact. It has no verified
+Gamma series mapping, so the collector publishes US books only rather than
+reusing EPL's Polymarket series.
+
 ## How a snapshot is built
 
 ```text
@@ -207,6 +212,7 @@ The Odds API US response is the skeleton: event ids, teams, kickoff, and sportsb
 |---|---|---|---|---|
 | FIFA World Cup | `soccer_fifa_world_cup` | 7 Jun 2026 00:00 until 20 Jul 2026 00:00 | All available events | `odds/worldcup.json` |
 | Premier League | `soccer_epl` | Aug–May | All available events | `odds/epl.json` |
+| La Liga | `soccer_spain_la_liga` | Aug–May | All available events | `odds/laliga.json` |
 | NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug–Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug–Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May–Oct | All available events | `odds/wnba.json` |
