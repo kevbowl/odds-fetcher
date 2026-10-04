@@ -226,7 +226,7 @@ Season months are UTC. World Cup uses a closed-open UTC window.
 **Markets**
 
 - **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, WNBA, NHL, NBA, MLB, KBO.
-- **Soccer** (`h2h,totals`): World Cup and Premier League. Soccer `h2h` is three-way and includes `Draw`. Premier League is written only to `odds/epl.json`; every event `sport_key` is `soccer_epl`.
+- **Soccer** (`h2h,totals`): World Cup, Premier League, and La Liga. Soccer `h2h` is three-way and includes `Draw`. Premier League and La Liga are written separately to `odds/epl.json` and `odds/laliga.json`; every event retains its league-specific `sport_key`.
 
 **NFL.** Regular-season and preseason feeds are combined, de-duplicated by event id, and sorted by `commence_time` then id. Each game keeps its provider `sport_key`. The free `/sports` response decides whether preseason is polled; if that check fails, polling is limited to 1 Aug through 9 Sep UTC. Every required US response must be an array with the exact requested `sport_key` before `odds/nfl.json` is replaced. Polymarket is merged after that publish gate and cannot block it.
 
