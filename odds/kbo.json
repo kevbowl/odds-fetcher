@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "id": "8f1970d3b38221fb29ada6568f79e937",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-10-09T05:00:00Z",
+    "home_team": "NC Dinos",
+    "away_team": "Kia Tigers",
+    "bookmakers": []
+  },
+  {
+    "id": "f839a7a7490af7fbe1140b8dda2bcb3b",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-10-09T05:00:00Z",
+    "home_team": "Lotte Giants",
+    "away_team": "LG Twins",
+    "bookmakers": [
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-10-08T06:25:24Z",
+        "sid": "889841",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-08T06:25:24Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -199,
+                "sid": "105209173331713562263495815603306741960507477464730300456912158524728675949335"
+              },
+              {
+                "name": "Lotte Giants",
+                "price": 199,
+                "sid": "108714110056974836675909256534953657631352251904232524269051225276693831435989"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "14172b1c8dc41edbf01f73a77c277ee6",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-10-09T05:00:00Z",
+    "home_team": "SSG Landers",
+    "away_team": "Samsung Lions",
+    "bookmakers": []
+  }
+]
