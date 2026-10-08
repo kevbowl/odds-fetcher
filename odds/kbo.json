@@ -19,12 +19,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-10-08T06:25:24Z",
+        "last_update": "2026-10-08T06:30:34Z",
         "sid": "889841",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-08T06:25:24Z",
+            "last_update": "2026-10-08T06:30:34Z",
             "outcomes": [
               {
                 "name": "LG Twins",
@@ -49,6 +49,113 @@
     "commence_time": "2026-10-09T05:00:00Z",
     "home_team": "SSG Landers",
     "away_team": "Samsung Lions",
-    "bookmakers": []
+    "bookmakers": [
+      {
+        "key": "fanatics",
+        "title": "Fanatics",
+        "last_update": "2026-10-08T06:30:22Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-08T06:30:22Z",
+            "outcomes": [
+              {
+                "name": "Samsung Lions",
+                "price": -145
+              },
+              {
+                "name": "SSG Landers",
+                "price": 125
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-10-08T06:30:22Z",
+            "outcomes": [
+              {
+                "name": "Samsung Lions",
+                "price": 105,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -135,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-08T06:30:22Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -110,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -120,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-10-08T06:30:23Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-08T06:30:23Z",
+            "outcomes": [
+              {
+                "name": "Samsung Lions",
+                "price": -152
+              },
+              {
+                "name": "SSG Landers",
+                "price": 124
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-10-08T06:30:23Z",
+            "outcomes": [
+              {
+                "name": "Samsung Lions",
+                "price": 108,
+                "point": -1.5
+              },
+              {
+                "name": "SSG Landers",
+                "price": -135,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-08T06:30:23Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -108,
+                "point": 10.5
+              },
+              {
+                "name": "Under",
+                "price": -116,
+                "point": 10.5
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
