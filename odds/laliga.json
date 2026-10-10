@@ -10,20 +10,38 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
+            "key": "h2h",
+            "last_update": "2026-10-10T17:15:17Z",
+            "outcomes": [
+              {
+                "name": "Barcelona",
+                "price": -10000
+              },
+              {
+                "name": "Getafe",
+                "price": 5000
+              },
+              {
+                "name": "Draw",
+                "price": 2800
+              }
+            ]
+          },
+          {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 112,
+                "price": 132,
                 "point": 4.5
               },
               {
                 "name": "Under",
-                "price": -134,
+                "price": -160,
                 "point": 4.5
               }
             ]
@@ -58,38 +76,20 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
-            "outcomes": [
-              {
-                "name": "Barcelona",
-                "price": -35000
-              },
-              {
-                "name": "Getafe",
-                "price": 10000
-              },
-              {
-                "name": "Draw",
-                "price": 3300
-              }
-            ]
-          },
-          {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": -108,
+                "price": 120,
                 "point": 4.5
               },
               {
                 "name": "Under",
-                "price": -135,
+                "price": -165,
                 "point": 4.5
               }
             ]
@@ -99,11 +99,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:08:51Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:51Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -115,7 +115,7 @@
               },
               {
                 "name": "Draw",
-                "price": 6000
+                "price": 5500
               }
             ]
           }
@@ -124,11 +124,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -136,7 +136,7 @@
               },
               {
                 "name": "Getafe",
-                "price": 18000
+                "price": 25000
               },
               {
                 "name": "Draw",
@@ -159,11 +159,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -181,7 +181,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -198,13 +198,54 @@
         ]
       },
       {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:17Z",
+            "outcomes": [
+              {
+                "name": "Real Madrid",
+                "price": -300
+              },
+              {
+                "name": "Villarreal",
+                "price": 625
+              },
+              {
+                "name": "Draw",
+                "price": 475
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-10T17:15:17Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -118,
+                "point": 3.75
+              },
+              {
+                "name": "Under",
+                "price": -102,
+                "point": 3.75
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "draftkings",
+        "title": "DraftKings",
+        "last_update": "2026-10-10T17:13:34Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -225,11 +266,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -247,7 +288,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -266,11 +307,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -291,11 +332,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -313,7 +354,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -332,11 +373,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -357,11 +398,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -379,7 +420,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -398,11 +439,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -420,7 +461,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -449,11 +490,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -471,7 +512,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -490,11 +531,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -512,7 +553,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -531,11 +572,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -556,11 +597,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -578,7 +619,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -597,11 +638,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -619,7 +660,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -638,11 +679,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -663,11 +704,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -688,11 +729,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -710,7 +751,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -729,11 +770,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Celta Vigo",
@@ -751,7 +792,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -780,11 +821,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -802,7 +843,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -821,11 +862,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -843,7 +884,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -862,11 +903,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -887,11 +928,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -909,7 +950,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -928,11 +969,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -950,7 +991,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -969,11 +1010,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -994,11 +1035,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -1019,11 +1060,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -1041,7 +1082,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1060,11 +1101,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -1082,7 +1123,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1111,11 +1152,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1133,7 +1174,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1152,11 +1193,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1174,7 +1215,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1193,11 +1234,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1218,11 +1259,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1240,7 +1281,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1259,11 +1300,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1281,7 +1322,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1300,11 +1341,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1325,11 +1366,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1350,11 +1391,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1372,7 +1413,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1391,11 +1432,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -1413,7 +1454,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1442,11 +1483,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1464,7 +1505,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1483,11 +1524,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1508,11 +1549,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1530,7 +1571,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1549,11 +1590,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1574,11 +1615,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1596,7 +1637,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1615,11 +1656,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1640,11 +1681,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1662,7 +1703,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1681,11 +1722,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1703,7 +1744,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1722,11 +1763,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Real Racing Club de Santander",
@@ -1744,7 +1785,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1773,11 +1814,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1795,7 +1836,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1814,11 +1855,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1836,7 +1877,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1855,11 +1896,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1880,11 +1921,11 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-10-10T17:09:21Z",
+        "last_update": "2026-10-10T17:14:41Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1902,7 +1943,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:41Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1921,11 +1962,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1946,11 +1987,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:12Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1971,11 +2012,11 @@
       {
         "key": "lowvig",
         "title": "LowVig.ag",
-        "last_update": "2026-10-10T17:09:54Z",
+        "last_update": "2026-10-10T17:14:58Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:54Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -1993,7 +2034,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:54Z",
+            "last_update": "2026-10-10T17:14:58Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2012,11 +2053,11 @@
       {
         "key": "betonlineag",
         "title": "BetOnline.ag",
-        "last_update": "2026-10-10T17:09:53Z",
+        "last_update": "2026-10-10T17:14:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -2034,7 +2075,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:53Z",
+            "last_update": "2026-10-10T17:14:59Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2053,11 +2094,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Levante",
@@ -2075,7 +2116,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2104,11 +2145,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2129,11 +2170,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2151,7 +2192,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2170,11 +2211,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2195,11 +2236,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2217,7 +2258,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2236,11 +2277,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2261,11 +2302,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Deportivo La Coruña",
@@ -2283,7 +2324,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2312,11 +2353,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Atlético Madrid",
@@ -2337,11 +2378,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Atlético Madrid",
@@ -2359,7 +2400,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2378,11 +2419,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Atlético Madrid",
@@ -2403,11 +2444,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Atlético Madrid",
@@ -2425,7 +2466,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2444,11 +2485,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Atlético Madrid",
@@ -2479,11 +2520,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2504,11 +2545,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2526,7 +2567,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2545,11 +2586,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2570,11 +2611,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2592,7 +2633,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2611,11 +2652,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2636,11 +2677,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Elche CF",
@@ -2658,7 +2699,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2687,11 +2728,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -2712,11 +2753,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2735,11 +2776,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -2760,11 +2801,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -2782,7 +2823,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2801,11 +2842,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -2826,11 +2867,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Barcelona",
@@ -2848,7 +2889,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2877,11 +2918,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
@@ -2902,19 +2943,19 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
-                "price": 104
+                "price": 106
               },
               {
                 "name": "Valencia",
-                "price": 270
+                "price": 265
               },
               {
                 "name": "Draw",
@@ -2924,7 +2965,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -2943,11 +2984,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
@@ -2968,11 +3009,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
@@ -2990,7 +3031,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3009,11 +3050,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
@@ -3034,11 +3075,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Athletic Bilbao",
@@ -3056,7 +3097,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:21Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3085,11 +3126,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3110,11 +3151,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3132,7 +3173,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3151,11 +3192,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3176,11 +3217,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3201,11 +3242,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3223,7 +3264,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3242,11 +3283,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "CA Osasuna",
@@ -3264,7 +3305,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3293,11 +3334,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3318,11 +3359,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3340,7 +3381,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3359,11 +3400,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3384,11 +3425,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3406,7 +3447,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3425,11 +3466,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3450,11 +3491,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Alavés",
@@ -3472,7 +3513,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3501,11 +3542,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3526,11 +3567,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3548,7 +3589,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3567,11 +3608,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3592,11 +3633,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3614,7 +3655,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3633,11 +3674,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3658,11 +3699,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Málaga",
@@ -3680,7 +3721,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3709,11 +3750,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -3734,11 +3775,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3757,11 +3798,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -3782,11 +3823,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -3804,7 +3845,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3823,11 +3864,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -3848,11 +3889,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Real Madrid",
@@ -3870,7 +3911,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3899,11 +3940,11 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-10-10T17:09:52Z",
+        "last_update": "2026-10-10T17:14:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:52Z",
+            "last_update": "2026-10-10T17:14:56Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -3924,11 +3965,11 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-10-10T17:08:33Z",
+        "last_update": "2026-10-10T17:15:17Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -3946,7 +3987,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:08:33Z",
+            "last_update": "2026-10-10T17:15:17Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -3965,11 +4006,11 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-10-10T17:10:09Z",
+        "last_update": "2026-10-10T17:13:34Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:09Z",
+            "last_update": "2026-10-10T17:13:34Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -3990,11 +4031,11 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-10-10T17:10:11Z",
+        "last_update": "2026-10-10T17:15:14Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -4012,7 +4053,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:10:11Z",
+            "last_update": "2026-10-10T17:15:14Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -4031,11 +4072,11 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-10-10T17:10:10Z",
+        "last_update": "2026-10-10T17:15:13Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:10:10Z",
+            "last_update": "2026-10-10T17:15:13Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -4056,11 +4097,11 @@
       {
         "key": "betus",
         "title": "BetUS",
-        "last_update": "2026-10-10T17:09:22Z",
+        "last_update": "2026-10-10T17:14:40Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Getafe",
@@ -4078,7 +4119,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-10-10T17:09:22Z",
+            "last_update": "2026-10-10T17:14:40Z",
             "outcomes": [
               {
                 "name": "Over",
