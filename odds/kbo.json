@@ -1,1 +1,89 @@
-[]
+[
+  {
+    "id": "0daa54a64820993b6645259583f8f44e",
+    "sport_key": "baseball_kbo",
+    "sport_title": "KBO",
+    "commence_time": "2026-10-20T09:30:00Z",
+    "home_team": "LG Twins",
+    "away_team": "Kia Tigers",
+    "bookmakers": [
+      {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-10-19T07:58:55Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-19T07:58:55Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -107
+              },
+              {
+                "name": "LG Twins",
+                "price": -119
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-10-19T07:58:55Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 147,
+                "point": -1.5
+              },
+              {
+                "name": "LG Twins",
+                "price": -190,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-19T07:58:55Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -125,
+                "point": 9
+              },
+              {
+                "name": "Under",
+                "price": -102,
+                "point": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-10-19T08:00:43Z",
+        "sid": "1194036",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-19T08:00:43Z",
+            "outcomes": [
+              {
+                "name": "LG Twins",
+                "price": -111,
+                "sid": "48506470079539370642368606227374676987304960674302593644945946839169188213483"
+              },
+              {
+                "name": "Kia Tigers",
+                "price": 111,
+                "sid": "40322897733149954900795696636466204126227404291210259589257206613939559073970"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
