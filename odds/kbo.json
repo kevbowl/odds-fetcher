@@ -8,14 +8,67 @@
     "away_team": "Samsung Lions",
     "bookmakers": [
       {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-10-28T07:53:17Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-28T07:53:17Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": -139
+              },
+              {
+                "name": "Samsung Lions",
+                "price": 109
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-10-28T07:53:17Z",
+            "outcomes": [
+              {
+                "name": "Kia Tigers",
+                "price": 137,
+                "point": -1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -176,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-28T07:53:17Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -102,
+                "point": 9.5
+              },
+              {
+                "name": "Under",
+                "price": -125,
+                "point": 9.5
+              }
+            ]
+          }
+        ]
+      },
+      {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-10-28T07:50:33Z",
+        "last_update": "2026-10-28T07:55:23Z",
         "sid": "1235144",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-10-28T07:50:33Z",
+            "last_update": "2026-10-28T07:55:23Z",
             "outcomes": [
               {
                 "name": "Samsung Lions",
