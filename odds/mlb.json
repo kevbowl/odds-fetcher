@@ -1,1 +1,89 @@
-[]
+[
+  {
+    "id": "99d7f299f7f7feb7980daeeee5f238a9",
+    "sport_key": "baseball_mlb",
+    "sport_title": "MLB",
+    "commence_time": "2026-10-29T00:00:00Z",
+    "home_team": "Tampa Bay Rays",
+    "away_team": "Milwaukee Brewers",
+    "bookmakers": [
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-10-28T04:30:13Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-28T04:30:13Z",
+            "outcomes": [
+              {
+                "name": "Milwaukee Brewers",
+                "price": -122
+              },
+              {
+                "name": "Tampa Bay Rays",
+                "price": 104
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-10-28T04:30:13Z",
+            "outcomes": [
+              {
+                "name": "Milwaukee Brewers",
+                "price": 158,
+                "point": -1.5
+              },
+              {
+                "name": "Tampa Bay Rays",
+                "price": -192,
+                "point": 1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-10-28T04:30:13Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -106,
+                "point": 6.5
+              },
+              {
+                "name": "Under",
+                "price": -114,
+                "point": 6.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "polymarket",
+        "title": "Polymarket",
+        "last_update": "2026-10-28T04:30:37Z",
+        "sid": "1235147",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-10-28T04:30:37Z",
+            "outcomes": [
+              {
+                "name": "Milwaukee Brewers",
+                "price": -153,
+                "sid": "91003541915162788854210700624341898943610338973976196710034537030462603323520"
+              },
+              {
+                "name": "Tampa Bay Rays",
+                "price": 153,
+                "sid": "76373497639099615911225824582526699849704267372702944646266480661925473823513"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
