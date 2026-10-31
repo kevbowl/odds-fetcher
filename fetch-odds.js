@@ -109,8 +109,11 @@ const SPORTS = [
     sport: 'ucl', sportKey: 'soccer_uefa_champs_league', fileName: 'ucl',
     markets: 'h2h,totals',
     regions: DEFAULT_REGIONS,
-    // Whole UTC months, so the 5 June final is still fetched on 6 June UTC.
-    seasonMonths: [8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6], // Aug - Jun
+    // 1 Aug through 6 Jun UTC. end is exclusive, so 6 June is fetched and 7 June is not.
+    seasonWindow: {
+      start: { month: 8, day: 1 },
+      end: { month: 6, day: 7 }
+    },
     fetchEveryMinutes: 5,
   },
   {
@@ -161,9 +164,11 @@ const SPORTS = [
     sport: 'ncaab', sportKey: 'basketball_ncaab', fileName: 'ncaab',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
-    // Whole UTC months. The 5 April US championship tip is 6 April UTC,
-    // and fetching continues through 7 April because April is included.
-    seasonMonths: [11, 12, 1, 2, 3, 4], // Nov - Apr
+    // 1 Nov through 7 Apr UTC. end is exclusive. The 5 Apr US tip falls on 6 Apr UTC.
+    seasonWindow: {
+      start: { month: 11, day: 1 },
+      end: { month: 4, day: 8 }
+    },
     fetchEveryMinutes: 5,
   },
   {
@@ -983,12 +988,26 @@ function isGameWithinWindow(game, window) {
     && commenceTime < new Date(window.commenceTimeTo).getTime();
 }
 
+// Recurring UTC month-day window. end is exclusive, and the window may wrap
+// the new year. { start: 1 Nov, end: 8 Apr } is active through 7 April.
+function isSeasonWindowActive(window, now = new Date()) {
+  const current = monthDayValue({
+    month: now.getUTCMonth() + 1,
+    day: now.getUTCDate()
+  });
+  const start = monthDayValue(window.start);
+  const end = monthDayValue(window.end);
+  if (start < end) return current >= start && current < end;
+  return current >= start || current < end;
+}
+
 // Whether a sport is in season right now (UTC).
 function isSportActive(sport, now = new Date()) {
   if (sport.window) {
     const t = now.getTime();
     return t >= new Date(sport.window.start).getTime() && t < new Date(sport.window.end).getTime();
   }
+  if (sport.seasonWindow) return isSeasonWindowActive(sport.seasonWindow, now);
   if (sport.seasonMonths) {
     return sport.seasonMonths.includes(now.getUTCMonth() + 1);
   }
