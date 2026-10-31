@@ -162,7 +162,7 @@ assert.equal(isSportActive(laLiga, new Date('2026-08-01T00:00:00Z')), true);
 assert.equal(isSportActive(laLiga, new Date('2026-05-31T23:59:59Z')), true);
 assert.equal(isSportActive(laLiga, new Date('2026-06-01T00:00:00Z')), false);
 assert.equal(isSportActive(laLiga, new Date('2026-07-31T23:59:59Z')), false);
-assert.equal(GAMMA_SERIES_BY_SPORT_KEY.soccer_spain_la_liga, undefined);
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.soccer_spain_la_liga, '10193');
 assert.doesNotThrow(() => assertExpectedSportKey([
   { id: 'laliga-1', sport_key: 'soccer_spain_la_liga' }
 ], 'soccer_spain_la_liga'));
@@ -182,6 +182,109 @@ assert.equal(laLigaSummary.gameCount, 10);
 assert.equal(laLigaSummary.lastFetched, nowIso);
 assert.notEqual(laLiga.fileName, epl.fileName);
 assert.notEqual(laLiga.sportKey, epl.sportKey);
+const ucl = SPORTS.find(candidate => candidate.sportKey === 'soccer_uefa_champs_league');
+assert.ok(ucl, 'UCL configuration should exist');
+assert.equal(ucl.sport, 'ucl');
+assert.equal(ucl.fileName, 'ucl');
+assert.equal(ucl.markets, 'h2h,totals');
+assert.equal(ucl.regions, 'us');
+assert.equal(ucl.fetchEveryMinutes, 5);
+assert.equal(ucl.preseasonSportKey, undefined);
+assert.equal(estimateCredits(ucl), 2);
+assert.equal(ucl.markets.includes('spreads'), false);
+assert.equal(ucl.markets.includes('to_qualify'), false);
+assert.equal(ucl.markets.includes('outrights'), false);
+assert.equal(isSportActive(ucl, new Date('2026-08-01T00:00:00Z')), true);
+assert.equal(isSportActive(ucl, new Date('2026-10-31T12:00:00Z')), true);
+assert.equal(isSportActive(ucl, new Date('2027-06-05T00:00:00Z')), true);
+assert.equal(isSportActive(ucl, new Date('2027-06-06T23:59:59Z')), true);
+assert.equal(isSportActive(ucl, new Date('2026-07-31T23:59:59Z')), false);
+assert.equal(isSportActive(ucl, new Date('2027-07-01T00:00:00Z')), false);
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.soccer_uefa_champs_league, '10204');
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.soccer_uefa_champs_league_women, undefined);
+assert.doesNotThrow(() => assertExpectedSportKey([
+  { id: 'ucl-1', sport_key: 'soccer_uefa_champs_league' }
+], 'soccer_uefa_champs_league'));
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'ucl-w', sport_key: 'soccer_uefa_champs_league_women' }
+  ], 'soccer_uefa_champs_league'),
+  /soccer_uefa_champs_league_women/
+);
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'ucl-1', sport_key: 'soccer_uefa_champs_league' },
+    { id: 'epl-1', sport_key: 'soccer_epl' }
+  ], 'soccer_uefa_champs_league'),
+  /soccer_epl/
+);
+const uclSummary = buildSummarySport(ucl, {
+  sport: 'ucl',
+  gameCount: 18
+}, undefined, nowIso);
+assert.equal(uclSummary.fileName, 'ucl.json');
+assert.equal(uclSummary.sport, 'ucl');
+assert.equal(uclSummary.gameCount, 18);
+assert.notEqual(ucl.fileName, epl.fileName);
+assert.notEqual(ucl.sportKey, epl.sportKey);
+const ncaab = SPORTS.find(candidate => candidate.sportKey === 'basketball_ncaab');
+assert.ok(ncaab, 'NCAAB configuration should exist');
+assert.equal(ncaab.sport, 'ncaab');
+assert.equal(ncaab.fileName, 'ncaab');
+assert.equal(ncaab.markets, 'h2h,spreads,totals');
+assert.equal(ncaab.regions, 'us');
+assert.equal(ncaab.fetchEveryMinutes, 5);
+assert.equal(ncaab.preseasonSportKey, undefined);
+assert.equal(estimateCredits(ncaab), 3);
+assert.equal(isSportActive(ncaab, new Date('2026-11-01T00:00:00Z')), true);
+assert.equal(isSportActive(ncaab, new Date('2026-11-01T14:30:00Z')), true);
+assert.equal(isSportActive(ncaab, new Date('2027-04-05T00:00:00Z')), true);
+assert.equal(isSportActive(ncaab, new Date('2027-04-06T23:00:00Z')), true);
+assert.equal(isSportActive(ncaab, new Date('2027-04-07T23:59:59Z')), true);
+assert.equal(isSportActive(ncaab, new Date('2026-10-31T23:59:59Z')), false);
+assert.equal(isSportActive(ncaab, new Date('2027-05-01T00:00:00Z')), false);
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.basketball_ncaab, '10470');
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.basketball_nba, '10345');
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.icehockey_nhl, '10346');
+assert.equal(GAMMA_SERIES_BY_SPORT_KEY.basketball_wncaab, undefined);
+assert.equal(Object.values(GAMMA_SERIES_BY_SPORT_KEY).includes('39'), false);
+assert.equal(Object.values(GAMMA_SERIES_BY_SPORT_KEY).includes('10471'), false);
+assert.equal(Object.values(GAMMA_SERIES_BY_SPORT_KEY).includes('11240'), false);
+assert.equal(
+  SPORTS.some(candidate => (
+    candidate.sportKey === 'basketball_wncaab'
+    || candidate.preseasonSportKey === 'basketball_wncaab'
+    || candidate.sportKey === 'soccer_uefa_champs_league_women'
+    || candidate.preseasonSportKey === 'soccer_uefa_champs_league_women'
+    || String(candidate.sportKey).includes('championship')
+    || String(candidate.preseasonSportKey || '').includes('championship')
+  )),
+  false
+);
+assert.doesNotThrow(() => assertExpectedSportKey([
+  { id: 'ncaab-1', sport_key: 'basketball_ncaab' }
+], 'basketball_ncaab'));
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'wncaab-1', sport_key: 'basketball_wncaab' }
+  ], 'basketball_ncaab'),
+  /basketball_wncaab/
+);
+assert.throws(
+  () => assertExpectedSportKey([
+    { id: 'futures-1', sport_key: 'basketball_ncaab_championship_winner' }
+  ], 'basketball_ncaab'),
+  /basketball_ncaab_championship_winner/
+);
+const ncaabSummary = buildSummarySport(ncaab, {
+  sport: 'ncaab',
+  gameCount: 40
+}, undefined, nowIso);
+assert.equal(ncaabSummary.fileName, 'ncaab.json');
+assert.equal(ncaabSummary.sport, 'ncaab');
+assert.equal(ncaabSummary.gameCount, 40);
+assert.equal(ncaabSummary.regularSeasonGameCount, undefined);
+assert.equal(ncaabSummary.preseasonGameCount, undefined);
 const nfl = SPORTS.find(candidate => candidate.sportKey === 'americanfootball_nfl');
 assert.ok(nfl, 'NFL configuration should exist');
 assert.equal(isSportActive(nfl, new Date('2026-08-01T00:00:00Z')), true);
@@ -376,6 +479,26 @@ assert.equal(teamMatches('Miami Hurricanes', {
   alias: 'Miami (OH)',
   abbreviation: 'miaoh'
 }), false);
+assert.equal(teamMatches('Chicago Blackhawks', {
+  name: 'Blackhawks',
+  alias: 'Blackhawks',
+  abbreviation: 'chi'
+}), true);
+assert.equal(teamMatches('Boston Bruins', {
+  name: 'Blackhawks',
+  alias: 'Blackhawks',
+  abbreviation: 'chi'
+}), false);
+assert.equal(teamMatches('Portland Trail Blazers', {
+  name: 'Trail Blazers',
+  alias: 'Trail Blazers',
+  abbreviation: 'por'
+}), true);
+assert.equal(teamMatches('Atletico Madrid', {
+  name: 'Club Atlético de Madrid',
+  alias: 'Atlético',
+  abbreviation: 'mad'
+}), true);
 assert.equal(isPrimaryGammaGameEvent({
   slug: 'epl-ars-che-2026-09-12',
   teams: [arsenalTeam, chelseaTeam]
@@ -451,6 +574,52 @@ assert.equal(gammaBook.markets[0].outcomes[0].sid, 'tok-ars');
 assert.equal(gammaBook.markets[0].outcomes[1].sid, 'tok-draw');
 assert.equal(gammaBook.markets[1].outcomes[0].point, 2.5);
 assert.deepEqual(gammaMerged[1].bookmakers, [usFanDuel]);
+
+const uclMoreMarkets = mergeGammaPolymarketBookmakers(
+  [sharedUsGame],
+  [
+    {
+      ...gammaEplEvent,
+      id: 'gamma-ucl-1',
+      slug: 'ucl-ars-bay-2026-09-12',
+      markets: gammaEplEvent.markets.filter(market => market.sportsMarketType === 'moneyline')
+    },
+    {
+      id: 'gamma-ucl-more',
+      slug: 'ucl-ars-bay-2026-09-12-more-markets',
+      startTime: sharedUsGame.commence_time,
+      teams: [arsenalTeam, chelseaTeam],
+      markets: [
+        {
+          sportsMarketType: 'spreads',
+          line: -1.5,
+          outcomes: '["Arsenal FC","Chelsea FC"]',
+          outcomePrices: '["0.5","0.5"]',
+          clobTokenIds: '["tok-spread-a","tok-spread-b"]'
+        },
+        {
+          sportsMarketType: 'totals',
+          line: 2.5,
+          outcomes: '["Over","Under"]',
+          outcomePrices: '["0.51","0.49"]',
+          clobTokenIds: '["tok-over","tok-under"]'
+        },
+        {
+          sportsMarketType: 'to_qualify',
+          groupItemTitle: 'Arsenal FC',
+          outcomes: '["Yes","No"]',
+          outcomePrices: '["0.6","0.4"]'
+        }
+      ]
+    }
+  ],
+  'h2h,totals'
+);
+const uclMoreBook = uclMoreMarkets[0].bookmakers.find(book => book.key === 'polymarket');
+assert.deepEqual(uclMoreBook.markets.map(market => market.key), ['h2h', 'totals']);
+assert.equal(uclMoreBook.markets[0].outcomes.some(outcome => outcome.name === 'Draw'), true);
+assert.equal(uclMoreBook.markets[1].outcomes[0].point, 2.5);
+assert.equal(JSON.stringify(uclMoreBook).includes('to_qualify'), false);
 
 const nextDaySameTeams = mergeGammaPolymarketBookmakers(
   [sharedUsGame],
@@ -971,8 +1140,12 @@ async function testNewLeaguePublication() {
     assert.equal(writes[0].filePath, `odds/${config.fileName}.json`);
     assert.equal(writes[0].contents.includes('opaque'), false);
     assert.equal(result.gameCount, config.includePreseason ? 2 : 1);
-    assert.equal(requests.every(item => item.params.regions === 'us'), true);
-    assert.equal(requests.some(item => item.url.includes('gamma')), false);
+    assert.equal(
+      requests.filter(item => !String(item.url).includes('gamma')).every(item => item.params.regions === 'us'),
+      true
+    );
+    const gammaRequest = requests.find(item => String(item.url).includes('gamma'));
+    assert.equal(gammaRequest.params.series_id, GAMMA_SERIES_BY_SPORT_KEY[config.sportKey]);
     const failedWrites = [];
     const failure = await fetchOdds(config, {
       fetchRequest: async () => { throw new Error('unavailable'); },
@@ -983,7 +1156,163 @@ async function testNewLeaguePublication() {
   }
 }
 
-Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge(), testNewLeaguePublication(), testSeasonFeedFailures(), testPreseasonOnlyCatalog()])
+async function testNcaabAndUclPublication() {
+  const ncaabGame = {
+    id: 'ncaab-1',
+    sport_key: 'basketball_ncaab',
+    sport_title: 'NCAAB',
+    commence_time: '2026-11-01T14:30:00Z',
+    home_team: 'Villanova Wildcats',
+    away_team: 'Notre Dame Fighting Irish',
+    bookmakers: [{
+      key: 'draftkings',
+      title: 'DraftKings',
+      last_update: nowIso,
+      markets: [
+        {
+          key: 'h2h',
+          last_update: nowIso,
+          outcomes: [
+            { name: 'Villanova Wildcats', price: -145 },
+            { name: 'Notre Dame Fighting Irish', price: 125 }
+          ]
+        },
+        {
+          key: 'spreads',
+          last_update: nowIso,
+          outcomes: [
+            { name: 'Villanova Wildcats', price: -110, point: -3.5 },
+            { name: 'Notre Dame Fighting Irish', price: -110, point: 3.5 }
+          ]
+        },
+        {
+          key: 'totals',
+          last_update: nowIso,
+          outcomes: [
+            { name: 'Over', price: -105, point: 144.5 },
+            { name: 'Under', price: -115, point: 144.5 }
+          ]
+        }
+      ]
+    }]
+  };
+  const uclGame = {
+    id: 'ucl-1',
+    sport_key: 'soccer_uefa_champs_league',
+    sport_title: 'UEFA Champions League',
+    commence_time: '2026-11-04T20:00:00Z',
+    home_team: 'Arsenal',
+    away_team: 'Bayern Munich',
+    bookmakers: [{
+      key: 'fanduel',
+      title: 'FanDuel',
+      last_update: nowIso,
+      markets: [
+        {
+          key: 'h2h',
+          last_update: nowIso,
+          outcomes: [
+            { name: 'Arsenal', price: 180 },
+            { name: 'Bayern Munich', price: 155 },
+            { name: 'Draw', price: 240 }
+          ]
+        },
+        {
+          key: 'totals',
+          last_update: nowIso,
+          outcomes: [
+            { name: 'Over', price: -120, point: 2.5 },
+            { name: 'Under', price: 100, point: 2.5 }
+          ]
+        }
+      ]
+    }]
+  };
+  const blockedMarkets = ['spreads', 'to_qualify', 'outrights', 'h2h_3_way', 'draw_no_bet'];
+
+  for (const [config, game] of [[ncaab, ncaabGame], [ucl, uclGame]]) {
+    const requests = [];
+    const writes = [];
+    const result = await fetchOdds(config, {
+      fetchRequest: async (url, params) => {
+        requests.push({ url, params });
+        if (String(url).includes('gamma-api.polymarket.com')) return { data: [], headers: {} };
+        return { data: [game], headers: {} };
+      },
+      writeFile: (filePath, contents) => writes.push({ filePath, contents })
+    });
+    assert.equal(result.error, undefined);
+    const oddsRequest = requests.find(item => String(item.url).includes('/odds/'));
+    const gammaRequest = requests.find(item => String(item.url).includes('gamma-api.polymarket.com'));
+    assert.ok(oddsRequest);
+    assert.equal(gammaRequest.params.series_id, GAMMA_SERIES_BY_SPORT_KEY[config.sportKey]);
+    assert.equal(
+      oddsRequest.url,
+      `https://api.the-odds-api.com/v4/sports/${config.sportKey}/odds/`
+    );
+    assert.equal(oddsRequest.params.markets, config.markets);
+    assert.equal(oddsRequest.params.regions, 'us');
+    assert.equal(oddsRequest.url.includes('preseason'), false);
+    assert.equal(oddsRequest.url.includes('championship'), false);
+    assert.equal(writes.length, 1);
+    assert.equal(writes[0].filePath, `odds/${config.fileName}.json`);
+    const published = JSON.parse(writes[0].contents);
+    assert.equal(published.length, 1);
+    assert.equal(published[0].sport_key, config.sportKey);
+    assert.equal(published[0].id, game.id);
+    assert.deepEqual(
+      published[0].bookmakers[0].markets.map(market => market.key),
+      config.markets.split(',')
+    );
+    published[0].bookmakers[0].markets.forEach(market => {
+      market.outcomes.forEach(outcome => {
+        assert.equal(Number.isFinite(outcome.price), true);
+      });
+    });
+    if (config.fileName === 'ucl') {
+      const moneyline = published[0].bookmakers[0].markets.find(market => market.key === 'h2h');
+      assert.deepEqual(moneyline.outcomes.map(outcome => outcome.name), [
+        'Arsenal',
+        'Bayern Munich',
+        'Draw'
+      ]);
+      blockedMarkets.forEach(market => {
+        assert.equal(oddsRequest.params.markets.split(',').includes(market), false);
+      });
+    }
+    if (config.fileName === 'ncaab') {
+      const moneyline = published[0].bookmakers[0].markets.find(market => market.key === 'h2h');
+      assert.deepEqual(moneyline.outcomes.map(outcome => outcome.name), [
+        'Villanova Wildcats',
+        'Notre Dame Fighting Irish'
+      ]);
+      assert.equal(moneyline.outcomes.some(outcome => outcome.name === 'Draw'), false);
+      const spread = published[0].bookmakers[0].markets.find(market => market.key === 'spreads');
+      assert.equal(spread.outcomes[0].point, -3.5);
+    }
+  }
+
+  for (const [config, foreignKey] of [
+    [ncaab, 'basketball_wncaab'],
+    [ncaab, 'basketball_ncaab_championship_winner'],
+    [ucl, 'soccer_uefa_champs_league_women'],
+    [ucl, 'soccer_uefa_europa_league']
+  ]) {
+    const writes = [];
+    const result = await fetchOdds(config, {
+      fetchRequest: async () => ({
+        data: [{ id: 'foreign', sport_key: foreignKey, home_team: 'Home', away_team: 'Away' }],
+        headers: {}
+      }),
+      writeFile: (...value) => writes.push(value)
+    });
+    assert.ok(result.error, `${config.fileName} must fail closed on ${foreignKey}`);
+    assert.match(result.error.message, new RegExp(foreignKey));
+    assert.equal(writes.length, 0);
+  }
+}
+
+Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge(), testNewLeaguePublication(), testSeasonFeedFailures(), testPreseasonOnlyCatalog(), testNcaabAndUclPublication()])
   .then(() => console.log('odds-fetcher fetch and receipt tests passed'))
   .catch(error => {
     console.error(error);

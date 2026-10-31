@@ -46,13 +46,21 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
     slateLabel: 'Korea slate window'
   }
 };
+// Gamma /sports game series. Women's college basketball (10471), women's
+// Champions League (11240), and March Madness (39) are different competitions
+// and are intentionally absent.
 const GAMMA_SERIES_BY_SPORT_KEY = {
   soccer_fifa_world_cup: '11433',
   soccer_epl: '10188',
+  soccer_spain_la_liga: '10193',
+  soccer_uefa_champs_league: '10204',
   [NFL_REGULAR_SPORT_KEY]: '12185',
   [NFL_PRESEASON_SPORT_KEY]: '12185',
   americanfootball_ncaaf: '12756',
   basketball_wnba: '10105',
+  basketball_ncaab: '10470',
+  basketball_nba: '10345',
+  icehockey_nhl: '10346',
   [MLB_SPORT_KEY]: '3',
   [KBO_SPORT_KEY]: '10370'
 };
@@ -95,6 +103,17 @@ const SPORTS = [
     fetchEveryMinutes: 5,
   },
   {
+    // Men's Champions League only. h2h is the 90-minute three-way market and
+    // keeps Draw. Totals are 90 minutes plus stoppage. One file, one sport key.
+    // Do not request spreads, extra time, penalties, or to-advance (to_qualify).
+    sport: 'ucl', sportKey: 'soccer_uefa_champs_league', fileName: 'ucl',
+    markets: 'h2h,totals',
+    regions: DEFAULT_REGIONS,
+    // Whole UTC months, so the 5 June final is still fetched on 6 June UTC.
+    seasonMonths: [8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6], // Aug - Jun
+    fetchEveryMinutes: 5,
+  },
+  {
     sport: 'NFL', sportKey: NFL_REGULAR_SPORT_KEY, fileName: 'nfl',
     preseasonSportKey: NFL_PRESEASON_SPORT_KEY,
     preseasonFallbackWindow: {
@@ -134,6 +153,17 @@ const SPORTS = [
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
     seasonMonths: [9, 10, 11, 12, 1, 2, 3, 4, 5, 6],
+    fetchEveryMinutes: 5,
+  },
+  {
+    // Men's Division I only. h2h is two-way. One file, one sport key.
+    // Do not add a preseason or championship-futures key to odds/ncaab.json.
+    sport: 'ncaab', sportKey: 'basketball_ncaab', fileName: 'ncaab',
+    markets: 'h2h,spreads,totals',
+    regions: DEFAULT_REGIONS,
+    // Whole UTC months. The 5 April US championship tip is 6 April UTC,
+    // and fetching continues through 7 April because April is included.
+    seasonMonths: [11, 12, 1, 2, 3, 4], // Nov - Apr
     fetchEveryMinutes: 5,
   },
   {
@@ -501,6 +531,8 @@ function isoTimestamp(value = new Date()) {
 
 function normalizeName(value) {
   return String(value || '')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
     .toLowerCase()
     .replace(/&/g, ' and ')
     .replace(/[.'’]/g, '')
@@ -508,6 +540,14 @@ function normalizeName(value) {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .replace(/\s+/g, ' ');
+}
+
+function nameContainsPhrase(haystack, needle) {
+  if (!needle || needle.length < 4) return false;
+  return haystack === needle
+    || haystack.startsWith(`${needle} `)
+    || haystack.endsWith(` ${needle}`)
+    || haystack.includes(` ${needle} `);
 }
 
 function gammaTeamLabels(team) {
@@ -533,7 +573,8 @@ function teamMatches(oddsName, gammaTeam) {
     if (!normalized) return false;
     if (odds === normalized) return true;
     if (normalized.split(' ').length >= 2 && odds.startsWith(`${normalized} `)) return true;
-    return odds.split(' ').length >= 2 && normalized.startsWith(`${odds} `);
+    if (odds.split(' ').length >= 2 && normalized.startsWith(`${odds} `)) return true;
+    return nameContainsPhrase(odds, normalized) || nameContainsPhrase(normalized, odds);
   });
 }
 
@@ -714,6 +755,24 @@ function buildGammaSideMarket(event, pairing, game, type) {
   return { key: type, last_update: isoTimestamp(), outcomes };
 }
 
+// Soccer totals and some alternate lines live on "<slug>-more-markets".
+// Copy only the side markets this league asked for. A UCL request without
+// spreads never picks up the handicap from that sibling. Half, corners,
+// exact score, and to-advance events use other slugs and stay out.
+function withSupplementalGammaMarkets(event, events, markets) {
+  const wanted = requestedMarketSet(markets);
+  const sibling = (Array.isArray(events) ? events : []).find(candidate => (
+    candidate?.slug === `${event.slug}-more-markets`
+    && parseTimestampMs(candidate.startTime) === parseTimestampMs(event.startTime)
+  ));
+  const extras = (Array.isArray(sibling?.markets) ? sibling.markets : []).filter(market => {
+    const type = market?.sportsMarketType;
+    return (type === 'totals' || type === 'spreads') && wanted.has(type);
+  });
+  if (extras.length === 0) return event;
+  return { ...event, markets: [...(event.markets || []), ...extras] };
+}
+
 function gammaEventToPolymarketBook(event, game, markets) {
   const pairing = pairGammaTeams(game, event?.teams);
   if (!pairing) return null;
@@ -769,7 +828,11 @@ function mergeGammaPolymarketBookmakers(usGames, gammaEvents, markets) {
       try {
         const event = findMatchingGammaEvent(game, primaryEvents);
         if (!event) return null;
-        const book = gammaEventToPolymarketBook(event, game, markets);
+        const book = gammaEventToPolymarketBook(
+          withSupplementalGammaMarkets(event, gammaEvents, markets),
+          game,
+          markets
+        );
         if (!book) return null;
         return { id: game.id, bookmakers: [book] };
       } catch {

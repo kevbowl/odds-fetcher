@@ -11,7 +11,7 @@ Current US sportsbook lines from [The Odds API](https://the-odds-api.com/) with 
 https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/<file>.json
 ```
 
-`file` is `worldcup`, `epl`, `laliga`, `nfl`, `ncaaf`, `wnba`, `nhl`, `nba`, `mlb`, `kbo`, or `summary`.
+`file` is `worldcup`, `epl`, `laliga`, `ucl`, `nfl`, `ncaaf`, `wnba`, `nhl`, `nba`, `ncaab`, `mlb`, `kbo`, or `summary`.
 
 ```bash
 curl -s https://raw.githubusercontent.com/kevbowl/odds-fetcher/main/odds/nfl.json
@@ -145,9 +145,10 @@ Live files include every US-region sportsbook. The excerpts below keep one US bo
 A game with no Gamma match has US books only: no `"key": "polymarket"` entry.
 
 La Liga uses the same three-way `h2h` plus totals shape as EPL, with its own
-`soccer_spain_la_liga` source key and `laliga.json` artifact. It has no verified
-Gamma series mapping, so the collector publishes US books only rather than
-reusing EPL's Polymarket series.
+`soccer_spain_la_liga` source key and `laliga.json` artifact. Its Polymarket
+series is `10193`, separate from EPL.
+
+Men's Champions League (`odds/ucl.json`) uses that same three-way `h2h` plus totals shape. `h2h` is the 90-minute market and keeps `Draw`. Totals are 90 minutes plus stoppage. NCAAB (`odds/ncaab.json`) uses the two-way `h2h`, spreads, and totals shape. Their Polymarket series are `10204` and `10470`.
 
 ## How a snapshot is built
 
@@ -213,11 +214,13 @@ The Odds API US response is the skeleton: event ids, teams, kickoff, and sportsb
 | FIFA World Cup | `soccer_fifa_world_cup` | 7 Jun 2026 00:00 until 20 Jul 2026 00:00 | All available events | `odds/worldcup.json` |
 | Premier League | `soccer_epl` | Aug–May | All available events | `odds/epl.json` |
 | La Liga | `soccer_spain_la_liga` | Aug–May | All available events | `odds/laliga.json` |
+| Champions League | `soccer_uefa_champs_league` | Aug–Jun | All available events | `odds/ucl.json` |
 | NFL | `americanfootball_nfl` + `americanfootball_nfl_preseason` | Aug–Feb | Regular season plus provider-listed preseason | `odds/nfl.json` |
 | NCAA Football | `americanfootball_ncaaf` | Aug–Jan | All available events | `odds/ncaaf.json` |
 | WNBA | `basketball_wnba` | May–Oct | All available events | `odds/wnba.json` |
 | NHL | `icehockey_nhl` | Sep–Jun | All available events | `odds/nhl.json` |
 | NBA | `basketball_nba` + `basketball_nba_preseason` | Sep–Jun | Regular season plus provider-listed preseason | `odds/nba.json` |
+| NCAAB | `basketball_ncaab` | Nov–Apr | All available events | `odds/ncaab.json` |
 | MLB | `baseball_mlb` | Mar–Oct | Current and next New York–local slate | `odds/mlb.json` |
 | KBO | `baseball_kbo` | Mar–Nov | Current and next Korea–local slate | `odds/kbo.json` |
 
@@ -225,18 +228,42 @@ Season months are UTC. World Cup uses a closed-open UTC window.
 
 **Markets**
 
-- **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, WNBA, NHL, NBA, MLB, KBO.
-- **Soccer** (`h2h,totals`): World Cup, Premier League, and La Liga. Soccer `h2h` is three-way and includes `Draw`. Premier League and La Liga are written separately to `odds/epl.json` and `odds/laliga.json`; every event retains its league-specific `sport_key`.
+- **Standard** (`h2h,spreads,totals`): NFL, NCAA Football, NCAAB, WNBA, NHL, NBA, MLB, KBO. NCAAB `h2h` is two-way.
+- **Soccer** (`h2h,totals`): World Cup, Premier League, La Liga, and men's Champions League. Soccer `h2h` is three-way and includes `Draw`. Each league is written to its own file; every event retains its league-specific `sport_key`.
 
 **NFL.** Regular-season and preseason feeds are combined, de-duplicated by event id, and sorted by `commence_time` then id. Each game keeps its provider `sport_key`. The free `/sports` response decides whether preseason is polled; if that check fails, polling is limited to 1 Aug through 9 Sep UTC. Every required US response must be an array with the exact requested `sport_key` before `odds/nfl.json` is replaced. Polymarket is merged after that publish gate and cannot block it.
 
-**NHL and NBA.** Separate league files span the northern winter and postseason. The [official NBA key dates](https://gleague.nba.com/key-dates) list 3–16 October 2026 preseason and a 20 October regular-season start (checked 3 October 2026); these dates do not prove provider market availability. NBA preseason uses the same atomic two-feed publication owner as NFL, but is requested only when the free provider catalog explicitly lists it. The [free `/sports` catalog](https://the-odds-api.com/liveapi/guides/v4/#get-sports) lists current offerings: when it explicitly lists preseason and omits regular season, only preseason is required and the estimate is 3 credits. When both are listed, both are required (6 credits). The collector does not assume an inactive regular `/odds` response will be empty rather than an error. Both feeds retain their original event `sport_key`; an unavailable or malformed required feed preserves the last good `nba.json`. Files are written through a temporary core document outside the staged `odds/` directory and atomic rename, so a disk-write failure also preserves the prior complete document. NHL does not guess a separate preseason key. NHL `h2h` must be interpreted by the consumer using sportsbook settlement rules: regulation three-way and full-game two-way prices are not interchangeable. No Polymarket series is assumed for either new league.
+**NHL and NBA.** Separate league files span the northern winter and postseason. The [official NBA key dates](https://gleague.nba.com/key-dates) list 3–16 October 2026 preseason and a 20 October regular-season start (checked 3 October 2026); these dates do not prove provider market availability. NBA preseason uses the same atomic two-feed publication owner as NFL, but is requested only when the free provider catalog explicitly lists it. The [free `/sports` catalog](https://the-odds-api.com/liveapi/guides/v4/#get-sports) lists current offerings: when it explicitly lists preseason and omits regular season, only preseason is required and the estimate is 3 credits. When both are listed, both are required (6 credits). The collector does not assume an inactive regular `/odds` response will be empty rather than an error. Both feeds retain their original event `sport_key`; an unavailable or malformed required feed preserves the last good `nba.json`. Files are written through a temporary core document outside the staged `odds/` directory and atomic rename, so a disk-write failure also preserves the prior complete document. NHL does not guess a separate preseason key. NHL `h2h` must be interpreted by the consumer using sportsbook settlement rules: regulation three-way and full-game two-way prices are not interchangeable. Polymarket uses the NBA series `10345` and the NHL series `10346`.
+
+**NCAAB.** Men's Division I only. One file, `odds/ncaab.json`, and one sport key, `basketball_ncaab`. `h2h` is two-way. Spreads and totals are the full game, including overtime. The file does not include a preseason key or a championship-futures key. Women's college basketball (`basketball_wncaab`) is a different competition and is not collected. The season window is November through April UTC. That includes 6 April UTC, when the 5 April US championship is played, and it keeps fetching through 7 April. Polymarket uses the college-basketball game series `10470`, not March Madness.
+
+**UCL.** Men's Champions League only. One file, `odds/ucl.json`, and one sport key, `soccer_uefa_champs_league`. `h2h` is the 90-minute three-way market and keeps `Draw`. Totals are 90 minutes plus stoppage. The request is `h2h,totals`. Spreads are not requested. Extra time, penalties, and "to advance" are not substituted for `h2h`. The women's competition (`soccer_uefa_champs_league_women`) is not collected. The season window is August through June UTC, so the 5 June final is still fetched on 6 June. It is in season in October, so the first `main` run writes `odds/ucl.json`. `odds/ncaab.json` waits until 1 November. A missing file is not replaced by another league's file. Polymarket uses series `10204`. Odds API requests stay `regions=us`.
 
 **MLB and KBO.** Windows are league-local (`America/New_York`, `Asia/Seoul`). The fetcher uses the free `/events` list, then odds by event id. A direct windowed `/odds` call runs only when `/events` is empty or at least one listed event is missing from the event-id response. Results are de-duplicated by event id and keep the same object shape as the other leagues.
 
 ## Polymarket
 
-Polymarket is not a second tape and is not stored under `odds/polymarket/`. It is the `"key": "polymarket"` book on the same Odds API game objects.
+Polymarket is not a second tape and is not stored under `odds/polymarket/`. It is the `"key": "polymarket"` book on the same Odds API game objects. Odds API requests stay `regions=us`.
+
+Series ids are the Gamma `/sports` game feeds checked on 31 October 2026. A league is merged only from that row. These series are real and are not used: March Madness `39`, women's college basketball `10471`, and UEFA Women's Champions League `11240`.
+
+| League | Gamma series | Merged |
+|---|---:|---|
+| World Cup | 11433 | yes |
+| Premier League | 10188 | yes |
+| La Liga | 10193 | yes |
+| Men's Champions League | 10204 | yes |
+| NFL, including preseason | 12185 | yes |
+| NCAA Football | 12756 | yes |
+| WNBA | 10105 | yes |
+| NHL | 10346 | yes |
+| NBA | 10345 | yes |
+| NCAAB men's games | 10470 | yes |
+| MLB | 3 | yes |
+| KBO | 10370 | yes |
+| Women's college basketball | 10471 | no |
+| UEFA Women's Champions League | 11240 | no |
+| March Madness | 39 | no |
 
 After the US sportsbook request succeeds, the fetcher pages Gamma `/events` for that league (no API key, no Odds API credits). A Gamma event is attached only when all of the following hold:
 
@@ -244,6 +271,8 @@ After the US sportsbook request succeeds, the fetcher pages Gamma `/events` for 
 2. Both Gamma teams match the Odds API home and away names.
 3. Gamma start time is within six hours of `commence_time`.
 4. Exactly one Gamma event wins that match.
+
+Soccer `totals` often live on the primary slug's `-more-markets` sibling. Those `totals` are merged onto the same game. Spreads on that sibling are merged only when the league requests spreads, so men's Champions League does not pick up the handicap. Half, corners, exact score, and to-advance events use other slugs and are ignored.
 
 On a hit, Polymarket is upserted onto that game. Outcome names use the Odds API home/away labels (and soccer `Draw`). Gamma probabilities are converted to American odds. Outcome `sid` is the Polymarket CLOB token for that selection; book `sid` is the Gamma event id.
 
@@ -261,8 +290,8 @@ Before any paid request, the fetcher reads quota headers from `/sports` and rese
 
 | Fetch profile | Leagues | Markets | Paid `/odds` calls | Reserved credits |
 |---|---|---:|---:|---:|
-| Soccer | World Cup, Premier League | 2 | 1 | 2 |
-| Standard | NFL regular season, NCAA Football, WNBA, NHL, NBA regular season | 3 | 1 | 3 |
+| Soccer | World Cup, Premier League, La Liga, UCL | 2 | 1 | 2 |
+| Standard | NFL regular season, NCAA Football, NCAAB, WNBA, NHL, NBA regular season | 3 | 1 | 3 |
 | Preseason add-on | NFL or NBA, only while available | 3 | 1 | 3 |
 | Windowed baseball | MLB, KBO | 3 | 1 typical (event-id batch); 2 in fallback | 6 |
 
@@ -270,7 +299,7 @@ Baseball event ids are batched 50 per request, so a very large slate can cost mo
 
 Default reserve is 20 credits (`ODDS_API_QUOTA_RESERVE_CREDITS`). Usage is recorded in `odds/summary.json` and in The Odds API dashboard.
 
-The two new leagues add up to 6 credits per run (1,728/day at five-minute cadence); a concurrently available NBA preseason feed adds another 3 per run (preseason-only remains 3 for NBA). These are planning estimates, not proof of adequate account quota. Activation must check provider account capacity and the existing reserve.
+NHL and NBA add up to 6 credits per run (1,728/day at five-minute cadence); a concurrently available NBA preseason feed adds another 3 per run (preseason-only remains 3 for NBA). NCAAB adds 3 credits on each November–April run. Men's UCL adds 2 on each August–June run, and it does not request spreads. These are planning estimates, not proof of adequate account quota. Activation must check provider account capacity and the existing reserve.
 
 Previous seven-league example, September after NFL preseason: EPL 2 + NFL 3 + NCAAF 3 + WNBA 3 + MLB 3 + KBO 3 = **17 credits** on a clean run (about 4,896/day, 146,880/30 days at a five-minute cadence). Both baseball fallbacks raise that run to 23. A 100,000-credit month cannot hold every active league every five minutes.
 
