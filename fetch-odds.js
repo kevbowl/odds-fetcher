@@ -164,9 +164,10 @@ const SPORTS = [
     sport: 'ncaab', sportKey: 'basketball_ncaab', fileName: 'ncaab',
     markets: 'h2h,spreads,totals',
     regions: DEFAULT_REGIONS,
-    // 1 Nov through 7 Apr UTC. end is exclusive. The 5 Apr US tip falls on 6 Apr UTC.
+    // 31 Oct through 7 Apr UTC. end is exclusive. Opening night is 1 Nov,
+    // and that game is already listed the day before. The 5 Apr US tip falls on 6 Apr UTC.
     seasonWindow: {
-      start: { month: 11, day: 1 },
+      start: { month: 10, day: 31 },
       end: { month: 4, day: 8 }
     },
     fetchEveryMinutes: 5,
@@ -989,7 +990,7 @@ function isGameWithinWindow(game, window) {
 }
 
 // Recurring UTC month-day window. end is exclusive, and the window may wrap
-// the new year. { start: 1 Nov, end: 8 Apr } is active through 7 April.
+// the new year. { start: 31 Oct, end: 8 Apr } is active through 7 April.
 function isSeasonWindowActive(window, now = new Date()) {
   const current = monthDayValue({
     month: now.getUTCMonth() + 1,
