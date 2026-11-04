@@ -8,25 +8,50 @@
     "away_team": "Arsenal",
     "bookmakers": [
       {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-11-04T21:50:09Z",
+        "key": "betmgm",
+        "title": "BetMGM",
+        "last_update": "2026-11-04T21:51:46Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:09Z",
+            "last_update": "2026-11-04T21:51:46Z",
             "outcomes": [
               {
                 "name": "Arsenal",
-                "price": -7000
+                "price": -10000
               },
               {
                 "name": "Slavia Praha",
-                "price": 25000
+                "price": 30000
               },
               {
                 "name": "Draw",
-                "price": 1400
+                "price": 2200
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fanduel",
+        "title": "FanDuel",
+        "last_update": "2026-11-04T21:54:55Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-04T21:54:55Z",
+            "outcomes": [
+              {
+                "name": "Arsenal",
+                "price": -20000
+              },
+              {
+                "name": "Slavia Praha",
+                "price": 35000
+              },
+              {
+                "name": "Draw",
+                "price": 3300
               }
             ]
           }
@@ -35,19 +60,19 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:52:07Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:52:07Z",
             "outcomes": [
               {
                 "name": "Arsenal",
-                "price": -4000
+                "price": -2500
               },
               {
                 "name": "Slavia Praha",
-                "price": 40000
+                "price": 60000
               },
               {
                 "name": "Draw",
@@ -60,20 +85,20 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:52:09Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:09Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 550,
+                "price": 600,
                 "point": 3.5
               },
               {
                 "name": "Under",
-                "price": -1000,
+                "price": -1250,
                 "point": 3.5
               }
             ]
@@ -83,67 +108,19 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:52:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:52:56Z",
             "outcomes": [
               {
                 "name": "Arsenal",
-                "price": -5000
+                "price": -8000
               },
               {
                 "name": "Slavia Praha",
-                "price": 9000
-              },
-              {
-                "name": "Draw",
-                "price": 1400
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "bovada",
-        "title": "Bovada",
-        "last_update": "2026-11-04T21:45:55Z",
-        "markets": [
-          {
-            "key": "totals",
-            "last_update": "2026-11-04T21:45:55Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 300,
-                "point": 2.5
-              },
-              {
-                "name": "Under",
-                "price": -400,
-                "point": 2.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "williamhill_us",
-        "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
-            "outcomes": [
-              {
-                "name": "Arsenal",
-                "price": -3500
-              },
-              {
-                "name": "Slavia Praha",
-                "price": 8000
+                "price": 13000
               },
               {
                 "name": "Draw",
@@ -154,14 +131,80 @@
         ]
       },
       {
+        "key": "bovada",
+        "title": "Bovada",
+        "last_update": "2026-11-04T21:50:37Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-04T21:50:37Z",
+            "outcomes": [
+              {
+                "name": "Arsenal",
+                "price": -4000
+              },
+              {
+                "name": "Slavia Praha",
+                "price": 45000
+              },
+              {
+                "name": "Draw",
+                "price": 1600
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-11-04T21:50:37Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": 500,
+                "point": 3.5
+              },
+              {
+                "name": "Under",
+                "price": -800,
+                "point": 3.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "williamhill_us",
+        "title": "Caesars",
+        "last_update": "2026-11-04T21:53:43Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-04T21:53:43Z",
+            "outcomes": [
+              {
+                "name": "Arsenal",
+                "price": -100000
+              },
+              {
+                "name": "Slavia Praha",
+                "price": 10000
+              },
+              {
+                "name": "Draw",
+                "price": 8000
+              }
+            ]
+          }
+        ]
+      },
+      {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236260",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Slavia Praha",
@@ -182,7 +225,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -213,23 +256,23 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-11-04T21:48:16Z",
+        "last_update": "2026-11-04T21:54:05Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:48:16Z",
+            "last_update": "2026-11-04T21:54:05Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -900
+                "price": -2500
               },
               {
                 "name": "Real Betis",
-                "price": 5000
+                "price": 10000
               },
               {
                 "name": "Draw",
-                "price": 625
+                "price": 1100
               }
             ]
           }
@@ -238,23 +281,23 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-11-04T21:50:09Z",
+        "last_update": "2026-11-04T21:55:19Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:09Z",
+            "last_update": "2026-11-04T21:55:19Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -1100
+                "price": -20000
               },
               {
                 "name": "Real Betis",
-                "price": 6500
+                "price": 35000
               },
               {
                 "name": "Draw",
-                "price": 650
+                "price": 2200
               }
             ]
           }
@@ -263,23 +306,23 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:54:28Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:54:28Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -1000
+                "price": -6000
               },
               {
                 "name": "Real Betis",
-                "price": 7000
+                "price": 90000
               },
               {
                 "name": "Draw",
-                "price": 600
+                "price": 1800
               }
             ]
           }
@@ -288,38 +331,20 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:55:18Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:49:48Z",
-            "outcomes": [
-              {
-                "name": "Borussia Dortmund",
-                "price": -1430
-              },
-              {
-                "name": "Real Betis",
-                "price": 9000
-              },
-              {
-                "name": "Draw",
-                "price": 800
-              }
-            ]
-          },
-          {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:55:18Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 250,
+                "price": 1200,
                 "point": 3.5
               },
               {
                 "name": "Under",
-                "price": -345,
+                "price": -3335,
                 "point": 3.5
               }
             ]
@@ -329,23 +354,23 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:55:22Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:55:22Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -900
+                "price": -10000
               },
               {
                 "name": "Real Betis",
-                "price": 6500
+                "price": 15000
               },
               {
                 "name": "Draw",
-                "price": 600
+                "price": 1600
               }
             ]
           }
@@ -354,39 +379,23 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:48:17Z",
+        "last_update": "2026-11-04T21:55:21Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:48:17Z",
+            "last_update": "2026-11-04T21:55:21Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -950
+                "price": -7000
               },
               {
                 "name": "Real Betis",
-                "price": 6600
+                "price": 50000
               },
               {
                 "name": "Draw",
-                "price": 600
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-11-04T21:48:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 163,
-                "point": 3.5
-              },
-              {
-                "name": "Under",
-                "price": -200,
-                "point": 3.5
+                "price": 2200
               }
             ]
           }
@@ -395,23 +404,23 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:54:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:54:55Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
-                "price": -1000
+                "price": -7500
               },
               {
                 "name": "Real Betis",
-                "price": 4000
+                "price": 8000
               },
               {
                 "name": "Draw",
-                "price": 600
+                "price": 2500
               }
             ]
           }
@@ -420,12 +429,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236226",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Borussia Dortmund",
@@ -446,7 +455,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -477,23 +486,23 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-11-04T21:50:09Z",
+        "last_update": "2026-11-04T21:54:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:09Z",
+            "last_update": "2026-11-04T21:54:55Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -550
+                "price": -10000
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 3000
+                "price": 35000
               },
               {
                 "name": "Draw",
-                "price": 410
+                "price": 1600
               }
             ]
           }
@@ -502,23 +511,23 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-11-04T21:48:16Z",
+        "last_update": "2026-11-04T21:52:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:48:16Z",
+            "last_update": "2026-11-04T21:52:55Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -525
+                "price": -2500
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 3000
+                "price": 12500
               },
               {
                 "name": "Draw",
-                "price": 400
+                "price": 1200
               }
             ]
           }
@@ -527,23 +536,23 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:53:43Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:53:43Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -750
+                "price": -1400
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 4500
+                "price": 40000
               },
               {
                 "name": "Draw",
-                "price": 550
+                "price": 850
               }
             ]
           }
@@ -552,38 +561,38 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:52:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:55Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -435
+                "price": -5000
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 2500
+                "price": 22500
               },
               {
                 "name": "Draw",
-                "price": 350
+                "price": 1500
               }
             ]
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:55Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 190,
+                "price": 1000,
                 "point": 3.5
               },
               {
                 "name": "Under",
-                "price": -265,
+                "price": -3335,
                 "point": 3.5
               }
             ]
@@ -593,23 +602,23 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:53:43Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:53:43Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -600
+                "price": -3500
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 5000
+                "price": 20000
               },
               {
                 "name": "Draw",
-                "price": 450
+                "price": 1200
               }
             ]
           }
@@ -618,39 +627,23 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:48:17Z",
+        "last_update": "2026-11-04T21:52:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:48:17Z",
+            "last_update": "2026-11-04T21:52:59Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -550
+                "price": -1500
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 5000
+                "price": 15000
               },
               {
                 "name": "Draw",
-                "price": 375
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-11-04T21:48:17Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 220,
-                "point": 3.5
-              },
-              {
-                "name": "Under",
-                "price": -275,
-                "point": 3.5
+                "price": 900
               }
             ]
           }
@@ -659,23 +652,23 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:53:43Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:53:43Z",
             "outcomes": [
               {
                 "name": "Club Brugge",
-                "price": -700
+                "price": -15000
               },
               {
                 "name": "PSV Eindhoven",
-                "price": 3500
+                "price": 10000
               },
               {
                 "name": "Draw",
-                "price": 450
+                "price": 3500
               }
             ]
           }
@@ -684,12 +677,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236235",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "PSV Eindhoven",
@@ -710,7 +703,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -739,45 +732,22 @@
     "away_team": "Como",
     "bookmakers": [
       {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-11-04T21:38:49Z",
-        "markets": [
-          {
-            "key": "totals",
-            "last_update": "2026-11-04T21:38:49Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": -145,
-                "point": 9.5
-              },
-              {
-                "name": "Under",
-                "price": 100,
-                "point": 9.5
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:52:09Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:09Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 290,
+                "price": 575,
                 "point": 9.5
               },
               {
                 "name": "Under",
-                "price": -420,
+                "price": -1115,
                 "point": 9.5
               }
             ]
@@ -787,20 +757,20 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:48:17Z",
+        "last_update": "2026-11-04T21:50:37Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:48:17Z",
+            "last_update": "2026-11-04T21:50:37Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 270,
+                "price": 500,
                 "point": 9.5
               },
               {
                 "name": "Under",
-                "price": -350,
+                "price": -800,
                 "point": 9.5
               }
             ]
@@ -810,11 +780,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:54:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:54:55Z",
             "outcomes": [
               {
                 "name": "Como",
@@ -845,23 +815,23 @@
       {
         "key": "fanduel",
         "title": "FanDuel",
-        "last_update": "2026-11-04T21:50:09Z",
+        "last_update": "2026-11-04T21:53:43Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:09Z",
+            "last_update": "2026-11-04T21:53:43Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -1500
+                "price": -5000
               },
               {
                 "name": "RB Leipzig",
-                "price": 12500
+                "price": 35000
               },
               {
                 "name": "Draw",
-                "price": 750
+                "price": 1300
               }
             ]
           }
@@ -870,23 +840,23 @@
       {
         "key": "betmgm",
         "title": "BetMGM",
-        "last_update": "2026-11-04T21:47:01Z",
+        "last_update": "2026-11-04T21:52:55Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:47:01Z",
+            "last_update": "2026-11-04T21:52:55Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -900
+                "price": -12500
               },
               {
                 "name": "RB Leipzig",
-                "price": 5000
+                "price": 22500
               },
               {
                 "name": "Draw",
-                "price": 600
+                "price": 2500
               }
             ]
           }
@@ -895,23 +865,23 @@
       {
         "key": "fanatics",
         "title": "Fanatics",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:52:57Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:52:57Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -1000
+                "price": -8000
               },
               {
                 "name": "RB Leipzig",
-                "price": 13000
+                "price": 100000
               },
               {
                 "name": "Draw",
-                "price": 700
+                "price": 2000
               }
             ]
           }
@@ -920,38 +890,20 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:52:55Z",
         "markets": [
           {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:49:48Z",
-            "outcomes": [
-              {
-                "name": "Manchester City",
-                "price": -2000
-              },
-              {
-                "name": "RB Leipzig",
-                "price": 14000
-              },
-              {
-                "name": "Draw",
-                "price": 1050
-              }
-            ]
-          },
-          {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:55Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 340,
+                "price": 1050,
                 "point": 5.5
               },
               {
                 "name": "Under",
-                "price": -530,
+                "price": -3335,
                 "point": 5.5
               }
             ]
@@ -961,23 +913,23 @@
       {
         "key": "draftkings",
         "title": "DraftKings",
-        "last_update": "2026-11-04T21:49:46Z",
+        "last_update": "2026-11-04T21:52:56Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:46Z",
+            "last_update": "2026-11-04T21:52:56Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -1600
+                "price": -10000
               },
               {
                 "name": "RB Leipzig",
-                "price": 9000
+                "price": 15000
               },
               {
                 "name": "Draw",
-                "price": 900
+                "price": 1600
               }
             ]
           }
@@ -986,39 +938,23 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:45:55Z",
+        "last_update": "2026-11-04T21:52:59Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:45:55Z",
+            "last_update": "2026-11-04T21:52:59Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -950
+                "price": -4000
               },
               {
                 "name": "RB Leipzig",
-                "price": 6600
+                "price": 50000
               },
               {
                 "name": "Draw",
-                "price": 600
-              }
-            ]
-          },
-          {
-            "key": "totals",
-            "last_update": "2026-11-04T21:45:55Z",
-            "outcomes": [
-              {
-                "name": "Over",
-                "price": 178,
-                "point": 5.5
-              },
-              {
-                "name": "Under",
-                "price": -220,
-                "point": 5.5
+                "price": 2000
               }
             ]
           }
@@ -1027,23 +963,23 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:53:43Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:53:43Z",
             "outcomes": [
               {
                 "name": "Manchester City",
-                "price": -1600
+                "price": -20000
               },
               {
                 "name": "RB Leipzig",
-                "price": 6000
+                "price": 10000
               },
               {
                 "name": "Draw",
-                "price": 750
+                "price": 5000
               }
             ]
           }
@@ -1052,12 +988,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236255",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "RB Leipzig",
@@ -1078,7 +1014,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1200,46 +1136,21 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:51:21Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:51:21Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 525,
+                "price": 850,
                 "point": 5.5
               },
               {
                 "name": "Under",
-                "price": -1000,
+                "price": -2500,
                 "point": 5.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-11-04T21:39:11Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:39:11Z",
-            "outcomes": [
-              {
-                "name": "Napoli",
-                "price": 4000
-              },
-              {
-                "name": "Porto",
-                "price": -575
-              },
-              {
-                "name": "Draw",
-                "price": 450
               }
             ]
           }
@@ -1248,21 +1159,21 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:45:55Z",
+        "last_update": "2026-11-04T21:50:37Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:45:55Z",
+            "last_update": "2026-11-04T21:50:37Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 240,
-                "point": 4.5
+                "price": 675,
+                "point": 5.5
               },
               {
                 "name": "Under",
-                "price": -300,
-                "point": 4.5
+                "price": -1200,
+                "point": 5.5
               }
             ]
           }
@@ -1271,11 +1182,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:52:37Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:52:37Z",
             "outcomes": [
               {
                 "name": "Napoli",
@@ -1296,12 +1207,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236240",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Porto",
@@ -1322,7 +1233,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
@@ -1351,56 +1262,6 @@
     "away_team": "Sabah FK",
     "bookmakers": [
       {
-        "key": "fanduel",
-        "title": "FanDuel",
-        "last_update": "2026-11-04T21:40:23Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:40:23Z",
-            "outcomes": [
-              {
-                "name": "Sabah FK",
-                "price": 8000
-              },
-              {
-                "name": "Viking FK",
-                "price": -2000
-              },
-              {
-                "name": "Draw",
-                "price": 900
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "betmgm",
-        "title": "BetMGM",
-        "last_update": "2026-11-04T21:38:49Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:38:49Z",
-            "outcomes": [
-              {
-                "name": "Sabah FK",
-                "price": 6600
-              },
-              {
-                "name": "Viking FK",
-                "price": -1400
-              },
-              {
-                "name": "Draw",
-                "price": 875
-              }
-            ]
-          }
-        ]
-      },
-      {
         "key": "fanatics",
         "title": "Fanatics",
         "last_update": "2026-11-04T21:47:26Z",
@@ -1428,46 +1289,21 @@
       {
         "key": "betrivers",
         "title": "BetRivers",
-        "last_update": "2026-11-04T21:49:48Z",
+        "last_update": "2026-11-04T21:52:09Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:49:48Z",
+            "last_update": "2026-11-04T21:52:09Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 375,
+                "price": 800,
                 "point": 4.5
               },
               {
                 "name": "Under",
-                "price": -590,
+                "price": -2000,
                 "point": 4.5
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "key": "draftkings",
-        "title": "DraftKings",
-        "last_update": "2026-11-04T21:39:11Z",
-        "markets": [
-          {
-            "key": "h2h",
-            "last_update": "2026-11-04T21:39:11Z",
-            "outcomes": [
-              {
-                "name": "Sabah FK",
-                "price": 9000
-              },
-              {
-                "name": "Viking FK",
-                "price": -2000
-              },
-              {
-                "name": "Draw",
-                "price": 1000
               }
             ]
           }
@@ -1476,20 +1312,20 @@
       {
         "key": "bovada",
         "title": "Bovada",
-        "last_update": "2026-11-04T21:48:17Z",
+        "last_update": "2026-11-04T21:50:37Z",
         "markets": [
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:48:17Z",
+            "last_update": "2026-11-04T21:50:37Z",
             "outcomes": [
               {
                 "name": "Over",
-                "price": 240,
+                "price": 300,
                 "point": 4.5
               },
               {
                 "name": "Under",
-                "price": -300,
+                "price": -400,
                 "point": 4.5
               }
             ]
@@ -1499,11 +1335,11 @@
       {
         "key": "williamhill_us",
         "title": "Caesars",
-        "last_update": "2026-11-04T21:49:47Z",
+        "last_update": "2026-11-04T21:52:37Z",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:49:47Z",
+            "last_update": "2026-11-04T21:52:37Z",
             "outcomes": [
               {
                 "name": "Sabah FK",
@@ -1515,7 +1351,7 @@
               },
               {
                 "name": "Draw",
-                "price": 8000
+                "price": 10000
               }
             ]
           }
@@ -1524,12 +1360,12 @@
       {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-04T21:50:33Z",
+        "last_update": "2026-11-04T21:55:26Z",
         "sid": "1236250",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Viking FK",
@@ -1550,7 +1386,7 @@
           },
           {
             "key": "totals",
-            "last_update": "2026-11-04T21:50:33Z",
+            "last_update": "2026-11-04T21:55:26Z",
             "outcomes": [
               {
                 "name": "Over",
