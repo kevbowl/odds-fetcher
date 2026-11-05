@@ -8,14 +8,67 @@
     "away_team": "KT Wiz",
     "bookmakers": [
       {
+        "key": "mybookieag",
+        "title": "MyBookie.ag",
+        "last_update": "2026-11-05T07:59:24Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-05T07:59:24Z",
+            "outcomes": [
+              {
+                "name": "KT Wiz",
+                "price": 110
+              },
+              {
+                "name": "Samsung Lions",
+                "price": -141
+              }
+            ]
+          },
+          {
+            "key": "spreads",
+            "last_update": "2026-11-05T07:59:24Z",
+            "outcomes": [
+              {
+                "name": "KT Wiz",
+                "price": -180,
+                "point": 1.5
+              },
+              {
+                "name": "Samsung Lions",
+                "price": 139,
+                "point": -1.5
+              }
+            ]
+          },
+          {
+            "key": "totals",
+            "last_update": "2026-11-05T07:59:24Z",
+            "outcomes": [
+              {
+                "name": "Over",
+                "price": -123,
+                "point": 8.5
+              },
+              {
+                "name": "Under",
+                "price": -104,
+                "point": 8.5
+              }
+            ]
+          }
+        ]
+      },
+      {
         "key": "polymarket",
         "title": "Polymarket",
-        "last_update": "2026-11-05T07:55:26Z",
+        "last_update": "2026-11-05T08:00:49Z",
         "sid": "1294934",
         "markets": [
           {
             "key": "h2h",
-            "last_update": "2026-11-05T07:55:26Z",
+            "last_update": "2026-11-05T08:00:49Z",
             "outcomes": [
               {
                 "name": "KT Wiz",
