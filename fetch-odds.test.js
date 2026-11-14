@@ -283,7 +283,20 @@ assert.throws(
   /basketball_ncaab_championship_winner/
 );
 const sourceRetractions = loadSourceEventRetractions();
-assert.equal(sourceRetractions.length, 3);
+assert.equal(sourceRetractions.length, 4);
+assert.deepEqual(
+  sourceRetractions.find(retraction => retraction.eventId === '0039563fd667f48d9f7345c620c428bf'),
+  {
+    eventId: '0039563fd667f48d9f7345c620c428bf',
+    sportKey: 'basketball_ncaab',
+    homeTeam: 'Youngstown St Penguins',
+    awayTeam: 'Marshall Thundering Herd',
+    commenceTime: '2026-11-14T18:02:17Z',
+    reason: 'provider-orphaned-event-without-authoritative-schedule-fixture',
+    retiredSourceIdentities: [{ commenceTime: '2026-11-14T23:00:00Z' }]
+  },
+  'The Marshall–Youngstown correction must preserve both the current and retired immutable identities.'
+);
 const retainedSourceEvent = {
   id: 'retained-ncaab-event', sport_key: 'basketball_ncaab',
   home_team: 'Home', away_team: 'Away', commence_time: '2026-11-15T00:00:00Z'
