@@ -1344,6 +1344,46 @@ async function testNcaabAndUclPublication() {
     assert.match(result.error.message, new RegExp(foreignKey));
     assert.equal(writes.length, 0);
   }
+
+  const incidentRows = sourceRetractions.map(retraction => ({
+    id: retraction.eventId,
+    sport_key: retraction.sportKey,
+    sport_title: 'NCAAB',
+    home_team: retraction.homeTeam,
+    away_team: retraction.awayTeam,
+    commence_time: retraction.commenceTime,
+    bookmakers: ncaabGame.bookmakers
+  }));
+  const retractionWrites = [];
+  const retractionResult = await fetchOdds(ncaab, {
+    fetchRequest: async url => String(url).includes('gamma-api.polymarket.com')
+      ? { data: [], headers: {} }
+      : { data: [...incidentRows, ncaabGame], headers: {} },
+    writeFile: (filePath, contents) => retractionWrites.push({ filePath, contents })
+  });
+  assert.equal(retractionResult.error, undefined);
+  assert.equal(retractionWrites.length, 1);
+  assert.equal(retractionWrites[0].filePath, 'odds/ncaab.json');
+  assert.deepEqual(
+    JSON.parse(retractionWrites[0].contents).map(game => game.id),
+    [ncaabGame.id],
+    'Both sealed NCAAB provider identities must be absent from the published source artifact.'
+  );
+
+  const reusedIdentityWrites = [];
+  const reusedIdentityResult = await fetchOdds(ncaab, {
+    fetchRequest: async () => ({
+      data: [{ ...incidentRows[0], commence_time: '2026-11-14T20:00:00Z' }],
+      headers: {}
+    }),
+    writeFile: (...value) => reusedIdentityWrites.push(value)
+  });
+  assert.match(reusedIdentityResult.error.message, /reused source event identity/i);
+  assert.equal(
+    reusedIdentityWrites.length,
+    0,
+    'A reused provider ID with a changed timestamp must preserve the prior published artifact.'
+  );
 }
 
 Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge(), testNewLeaguePublication(), testSeasonFeedFailures(), testPreseasonOnlyCatalog(), testNcaabAndUclPublication()])
