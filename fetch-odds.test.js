@@ -15,6 +15,8 @@ const {
   estimateCredits,
   fetchJson,
   fetchNflOdds,
+  filterRetractedSourceEvents,
+  loadSourceEventRetractions,
   serializeCoreOdds,
   writeFileAtomically,
   fetchOdds,
@@ -279,6 +281,34 @@ assert.throws(
     { id: 'futures-1', sport_key: 'basketball_ncaab_championship_winner' }
   ], 'basketball_ncaab'),
   /basketball_ncaab_championship_winner/
+);
+const sourceRetractions = loadSourceEventRetractions();
+assert.equal(sourceRetractions.length, 2);
+const retainedSourceEvent = {
+  id: 'retained-ncaab-event', sport_key: 'basketball_ncaab',
+  home_team: 'Home', away_team: 'Away', commence_time: '2026-11-15T00:00:00Z'
+};
+const retractedSourceEvent = {
+  id: '4c8ff36306cdb83dce7459d1013c32ad', sport_key: 'basketball_ncaab',
+  home_team: 'Utah Utes', away_team: 'Washington Huskies',
+  commence_time: '2026-11-14T19:00:00Z'
+};
+assert.deepEqual(
+  filterRetractedSourceEvents('basketball_ncaab', [retractedSourceEvent, retainedSourceEvent]),
+  [retainedSourceEvent],
+  'The published NCAAB tape must exclude only the exact sealed provider retraction.'
+);
+assert.deepEqual(
+  filterRetractedSourceEvents('basketball_nba', [retractedSourceEvent, retainedSourceEvent]),
+  [retractedSourceEvent, retainedSourceEvent],
+  'A NCAAB retraction must never suppress another sport.'
+);
+assert.throws(
+  () => filterRetractedSourceEvents('basketball_ncaab', [{
+    ...retractedSourceEvent, home_team: 'Reused Home'
+  }]),
+  /reused source event identity/i,
+  'A provider event-ID reuse must fail closed rather than inherit a stale retraction.'
 );
 const ncaabSummary = buildSummarySport(ncaab, {
   sport: 'ncaab',
@@ -1314,6 +1344,46 @@ async function testNcaabAndUclPublication() {
     assert.match(result.error.message, new RegExp(foreignKey));
     assert.equal(writes.length, 0);
   }
+
+  const incidentRows = sourceRetractions.map(retraction => ({
+    id: retraction.eventId,
+    sport_key: retraction.sportKey,
+    sport_title: 'NCAAB',
+    home_team: retraction.homeTeam,
+    away_team: retraction.awayTeam,
+    commence_time: retraction.commenceTime,
+    bookmakers: ncaabGame.bookmakers
+  }));
+  const retractionWrites = [];
+  const retractionResult = await fetchOdds(ncaab, {
+    fetchRequest: async url => String(url).includes('gamma-api.polymarket.com')
+      ? { data: [], headers: {} }
+      : { data: [...incidentRows, ncaabGame], headers: {} },
+    writeFile: (filePath, contents) => retractionWrites.push({ filePath, contents })
+  });
+  assert.equal(retractionResult.error, undefined);
+  assert.equal(retractionWrites.length, 1);
+  assert.equal(retractionWrites[0].filePath, 'odds/ncaab.json');
+  assert.deepEqual(
+    JSON.parse(retractionWrites[0].contents).map(game => game.id),
+    [ncaabGame.id],
+    'Both sealed NCAAB provider identities must be absent from the published source artifact.'
+  );
+
+  const reusedIdentityWrites = [];
+  const reusedIdentityResult = await fetchOdds(ncaab, {
+    fetchRequest: async () => ({
+      data: [{ ...incidentRows[0], commence_time: '2026-11-14T20:00:00Z' }],
+      headers: {}
+    }),
+    writeFile: (...value) => reusedIdentityWrites.push(value)
+  });
+  assert.match(reusedIdentityResult.error.message, /reused source event identity/i);
+  assert.equal(
+    reusedIdentityWrites.length,
+    0,
+    'A reused provider ID with a changed timestamp must preserve the prior published artifact.'
+  );
 }
 
 Promise.all([testNflPublication(), testNativeHttpClient(), testPolymarketFetchAndMerge(), testNewLeaguePublication(), testSeasonFeedFailures(), testPreseasonOnlyCatalog(), testNcaabAndUclPublication()])

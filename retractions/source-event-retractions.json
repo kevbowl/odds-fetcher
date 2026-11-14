@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "odds-source-event-retractions-v1",
+  "retractions": [
+    {
+      "eventId": "4c8ff36306cdb83dce7459d1013c32ad",
+      "sportKey": "basketball_ncaab",
+      "homeTeam": "Utah Utes",
+      "awayTeam": "Washington Huskies",
+      "commenceTime": "2026-11-14T19:00:00Z",
+      "reason": "provider-orphaned-event-without-authoritative-schedule-fixture",
+      "retiredSourceIdentities": [
+        {
+          "commenceTime": "2026-11-15T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "eventId": "b7e664d76ab994de4f92bccb1f592097",
+      "sportKey": "basketball_ncaab",
+      "homeTeam": "Utah Utes",
+      "awayTeam": "Washington Huskies",
+      "commenceTime": "2026-11-15T19:00:00Z",
+      "reason": "provider-orphaned-event-without-authoritative-schedule-fixture",
+      "retiredSourceIdentities": []
+    }
+  ]
+}
