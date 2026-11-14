@@ -46,6 +46,59 @@ const BASEBALL_EVENT_WINDOW_SPORTS = {
     slateLabel: 'Korea slate window'
   }
 };
+const SOURCE_RETRACTION_MANIFEST_PATH = path.join(__dirname, 'retractions', 'source-event-retractions.json');
+
+// Retractions are an auditable source correction, not a fuzzy matching rule.
+// Each entry names one immutable provider event identity and the complete
+// identity it was observed with. A recycled provider ID is refused rather
+// than silently suppressed.
+function loadSourceEventRetractions(fileSystem = fs, manifestPath = SOURCE_RETRACTION_MANIFEST_PATH) {
+  const manifest = JSON.parse(fileSystem.readFileSync(manifestPath, 'utf8'));
+  if (manifest?.schemaVersion !== 'odds-source-event-retractions-v1' ||
+      !Array.isArray(manifest.retractions) || manifest.retractions.length > 64) {
+    throw new Error('Invalid source-event retractions manifest');
+  }
+  const ids = new Set();
+  manifest.retractions.forEach(retraction => {
+    if (!retraction || typeof retraction !== 'object' ||
+        !['eventId', 'sportKey', 'homeTeam', 'awayTeam', 'commenceTime'].every(
+          field => typeof retraction[field] === 'string' && retraction[field].length > 0) ||
+        !Number.isFinite(Date.parse(retraction.commenceTime)) ||
+        !Array.isArray(retraction.retiredSourceIdentities) ||
+        retraction.retiredSourceIdentities.length > 8 ||
+        retraction.retiredSourceIdentities.some(retired =>
+          !retired || typeof retired.commenceTime !== 'string' ||
+          !Number.isFinite(Date.parse(retired.commenceTime)))) {
+      throw new Error('Invalid source-event retraction identity');
+    }
+    const key = `${retraction.sportKey}:${retraction.eventId}`;
+    if (ids.has(key)) throw new Error('Duplicate source-event retraction identity');
+    ids.add(key);
+  });
+  return Object.freeze(manifest.retractions.map(Object.freeze));
+}
+
+const SOURCE_EVENT_RETRACTIONS = loadSourceEventRetractions();
+
+function filterRetractedSourceEvents(sportKey, games, retractions = SOURCE_EVENT_RETRACTIONS) {
+  if (!Array.isArray(games)) throw new Error('Invalid source-event collection');
+  const retractionsById = new Map(
+    retractions
+      .filter(retraction => retraction.sportKey === sportKey)
+      .map(retraction => [retraction.eventId, retraction])
+  );
+  return games.filter(game => {
+    const retraction = retractionsById.get(game?.id);
+    if (!retraction) return true;
+    if (game.sport_key !== retraction.sportKey ||
+        game.home_team !== retraction.homeTeam ||
+        game.away_team !== retraction.awayTeam ||
+        game.commence_time !== retraction.commenceTime) {
+      throw new Error(`Refusing to retract reused source event identity: ${game?.id || '(missing)'}`);
+    }
+    return false;
+  });
+}
 // Gamma /sports game series. Women's college basketball (10471), women's
 // Champions League (11240), and March Madness (39) are different competitions
 // and are intentionally absent.
@@ -1412,6 +1465,7 @@ async function fetchOdds(config, dependencies = {}) {
       throw new Error(`Unexpected ${sport} odds payload`);
     }
     assertExpectedSportKey(oddsData, sportKey);
+    oddsData = filterRetractedSourceEvents(sportKey, oddsData);
     console.log(`Fetched ${oddsData.length} ${sport} games with odds`);
 
     let latestQuota = parseQuotaHeaders(response.headers);
@@ -1620,6 +1674,8 @@ module.exports = {
   fetchJson,
   fetchNflOdds: fetchSeasonOdds,
   fetchSeasonOdds,
+  filterRetractedSourceEvents,
+  loadSourceEventRetractions,
   serializeCoreOdds,
   writeFileAtomically,
   fetchOdds,

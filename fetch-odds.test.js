@@ -15,6 +15,8 @@ const {
   estimateCredits,
   fetchJson,
   fetchNflOdds,
+  filterRetractedSourceEvents,
+  loadSourceEventRetractions,
   serializeCoreOdds,
   writeFileAtomically,
   fetchOdds,
@@ -279,6 +281,34 @@ assert.throws(
     { id: 'futures-1', sport_key: 'basketball_ncaab_championship_winner' }
   ], 'basketball_ncaab'),
   /basketball_ncaab_championship_winner/
+);
+const sourceRetractions = loadSourceEventRetractions();
+assert.equal(sourceRetractions.length, 2);
+const retainedSourceEvent = {
+  id: 'retained-ncaab-event', sport_key: 'basketball_ncaab',
+  home_team: 'Home', away_team: 'Away', commence_time: '2026-11-15T00:00:00Z'
+};
+const retractedSourceEvent = {
+  id: '4c8ff36306cdb83dce7459d1013c32ad', sport_key: 'basketball_ncaab',
+  home_team: 'Utah Utes', away_team: 'Washington Huskies',
+  commence_time: '2026-11-14T19:00:00Z'
+};
+assert.deepEqual(
+  filterRetractedSourceEvents('basketball_ncaab', [retractedSourceEvent, retainedSourceEvent]),
+  [retainedSourceEvent],
+  'The published NCAAB tape must exclude only the exact sealed provider retraction.'
+);
+assert.deepEqual(
+  filterRetractedSourceEvents('basketball_nba', [retractedSourceEvent, retainedSourceEvent]),
+  [retractedSourceEvent, retainedSourceEvent],
+  'A NCAAB retraction must never suppress another sport.'
+);
+assert.throws(
+  () => filterRetractedSourceEvents('basketball_ncaab', [{
+    ...retractedSourceEvent, home_team: 'Reused Home'
+  }]),
+  /reused source event identity/i,
+  'A provider event-ID reuse must fail closed rather than inherit a stale retraction.'
 );
 const ncaabSummary = buildSummarySport(ncaab, {
   sport: 'ncaab',
