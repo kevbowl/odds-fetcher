@@ -283,7 +283,7 @@ assert.throws(
   /basketball_ncaab_championship_winner/
 );
 const sourceRetractions = loadSourceEventRetractions();
-assert.equal(sourceRetractions.length, 2);
+assert.equal(sourceRetractions.length, 3);
 const retainedSourceEvent = {
   id: 'retained-ncaab-event', sport_key: 'basketball_ncaab',
   home_team: 'Home', away_team: 'Away', commence_time: '2026-11-15T00:00:00Z'
@@ -1367,7 +1367,7 @@ async function testNcaabAndUclPublication() {
   assert.deepEqual(
     JSON.parse(retractionWrites[0].contents).map(game => game.id),
     [ncaabGame.id],
-    'Both sealed NCAAB provider identities must be absent from the published source artifact.'
+    'Every sealed NCAAB provider identity must be absent from the published source artifact.'
   );
 
   const reusedIdentityWrites = [];
