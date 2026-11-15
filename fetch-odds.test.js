@@ -283,7 +283,7 @@ assert.throws(
   /basketball_ncaab_championship_winner/
 );
 const sourceRetractions = loadSourceEventRetractions();
-assert.equal(sourceRetractions.length, 4);
+assert.equal(sourceRetractions.length, 5);
 assert.deepEqual(
   sourceRetractions.find(retraction => retraction.eventId === '0039563fd667f48d9f7345c620c428bf'),
   {
@@ -296,6 +296,19 @@ assert.deepEqual(
     retiredSourceIdentities: [{ commenceTime: '2026-11-14T23:00:00Z' }]
   },
   'The Marshall–Youngstown correction must preserve both the current and retired immutable identities.'
+);
+assert.deepEqual(
+  sourceRetractions.find(retraction => retraction.eventId === 'e41ff6ae9ddb0861ae1a4c8b4aacdc95'),
+  {
+    eventId: 'e41ff6ae9ddb0861ae1a4c8b4aacdc95',
+    sportKey: 'basketball_ncaab',
+    homeTeam: 'UTEP Miners',
+    awayTeam: 'Florida A&M Rattlers',
+    commenceTime: '2026-11-16T01:00:00Z',
+    reason: 'provider-orphaned-event-without-authoritative-schedule-fixture',
+    retiredSourceIdentities: []
+  },
+  'The Florida A&M–UTEP orphan must remain an exact, sealed source retraction.'
 );
 const retainedSourceEvent = {
   id: 'retained-ncaab-event', sport_key: 'basketball_ncaab',
