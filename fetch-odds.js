@@ -66,6 +66,11 @@ function loadSourceEventRetractions(fileSystem = fs, manifestPath = SOURCE_RETRA
         !Number.isFinite(Date.parse(retraction.commenceTime)) ||
         !Array.isArray(retraction.retiredSourceIdentities) ||
         retraction.retiredSourceIdentities.length > 8 ||
+        (retraction.historicalObservationOnly === true &&
+          (retraction.reason !== 'historical-odds-observation-withdrawn' ||
+           !/^[0-9a-f]{40}$/.test(retraction.originalSourceCommitSha || '') ||
+           !/^[0-9a-f]{64}$/.test(retraction.originalSourceArtifactSha256 || ''))) ||
+        (retraction.historicalObservationOnly !== undefined && retraction.historicalObservationOnly !== true) ||
         retraction.retiredSourceIdentities.some(retired =>
           !retired || typeof retired.commenceTime !== 'string' ||
           !Number.isFinite(Date.parse(retired.commenceTime)))) {
@@ -84,7 +89,9 @@ function filterRetractedSourceEvents(sportKey, games, retractions = SOURCE_EVENT
   if (!Array.isArray(games)) throw new Error('Invalid source-event collection');
   const retractionsById = new Map(
     retractions
-      .filter(retraction => retraction.sportKey === sportKey)
+      // Historical-only evidence names one old tape entry. A later live row
+      // must still be published and independently matched to its fixture.
+      .filter(retraction => retraction.sportKey === sportKey && retraction.historicalObservationOnly !== true)
       .map(retraction => [retraction.eventId, retraction])
   );
   return games.filter(game => {
