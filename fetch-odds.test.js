@@ -283,7 +283,24 @@ assert.throws(
   /basketball_ncaab_championship_winner/
 );
 const sourceRetractions = loadSourceEventRetractions();
-assert.equal(sourceRetractions.length, 5);
+assert.equal(sourceRetractions.length, 6);
+const historicalObservation = sourceRetractions.find(row => row.eventId === 'a595be90cfe89c2a497aec557184dcac');
+assert.deepEqual(historicalObservation, {
+  eventId: 'a595be90cfe89c2a497aec557184dcac', sportKey: 'basketball_ncaab',
+  homeTeam: 'Seattle Redhawks', awayTeam: 'Idaho State Bengals', commenceTime: '2026-11-17T21:00:14Z',
+  reason: 'historical-odds-observation-withdrawn', historicalObservationOnly: true,
+  originalSourceCommitSha: 'aa1634d68642a567848332da484d70ac6885daf5',
+  originalSourceArtifactSha256: '4d39c2749ebe17db097ca2770f841abb07abe901354d32e049383048ced3b722',
+  retiredSourceIdentities: []
+});
+const laterEvent = { id: historicalObservation.eventId, sport_key: historicalObservation.sportKey,
+  home_team: historicalObservation.homeTeam, away_team: historicalObservation.awayTeam,
+  commence_time: historicalObservation.commenceTime };
+assert.deepEqual(filterRetractedSourceEvents('basketball_ncaab', [laterEvent]), [laterEvent],
+  'Historical evidence must not suppress a later reappearing provider event.');
+assert.deepEqual(filterRetractedSourceEvents('basketball_ncaab', [{ ...laterEvent, commence_time: '2026-11-18T21:00:14Z' }]),
+  [{ ...laterEvent, commence_time: '2026-11-18T21:00:14Z' }],
+  'A later changed provider event must remain eligible for ordinary matching.');
 assert.deepEqual(
   sourceRetractions.find(retraction => retraction.eventId === '0039563fd667f48d9f7345c620c428bf'),
   {
@@ -1390,11 +1407,9 @@ async function testNcaabAndUclPublication() {
   assert.equal(retractionResult.error, undefined);
   assert.equal(retractionWrites.length, 1);
   assert.equal(retractionWrites[0].filePath, 'odds/ncaab.json');
-  assert.deepEqual(
-    JSON.parse(retractionWrites[0].contents).map(game => game.id),
-    [ncaabGame.id],
-    'Every sealed NCAAB provider identity must be absent from the published source artifact.'
-  );
+  assert.deepEqual(new Set(JSON.parse(retractionWrites[0].contents).map(game => game.id)),
+    new Set([ncaabGame.id, historicalObservation.eventId]),
+    'Only active retractions are removed; historical evidence must not suppress a live event.');
 
   const reusedIdentityWrites = [];
   const reusedIdentityResult = await fetchOdds(ncaab, {
