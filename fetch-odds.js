@@ -58,7 +58,7 @@ function loadSourceEventRetractions(fileSystem = fs, manifestPath = SOURCE_RETRA
       !Array.isArray(manifest.retractions) || manifest.retractions.length > 64) {
     throw new Error('Invalid source-event retractions manifest');
   }
-  const ids = new Set();
+  const ids = new Map();
   manifest.retractions.forEach(retraction => {
     if (!retraction || typeof retraction !== 'object' ||
         !['eventId', 'sportKey', 'homeTeam', 'awayTeam', 'commenceTime'].every(
@@ -77,8 +77,16 @@ function loadSourceEventRetractions(fileSystem = fs, manifestPath = SOURCE_RETRA
       throw new Error('Invalid source-event retraction identity');
     }
     const key = `${retraction.sportKey}:${retraction.eventId}`;
-    if (ids.has(key)) throw new Error('Duplicate source-event retraction identity');
-    ids.add(key);
+    const prior = ids.get(key) || [];
+    if (prior.some(existing =>
+      existing.historicalObservationOnly !== true || retraction.historicalObservationOnly !== true ||
+      existing.homeTeam !== retraction.homeTeam || existing.awayTeam !== retraction.awayTeam ||
+      existing.commenceTime !== retraction.commenceTime ||
+      existing.originalSourceCommitSha === retraction.originalSourceCommitSha)) {
+      throw new Error('Duplicate source-event retraction identity');
+    }
+    prior.push(retraction);
+    ids.set(key, prior);
   });
   return Object.freeze(manifest.retractions.map(Object.freeze));
 }
