@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { randomUUID } = require('crypto');
+const { execFileSync } = require('node:child_process');
+const { artifactDigest, buildPublication, readPublicationEntries } = require('./publication-order');
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const ODDS_DIR = 'odds';
@@ -1083,44 +1085,35 @@ function isSportActive(sport, now = new Date()) {
   return true;
 }
 
-// Last-fetch state from the previous run (persisted in summary.json), keyed by
-// "<fileName>.json".
-function loadLastFetched() {
-  try {
-    const prev = JSON.parse(fs.readFileSync(path.join(ODDS_DIR, 'summary.json'), 'utf8'));
-    const map = {};
-    (prev.sports || []).forEach(s => {
-      if (s.fileName) {
-        map[s.fileName] = {
-          lastFetched: s.lastFetched || null,
-          gameCount: s.gameCount,
-          lastAttemptAt: s.lastAttemptAt || null,
-          lastAttemptStatus: s.lastAttemptStatus || null,
-          lastError: s.lastError || null,
-          regularSeasonGameCount: s.regularSeasonGameCount,
-          preseasonGameCount: s.preseasonGameCount
-        };
-      }
-    });
-    const nflState = map['nfl.json'];
-    if (nflState && (
-      !Number.isInteger(nflState.regularSeasonGameCount)
-      || !Number.isInteger(nflState.preseasonGameCount)
-    )) {
-      try {
-        const existingNfl = JSON.parse(
-          fs.readFileSync(path.join(ODDS_DIR, 'nfl.json'), 'utf8')
-        );
-        Object.assign(nflState, countNflGamesByFeed(existingNfl));
-      } catch {
-        nflState.regularSeasonGameCount ??= 0;
-        nflState.preseasonGameCount ??= 0;
-      }
+function loadPreviousSummary() {
+  const previous = JSON.parse(fs.readFileSync(path.join(ODDS_DIR, 'summary.json'), 'utf8'));
+  if (!previous || !Array.isArray(previous.sports)) throw new Error('Invalid odds summary');
+  readPublicationEntries(previous.publication);
+  return previous;
+}
+
+// Last-fetch state from the previous run, keyed by the artifact file.
+function lastFetchedFromSummary(previous) {
+  const map = Object.fromEntries(previous.sports.filter(s => s.fileName).map(s => [s.fileName, {
+    lastFetched: s.lastFetched || null,
+    gameCount: s.gameCount,
+    lastAttemptAt: s.lastAttemptAt || null,
+    lastAttemptStatus: s.lastAttemptStatus || null,
+    lastError: s.lastError || null,
+    regularSeasonGameCount: s.regularSeasonGameCount,
+    preseasonGameCount: s.preseasonGameCount
+  }]));
+  const nflState = map['nfl.json'];
+  if (nflState && (!Number.isInteger(nflState.regularSeasonGameCount) || !Number.isInteger(nflState.preseasonGameCount))) {
+    try {
+      const existingNfl = JSON.parse(fs.readFileSync(path.join(ODDS_DIR, 'nfl.json'), 'utf8'));
+      Object.assign(nflState, countNflGamesByFeed(existingNfl));
+    } catch {
+      nflState.regularSeasonGameCount ??= 0;
+      nflState.preseasonGameCount ??= 0;
     }
-    return map;
-  } catch {
-    return {};
   }
+  return map;
 }
 
 // Due based on elapsed time since last fetch (not wall-clock slots), so it's
@@ -1557,31 +1550,66 @@ function buildSummarySport(sportConfig, attempt, previous, nowIso) {
   return summarySport;
 }
 
+function writeOmissionTransitions(previous, inSeason, publicationContext) {
+  const publication = buildPublication(previous.publication, {
+    ...publicationContext, attempts: new Map(), digests: new Map()
+  });
+  const previousEntries = readPublicationEntries(previous.publication);
+  const previousSports = new Set(previous.sports.map(sport => sport.fileName));
+  const reactivated = inSeason.filter(sport => {
+    const file = `${sport.fileName}.json`;
+    return previousEntries[file]?.kind === 'omitted' && !previousSports.has(file);
+  });
+  const omitted = Object.entries(publication.leagues)
+    .some(([file, entry]) => entry.kind === 'omitted' && entry.generation !== previousEntries[file]?.generation);
+  if (!omitted && reactivated.length === 0) return false;
+
+  const sports = previous.sports.filter(sport => publicationContext.activeFiles.has(sport.fileName));
+  for (const sport of reactivated) {
+    sports.push(buildSummarySport(sport, null, null, publicationContext.observedAtUtc));
+  }
+  const summary = { ...previous, lastUpdated: publicationContext.observedAtUtc, sports, publication };
+  writeFileAtomically(path.join(ODDS_DIR, 'summary.json'), JSON.stringify(summary, null, 2));
+  console.log('Prepared season coverage changes without a paid odds request.');
+  return true;
+}
+
 async function fetchAllOdds() {
   try {
     console.log('Starting odds fetching...');
 
-    if (!ODDS_API_KEY) {
-      throw new Error('ODDS_API_KEY is required');
+    const sourceParent = execFileSync('git', ['rev-parse', '--verify', 'HEAD'], { encoding: 'utf8' }).trim();
+    const pinnedParent = process.env.ODDS_PUBLICATION_PARENT;
+    if ((process.env.GITHUB_ACTIONS === 'true' || pinnedParent) && pinnedParent !== sourceParent) {
+      throw new Error('GitHub Actions must capture the exact odds publication parent before fetching');
     }
-    
+
     const now = new Date();
     // Production uses workflow_dispatch at RUN_EVERY_MIN cadence, so only
     // FORCE_FETCH bypasses cadence. The quota reserve still applies before
     // paid API calls.
     const isForced = process.env.FORCE_FETCH === 'true';
-    const lastFetched = loadLastFetched();
-    
-    // Fetch sports that are in season and due by elapsed time, unless forced.
+    const previous = loadPreviousSummary();
+    const lastFetched = lastFetchedFromSummary(previous);
     const inSeason = SPORTS.filter(s => isSportActive(s, now));
+    const publicationContext = {
+      configuredFiles: SPORTS.map(s => `${s.fileName}.json`),
+      activeFiles: new Set(inSeason.map(s => `${s.fileName}.json`)),
+      sourceParent,
+      observedAtUtc: now.toISOString()
+    };
     const due = inSeason.filter(s =>
       isForced || isSportDue(s, lastFetched[`${s.fileName}.json`]?.lastFetched, now)
     );
     if (due.length === 0) {
+      writeOmissionTransitions(previous, inSeason, publicationContext);
       console.log(inSeason.length === 0
-        ? 'No sports in season; skipping. No API quota used.'
-        : 'In-season sports not due yet; skipping. No API quota used.');
+        ? 'No sports in season. No API quota used.'
+        : 'In-season sports are not due yet. No API quota used.');
       return;
+    }
+    if (!ODDS_API_KEY) {
+      throw new Error('ODDS_API_KEY is required');
     }
     console.log(`Fetching this run${isForced ? ' (forced)' : ''}: ${due.map(s => s.sport).join(', ')}`);
 
@@ -1606,17 +1634,21 @@ async function fetchAllOdds() {
     });
 
     if (quotaAllowed.length === 0) {
+      writeOmissionTransitions(previous, inSeason, publicationContext);
       console.log('No due sports fit within the remaining quota reserve. No paid API quota used.');
       return;
     }
     
-    const results = await Promise.all(
-      quotaAllowed.map(s => fetchOdds(s))
-    );
+    const digests = new Map();
+    const writeArtifact = (filePath, contents) => {
+      writeFileAtomically(filePath, contents);
+      digests.set(path.basename(filePath), artifactDigest(contents));
+    };
+    const results = await Promise.all(quotaAllowed.map(s => fetchOdds(s, { writeFile: writeArtifact })));
     
     // Map every selected league's attempt, including failures. A green workflow is
     // not proof that every league refreshed; summary.json is the per-league receipt.
-    const nowIso = now.toISOString();
+    const nowIso = publicationContext.observedAtUtc;
     const attemptedByFile = {};
     quotaAllowed.forEach((s, i) => {
       if (results[i]) attemptedByFile[`${s.fileName}.json`] = results[i];
@@ -1650,6 +1682,11 @@ async function fetchAllOdds() {
         lastFetched[fileKey],
         nowIso
       ));
+    });
+    summary.publication = buildPublication(previous.publication, {
+      ...publicationContext,
+      attempts: new Map(Object.entries(attemptedByFile)),
+      digests
     });
     
     // Save combined summary
