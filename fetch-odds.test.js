@@ -283,8 +283,10 @@ assert.throws(
   /basketball_ncaab_championship_winner/
 );
 const sourceRetractions = loadSourceEventRetractions();
-assert.equal(sourceRetractions.length, 8);
-const historicalObservation = sourceRetractions.find(row => row.eventId === 'a595be90cfe89c2a497aec557184dcac');
+const historicalObservation = sourceRetractions.find(row =>
+  row.eventId === 'a595be90cfe89c2a497aec557184dcac'
+  && row.originalSourceCommitSha === 'aa1634d68642a567848332da484d70ac6885daf5'
+);
 assert.deepEqual(historicalObservation, {
   eventId: 'a595be90cfe89c2a497aec557184dcac', sportKey: 'basketball_ncaab',
   homeTeam: 'Seattle Redhawks', awayTeam: 'Idaho State Bengals', commenceTime: '2026-11-17T21:00:14Z',
@@ -293,15 +295,38 @@ assert.deepEqual(historicalObservation, {
   originalSourceArtifactSha256: '4d39c2749ebe17db097ca2770f841abb07abe901354d32e049383048ced3b722',
   retiredSourceIdentities: []
 });
-assert.deepEqual(sourceRetractions.filter(row => row.eventId === historicalObservation.eventId)
-  .map(row => [row.originalSourceCommitSha, row.originalSourceArtifactSha256]), [
+const establishedHistoricalArtifacts = [
   ['aa1634d68642a567848332da484d70ac6885daf5', '4d39c2749ebe17db097ca2770f841abb07abe901354d32e049383048ced3b722'],
   ['73eafda63124797a0c31af28b8c41cda1aa78d31', 'b96a1474149387a07e84f24d7dea001c6eaa77bf2d4b8a2ad51e01158557f506'],
   ['9cad3aec3291b47e3e549419c47ac4bb0bc3dd22', 'ba9f8f7b720be41344b1b4e8983b9ed8cde6cb6d60aa8092e364f752c6e77750'],
-]);
+];
+for (const [commit, artifact] of establishedHistoricalArtifacts) {
+  const row = sourceRetractions.find(candidate => (
+    candidate.eventId === historicalObservation.eventId
+    && candidate.originalSourceCommitSha === commit
+  ));
+  assert.deepEqual(row, {
+    ...historicalObservation,
+    originalSourceCommitSha: commit,
+    originalSourceArtifactSha256: artifact,
+  });
+}
 const fakeLedger = rows => ({ readFileSync: () => JSON.stringify({
   schemaVersion: 'odds-source-event-retractions-v1', retractions: rows
 }) });
+const appendedHistoricalObservation = {
+  ...historicalObservation,
+  originalSourceCommitSha: 'b'.repeat(40),
+  originalSourceArtifactSha256: 'c'.repeat(64),
+};
+assert.deepEqual(
+  loadSourceEventRetractions(fakeLedger([historicalObservation, appendedHistoricalObservation])),
+  [historicalObservation, appendedHistoricalObservation],
+  'A distinct exact historical artifact can be appended for the same withdrawn event.'
+);
+assert.throws(() => loadSourceEventRetractions(fakeLedger(Array(65).fill(historicalObservation))),
+  /Invalid source-event retractions manifest/);
+
 assert.throws(() => loadSourceEventRetractions(fakeLedger([historicalObservation, historicalObservation])),
   /Duplicate source-event retraction identity/);
 assert.throws(() => loadSourceEventRetractions(fakeLedger([historicalObservation,
@@ -1402,13 +1427,9 @@ async function testNcaabAndUclPublication() {
     assert.equal(writes.length, 0);
   }
 
-  const incidentRows = sourceRetractions.map(retraction => ({
-    id: retraction.eventId,
-    sport_key: retraction.sportKey,
+  const incidentRows = [retractedSourceEvent, laterEvent].map(game => ({
+    ...game,
     sport_title: 'NCAAB',
-    home_team: retraction.homeTeam,
-    away_team: retraction.awayTeam,
-    commence_time: retraction.commenceTime,
     bookmakers: ncaabGame.bookmakers
   }));
   const retractionWrites = [];
