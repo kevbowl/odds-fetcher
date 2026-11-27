@@ -5,7 +5,7 @@
   "main": "fetch-odds.js",
   "scripts": {
     "start": "node fetch-odds.js",
-    "test": "node fetch-odds.test.js"
+    "test": "node fetch-odds.test.js && node publication-order.test.js"
   },
   "engines": {
     "node": ">=18"

@@ -30,42 +30,22 @@ jobs:
         node-version: '18'
 
     - name: Test receipt contracts
-      run: node fetch-odds.test.js
+      run: npm test
+
+    - name: Capture exact publication parent
+      id: publication
+      run: printf 'parent=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
     - name: Fetch odds
       env:
         ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        ODDS_PUBLICATION_PARENT: ${{ steps.publication.outputs.parent }}
       run: node fetch-odds.js
 
     - name: Commit and push changes
+      env:
+        ODDS_PUBLICATION_PARENT: ${{ steps.publication.outputs.parent }}
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add odds/
-        if git diff --staged --quiet; then
-          echo "No odds changes to commit"
-          exit 0
-        fi
-
-        git commit -m "Update odds - $(date)"
-
-        for attempt in 1 2 3; do
-          if ! git pull --rebase origin main; then
-            if git rev-parse -q --verify REBASE_HEAD >/dev/null; then
-              git rebase --abort
-              echo "A newer odds snapshot reached main; discarding this stale snapshot."
-              exit 0
-            fi
-            echo "Pull failed before rebase; retrying..."
-            sleep 5
-            continue
-          fi
-          if git push origin main; then
-            exit 0
-          fi
-          echo "Push failed; retrying after fetching latest main..."
-          sleep 5
-        done
-
-        echo "Failed to push odds update after retries"
-        exit 1
+        bash scripts/publish-odds.sh
